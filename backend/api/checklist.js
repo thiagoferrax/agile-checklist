@@ -2,8 +2,12 @@ module.exports = app => {
     const {existsOrError, notExistsOrError} = app.api.validation
     
     const save = (req, res) => {
-        const checklist = {...req.body}
-
+        const checklist = {
+            id: req.body.id,
+            description: req.body.description,
+            parentId: req.body.parentId
+        }
+      
         if(req.params.id) checklist.id = req.params.id
 
         try{
@@ -16,13 +20,13 @@ module.exports = app => {
             app.db('checklists')
                 .update(checklist)
                 .where({id: checklist.id})
-                .then(_ => res.status(204).send(msg))
+                .then(_ => res.status(204).send())
                 .catch(err => res.status(500).send(err))
         } else {
             app.db('checklists')
                 .insert(checklist)
-                .then(_ => res.status(204).send(msg))
-                .catch(err => res.status(500).send(err))
+                .then(_ => res.status(204).send())
+                .catch(err => res.status(500).send(err))            
         }
     }
 
@@ -34,7 +38,7 @@ module.exports = app => {
 
             notExistsOrError(subChecklists, "This checklist has subchecklists!")
 
-            const rowsDeleted = await app.db('checklists').where({parentId: req.params.id}).del()
+            const rowsDeleted = await app.db('checklists').where({ id: req.params.id }).del()
 
             existsOrError(rowsDeleted, "Checklist was not found!")
 
@@ -44,12 +48,45 @@ module.exports = app => {
         }
     }
 
+    const withPath = checklists => {
+        const getParent = (checklists, parentId) => {
+            const parent = checklists.filter(parent => parent.id === parentId)
+            return parent.length ? parent[0] : null
+        }
+
+        const checklistsWithPath = checklists.map(checklist => {
+            let path = checklist.description
+            let parent = getParent(checklists, checklist.parentId)
+
+            while(parent) {
+                path = `${parent.description} > ${path}`
+                parent = getParent(checklists, parent.parentId)
+            }
+
+            return { ...checklist, path }
+        })
+
+        checklistsWithPath.sort((a, b) => {
+            if(a.path < b.path) return -1
+            if(a.path > b.path) return 1
+            return 0
+        })
+
+        return checklistsWithPath
+    }
+
     const get = (req, res) => {
-        res.json('get')
+        app.db('checklists')
+            .then(checklists => res.json(withPath(checklists)))
+            .catch(err => res.status(500).send(err))
     }
 
     const getById = (req, res) => {
-        res.json('getById')
+        app.db('checklists')
+        .where({ id: req.params.id })
+        .first()
+        .then(checklist => res.json(checklist))
+        .catch(err => res.status(500).send(err))
     }
 
     return {save, remove, get, getById}
