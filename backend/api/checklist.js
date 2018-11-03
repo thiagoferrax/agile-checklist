@@ -20,13 +20,13 @@ module.exports = app => {
             app.db('checklists')
                 .update(checklist)
                 .where({id: checklist.id})
-                .then(_ => res.status(204).send())
-                .catch(err => res.status(500).send(err))
+                .then(id => res.json({...checklist, id:Number(checklist.id)}))
+                .catch(err => res.status(500).send(err))     
         } else {
             app.db('checklists')
-                .insert(checklist)
-                .then(_ => res.status(204).send())
-                .catch(err => res.status(500).send(err))            
+                .insert(checklist, 'id')
+                .then(id => res.json({...checklist, id:id[0]}))
+                .catch(err => res.status(500).send(err))                 
         }
     }
 

@@ -48,7 +48,7 @@ export default class checklistCrud extends Component {
 
     updateField(event) {
         const checklist = { ...this.state.checklist }
-        checklist[event.target.description] = event.target.value
+        checklist[event.target.name] = event.target.value
         this.setState({ checklist })
     }
 
