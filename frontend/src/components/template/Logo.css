@@ -2,18 +2,18 @@ aside.logo {
     background-color: var(--bg-dark);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;    
+}
+
+aside link {
+    font-size: 1.8em;
+    text-decoration: none;
+    color: white;
 }
 
 aside.logo img {
     padding: 0px 15px;
     width: 100%;
-}
-
-aside a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
 }
 
 @media(max-width: 576px) {
