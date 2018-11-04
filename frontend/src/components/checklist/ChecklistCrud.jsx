@@ -52,11 +52,19 @@ export default class checklistCrud extends Component {
         this.setState({ checklist })
     }
 
+    createSelectItems() {
+        let items = []         
+        for (let i = 0; i < this.state.list.length; i++) {             
+             items.push(<option key={i} value={this.state.list[i].id}>{this.state.list[i].path}</option>);   
+        }
+        return items;
+    }
+
     renderForm() {
         return (
             <div className="form">
                 <div className="row">
-                    <div className="col-12 col-md-6">
+                    <div className="col-12">
                         <div className="form-group">
                             <label>Description</label>
                             <input type="text" className="form-control"
@@ -66,15 +74,17 @@ export default class checklistCrud extends Component {
                                 placeholder="Write the description..." />
                         </div>
                     </div>
-
-                    <div className="col-12 col-md-6">
+                </div>    
+                <div className="row">    
+                    <div className="col-12">
                         <div className="form-group">
-                            <label>ParentId</label>
-                            <input type="text" className="form-control"
+                            <label>Parent</label>
+                            <select  className="form-control"
                                 name="parentId"
-                                value={this.state.checklist.parentId}
-                                onChange={e => this.updateField(e)}
-                                placeholder="Write the parentId..." />
+                                onChange={e => this.updateField(e)}>
+                                <option key="-1" value="-1">Select one option</option>
+                                {this.createSelectItems()}
+                            </select>                            
                         </div>
                     </div>
                 </div>

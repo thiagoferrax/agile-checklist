@@ -25,7 +25,7 @@ module.exports = app => {
         } else {
             app.db('checklists')
                 .insert(checklist, 'id')
-                .then(id => res.json({...checklist, id:id[0]}))
+                .then(id => res.json({...checklist, id:Number(id[0])}))
                 .catch(err => res.status(500).send(err))                 
         }
     }
