@@ -15,5 +15,8 @@ export default props =>
             <Link to="/checklists">
                 <i className="fa fa-check-square"></i> Checklists
             </Link>
+            <Link to="/assessments">
+                <i className="fa fa-check-square"></i> Assessments
+            </Link>
         </nav>
     </aside>
