@@ -10,7 +10,7 @@ const headerProps = {
 
 const baseUrl = 'http://localhost:3001/users'
 const initialState = {
-    user: { name: '', email: '' },
+    user: { name: '', email: '',  password: '', confirmPassword: '', admin: false},
     list: []
 }
 
@@ -77,7 +77,29 @@ export default class UserCrud extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="row">
+                    <div className="col-12 col-md-6">
+                        <div className="form-group">
+                            <label>Password</label>
+                            <input type="text" className="form-control"
+                                name="password"
+                                value={this.state.user.password}
+                                onChange={e => this.updateField(e)}
+                                placeholder="Write the password..." />
+                        </div>
+                    </div>
 
+                    <div className="col-12 col-md-6">
+                        <div className="form-group">
+                            <label>Confirm the Password</label>
+                            <input type="text" className="form-control"
+                                name="confirmPassword"
+                                value={this.state.user.confirmPassword}
+                                onChange={e => this.updateField(e)}
+                                placeholder="Confirm the password..." />
+                        </div>
+                    </div>
+                </div>                
                 <hr />
                 <div className="row">
                     <div className="col-12 d-flex justify-content-end">
