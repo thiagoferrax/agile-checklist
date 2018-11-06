@@ -10,4 +10,13 @@ module.exports = app => {
         .put(app.api.checklist.save)
         .delete(app.api.checklist.remove)
         .get(app.api.checklist.getById)    
+
+    app.route('/users')
+        .post(app.api.user.save)
+        .get(app.api.user.get)
+
+    app.route('/users/:id')
+        .put(app.api.user.save)
+        .delete(app.api.user.remove)
+        .get(app.api.user.getById)        
 }   
