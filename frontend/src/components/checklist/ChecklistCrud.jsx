@@ -64,7 +64,7 @@ export default class checklistCrud extends Component {
         return (
             <div className="form">
                 <div className="row">
-                    <div className="col-12">
+                    <div className="col-12 col-md-6">
                         <div className="form-group">
                             <label>Description</label>
                             <input type="text" className="form-control"
@@ -74,9 +74,7 @@ export default class checklistCrud extends Component {
                                 placeholder="Write the description..." />
                         </div>
                     </div>
-                </div>    
-                <div className="row">    
-                    <div className="col-12">
+                    <div className="col-12 col-md-6">
                         <div className="form-group">
                             <label>Parent</label>
                             <select  className="form-control"

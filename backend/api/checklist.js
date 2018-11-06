@@ -89,5 +89,21 @@ module.exports = app => {
         .catch(err => res.status(500).send(err))
     }
 
-    return {save, remove, get, getById}
+    const toTree = (checklists, tree) => {
+        if(!tree) tree = checklists.filter(c => !c.parentId)
+        tree = tree.map(parentNode => {
+            const isChild = node => node.parentId == parentNode.id
+            parentNode.children = toTree(checklists, checklists.filter(isChild))
+            return parentNode
+        })
+        return tree
+    }
+
+    const getTree = (req, res) => {
+        app.db('checklists')
+            .then(checklists => res.json(toTree(checklists)))
+            .catch(err => res.status(500).send(err))
+    }
+
+    return {save, remove, get, getById, getTree}
 }

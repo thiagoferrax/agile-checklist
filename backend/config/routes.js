@@ -3,8 +3,11 @@ module.exports = app => {
         .post(app.api.checklist.save)
         .get(app.api.checklist.get)
 
+    app.route('/checklists/tree')
+        .get(app.api.checklist.getTree)
+
     app.route('/checklists/:id')
         .put(app.api.checklist.save)
         .delete(app.api.checklist.remove)
-        .get(app.api.checklist.getById)
+        .get(app.api.checklist.getById)    
 }   

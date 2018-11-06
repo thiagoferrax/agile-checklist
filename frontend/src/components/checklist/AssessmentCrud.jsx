@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Main from '../template/Main'
+import './AssessmentCrud.css'
 
 const headerProps = {
     icon: 'check-square',
@@ -12,7 +13,8 @@ const baseUrl = 'http://localhost:3001/checklists'
 
 const initialState = {
     checklist: { description: '', parentId: '' },
-    list: []
+    list: [],
+    tree: []
 }
 
 export default class checklistCrud extends Component {
@@ -22,6 +24,11 @@ export default class checklistCrud extends Component {
     componentWillMount() {
         axios(baseUrl).then(resp => {
             this.setState({ list: resp.data })
+        })
+
+        const treeUrl = baseUrl + '/tree'
+        axios(treeUrl).then(resp => {
+            this.setState({ tree: resp.data })
         })
     }
 
@@ -65,7 +72,7 @@ export default class checklistCrud extends Component {
         return (
             <div className="form">
                 <div className="row">
-                    <div className="col-12">
+                    <div className="col-12 col-md-6">
                         <div className="form-group">
                             <label>Project</label>
                             <input type="text" className="form-control"
@@ -75,9 +82,7 @@ export default class checklistCrud extends Component {
                                 placeholder="Write the project..." />
                         </div>
                     </div>
-                </div>    
-                <div className="row">    
-                    <div className="col-12">
+                    <div className="col-12 col-md-6">
                         <div className="form-group">
                             <label>Checklist</label>
                             <select  className="form-control"
@@ -121,21 +126,33 @@ export default class checklistCrud extends Component {
 
     renderTable() {
         return (
-            <div>
+            <div className="checklist">
                  {this.renderChecklist()}
             </div>            
         )
     }
 
     renderChecklist() {
-        return this.state.list.map(checklist => {
+        const tree = this.state.tree
+
+        const getChildren = node => node.children
+
+        const buildTree = tree => tree.map(checklist => {
+            
+            const children = getChildren(checklist)
+
             return (
-                <div className="col-12 d-flex">                     
-                    <label for={checklist.id}>{checklist.description}</label>
-                    <input type="checkbox" id={checklist.id} name={checklist.id} />
+                <div className="col-12">
+                    <div className="form-check mr-3">                     
+                        <input className="form-check-input" type="checkbox" id={checklist.id} name={checklist.id} />
+                        <label className="form-check-label" for={checklist.id}>{checklist.description}</label>
+                    </div>
+                    {buildTree(children)} 
                 </div>                    
             )
         })
+
+        return buildTree(tree)
     }
     
     render() {
