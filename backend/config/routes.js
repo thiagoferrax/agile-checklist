@@ -19,4 +19,13 @@ module.exports = app => {
         .put(app.api.user.save)
         .delete(app.api.user.remove)
         .get(app.api.user.getById)        
+
+    app.route('/projects')
+        .post(app.api.project.save)
+        .get(app.api.project.get)
+
+    app.route('/projects/:id')
+        .put(app.api.project.save)
+        .delete(app.api.project.remove)
+        .get(app.api.project.getById)  
 }   
