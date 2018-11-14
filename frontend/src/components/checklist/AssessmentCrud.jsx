@@ -14,12 +14,28 @@ const baseUrl = 'http://localhost:3001/checklists'
 const initialState = {
     checklist: { description: '', parentId: '' },
     list: [],
-    tree: []
+    tree: [],
+    answerList: {}
 }
 
 export default class checklistCrud extends Component {
 
     state = { ...initialState }
+
+    initializeAnswers(tree) {
+        const getAnswers = (accumulator, childrenTree) => childrenTree.reduce(function(accumulator, checklist) {
+            accumulator[checklist.id] = 0
+
+            if(checklist.children) {
+                getAnswers(accumulator, checklist.children)
+            }
+
+            return accumulator
+        }, accumulator)
+
+        return getAnswers({}, tree)
+    }
+
 
     componentWillMount() {
         axios(baseUrl).then(resp => {
@@ -28,7 +44,7 @@ export default class checklistCrud extends Component {
 
         const treeUrl = baseUrl + '/tree'
         axios(treeUrl).then(resp => {
-            this.setState({ tree: resp.data })
+            this.setState({ tree: resp.data, answerList: this.initializeAnswers(resp.data) })            
         })
     }
 
@@ -57,6 +73,25 @@ export default class checklistCrud extends Component {
         const checklist = { ...this.state.checklist }
         checklist[event.target.name] = event.target.value
         this.setState({ checklist })
+    }
+
+    updateSlideBar(event) {
+        const colors = ['#dc3545', '#ffc107', '#17a2b8', '#28a745']
+
+        const slideId = event.target.id
+        const checklistId = slideId.split('_')[1]
+
+        const answer = event.target.value
+
+        console.log(colors[answer])
+        console.log(document.getElementById(slideId).style)
+        document.getElementById(slideId).style = `background: ${colors[answer]} !important`
+
+
+        const answersList = this.state.answerList
+        answersList[checklistId] = answer
+
+        this.setState({ answersList })
     }
 
     createSelectItems() {
@@ -132,6 +167,18 @@ export default class checklistCrud extends Component {
         )
     }
 
+    closeNode(checklistId) {
+        const children  = document.getElementById(checklistId)
+        children.hidden = !children.hidden        
+
+        const link  = document.getElementById(`link_${checklistId}`)
+        if(link.className === "fa fa-angle-down ml-2") {
+            link.className = "fa fa-angle-right ml-2"
+        } else {
+            link.className = "fa fa-angle-down ml-2"
+        }
+    }
+
     renderChecklist() {
         const tree = this.state.tree
 
@@ -142,12 +189,15 @@ export default class checklistCrud extends Component {
             const children = getChildren(checklist)
 
             return (
-                <div className={children.length > 0 ? "parent" : ""}>
+                <div key={checklist.id} className={children.length > 0 ? "parent" : ""}>
                     <div className="rowItem">
-                        <i className="fa fa-angle-down ml-3 " hidden={children.length === 0}></i>
-                        <input id={checklist.id} type="text" value={checklist.description}/>                                                                            
+                        <a onClick={() => this.closeNode(checklist.id)}><i id={`link_${checklist.id}`} className="fa fa-angle-down ml-2" hidden={children.length === 0}></i></a>
+                        <div className="ml-2">{checklist.description}</div> 
+                        <div className="slidecontainer">
+                            <input type="range" min="0" max="3" value="0" className="slider" id={`slide_${checklist.id}`} value={this.state.answerList[checklist.id]}  onChange={e => this.updateSlideBar(e)}/>
+                        </div>
                     </div>
-                    <div className="children">
+                    <div className="children" id={checklist.id}>
                         {buildTree(children)} 
                     </div>
                 </div>                    
