@@ -1,2 +1,2 @@
 # agile-checklist
-Implementing the Scrum Evaluation Checklist Using React and Node.js
+Implementing the Scrum Evaluation Checklist using the PREN technology stack (PostgreSQL, ReactJS, ExpressJS, and NodeJS).
