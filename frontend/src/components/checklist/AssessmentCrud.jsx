@@ -142,12 +142,14 @@ export default class checklistCrud extends Component {
             const children = getChildren(checklist)
 
             return (
-                <div className="col-12">
-                    <div className="form-check mr-3">                     
-                        <input className="form-check-input" type="checkbox" id={checklist.id} name={checklist.id} />
-                        <label className="form-check-label" for={checklist.id}>{checklist.description}</label>
+                <div className={children.length > 0 ? "parent" : ""}>
+                    <div className="rowItem">
+                        <i className="fa fa-angle-down ml-3 " hidden={children.length === 0}></i>
+                        <input id={checklist.id} type="text" value={checklist.description}/>                                                                            
                     </div>
-                    {buildTree(children)} 
+                    <div className="children">
+                        {buildTree(children)} 
+                    </div>
                 </div>                    
             )
         })
