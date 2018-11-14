@@ -48,16 +48,30 @@ const initializeAnswers = (tree) => {
 }
 
 const getSlideBarColor = (answer) => {
-    const colors = ['#dc3545', '#ffc107', '#17a2b8', '#28a745']
-    let color = colors[3]
-    if(answer <= 25) {
-        color = colors[0]
-    } else if (answer <= 50){
-        color = colors[1]
-    } else if (answer <= 75){
-        color = colors[2]
-    } 
 
+    const colors = ['#FF0000', '#FF3300', '#ff6600', '#ff9900', '#FFCC00', '#FFFF00', '#ccff00', '#ccff00', '#99ff00', '#66ff00', '#33ff00'] 
+    
+    let color = colors[9]
+    if(answer<=10) {
+        color = colors[0]
+    } else if(answer<=20) {
+        color = colors[1]
+    } else if(answer<=30) {
+        color = colors[2]
+    } else if(answer<=40) {
+        color = colors[3]
+    } else if(answer<=50) {
+        color = colors[4]
+    } else if(answer<=60) {
+        color = colors[5]
+    } else if(answer<=70) {
+        color = colors[6]
+    } else if(answer<=80) {
+        color = colors[7]
+    } else if(answer<=90) {
+        color = colors[8]
+    }
+     
     return color
 }
 

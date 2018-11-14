@@ -4,14 +4,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "0.18.0",
-    "bootstrap": "4.1.1",
-    "font-awesome": "4.7.0",
-    "react-router": "4.2.0",
-    "react-router-dom": "4.2.2",
+    "axios": "^0.18.0",
+    "bootstrap": "^4.1.1",
+    "font-awesome": "^4.7.0",
+    "popper.js": "^1.14.5",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "react-scripts": "1.1.4"
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "jquery": "^1.9.1",
+    "react-scripts": "^1.1.4",
+    "ajv": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
