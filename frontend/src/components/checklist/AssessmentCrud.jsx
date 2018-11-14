@@ -75,18 +75,26 @@ export default class checklistCrud extends Component {
         this.setState({ checklist })
     }
 
-    updateSlideBar(event) {
+    getSlideBarColor(answer) {
         const colors = ['#dc3545', '#ffc107', '#17a2b8', '#28a745']
+        let color = colors[3]
+        if(answer <= 25) {
+            color = colors[0]
+        } else if (answer <= 50){
+            color = colors[1]
+        } else if (answer <= 75){
+            color = colors[2]
+        } 
+        return color
+    }
 
+    updateSlideBar(event) {
         const slideId = event.target.id
         const checklistId = slideId.split('_')[1]
 
-        const answer = event.target.value
+        let answer = event.target.value
 
-        console.log(colors[answer])
-        console.log(document.getElementById(slideId).style)
-        document.getElementById(slideId).style = `background: ${colors[answer]} !important`
-
+        document.getElementById(slideId).style = `background: ${this.getSlideBarColor(answer)} !important`
 
         const answersList = this.state.answerList
         answersList[checklistId] = answer
@@ -194,7 +202,7 @@ export default class checklistCrud extends Component {
                         <a onClick={() => this.closeNode(checklist.id)}><i id={`link_${checklist.id}`} className="fa fa-angle-down ml-2" hidden={children.length === 0}></i></a>
                         <div className="ml-2">{checklist.description}</div> 
                         <div className="slidecontainer">
-                            <input type="range" min="0" max="3" value="0" className="slider" id={`slide_${checklist.id}`} value={this.state.answerList[checklist.id]}  onChange={e => this.updateSlideBar(e)}/>
+                            <input type="range" min="0" max="100" value="0" className="slider" id={`slide_${checklist.id}`} value={this.state.answerList[checklist.id]}  onChange={e => this.updateSlideBar(e)}/>
                         </div>
                     </div>
                     <div className="children" id={checklist.id}>
