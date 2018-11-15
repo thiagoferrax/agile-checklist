@@ -47,6 +47,37 @@ const initializeAnswers = (tree) => {
     return getAnswers({}, tree, null)
 }
 
+const refreshChildrenNodes = (checklistId, answersList) => {
+    Object.getOwnPropertyNames(answersList).forEach(id => {        
+        if(answersList[id].parentId == checklistId) {
+            const parentAnswer = answersList[checklistId].answer
+
+            const child = answersList[id]
+            child.answer = parentAnswer
+
+            updateSlideBarColor(id, child.answer)
+
+            refreshChildrenNodes(id, answersList)
+        }
+    }) 
+}
+
+const refreshParentNodes = (checklistId, answersList) => {
+    const parentId = answersList[checklistId].parentId
+    if(parentId) {
+        const brothers = Object.getOwnPropertyNames(answersList).filter(id => answersList[id].parentId == answersList[checklistId].parentId)    
+        const sum = brothers.reduce((accumulator, id) => accumulator + parseInt(answersList[id].answer), 0)
+
+        const parentAnswer = sum/(brothers.length)
+
+        answersList[parentId] = {...answersList[parentId], answer: parentAnswer} 
+
+        updateSlideBarColor(parentId, parentAnswer)    
+
+        refreshParentNodes(parentId, answersList)
+    }
+}
+
 const updateSlide = (event, answersList) => {
     const slideId = event.target.id
     let answer = event.target.value
@@ -57,7 +88,10 @@ const updateSlide = (event, answersList) => {
     answersList[checklistId] = {answer, parentId}
 
     updateSlideBarColor(checklistId, answer)
-    
+
+    refreshChildrenNodes(checklistId, answersList)
+    refreshParentNodes(checklistId, answersList)
+
     return answersList
 }
 
