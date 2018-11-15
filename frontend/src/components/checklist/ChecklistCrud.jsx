@@ -80,7 +80,7 @@ export default class checklistCrud extends Component {
                             <select  className="form-control"
                                 name="parentId"
                                 onChange={e => this.updateField(e)}>
-                                <option key="-1" value="-1">Select one option</option>
+                                <option key="-1" value={null}>Select one option</option>
                                 {this.createSelectItems()}
                             </select>                            
                         </div>
