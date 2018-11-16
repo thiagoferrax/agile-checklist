@@ -9,7 +9,7 @@ module.exports = app => {
             type: req.body.type,
             complexity: req.body.complexity,
             estimatedDuration: req.body.estimatedDuration,            
-            userId: req.body.userId, 
+            userId: req.body.userId
         }
       
         if(req.params.id) project.id = req.params.id

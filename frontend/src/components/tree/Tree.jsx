@@ -1,28 +1,32 @@
 import React from 'react'
 import './Tree.css'
-import TreeItem, {updateSlideBarColor} from './TreeItem'
+import TreeItem, {toggleIcon}from './TreeItem'
+import SlideBar, {updateSlideBarColor} from './SlideBar';
 
 export default props => {
   
-    const closeNode = (checklistId) => {
-        const children  = document.getElementById(`children_${checklistId}`)
-        const link  = document.getElementById(`link_${checklistId}`)
-
+    const toggleNode = (nodeId) => {
+        const children  = document.getElementById(`children_${nodeId}`)
         children.hidden = !children.hidden        
-        link.className = link.className === 'fa fa-angle-down ml-2' ? 'fa fa-angle-right ml-2' : 'fa fa-angle-down ml-2'
+
+        toggleIcon(nodeId)
     }
 
-    const buildTree = tree => tree.map(checklist => {
-        
-        const getChildren = node => node.children
-
-        const children = getChildren(checklist)
+    const buildTree = tree => tree.map(node => {
+        const nodeId = node.id    
+        const description = node.description
+        const children = node.children
+        const answer = props.answers[nodeId].answer
 
         return (
-            <div className="checklist">    
-                <div key={checklist.id} className={children.length > 0 ? "parent" : ""}>
-                    <TreeItem id={checklist.id} description={checklist.description} onClick={closeNode} hidden={children.length === 0} updateSlideBar={props.updateSlideBar} answerList={props.answerList} />
-                    <div className="children" id={`children_${checklist.id}`}>
+            <div className="node">    
+                <div key={nodeId} className={children.length ? 'parent' : ''}>
+                    <TreeItem id={nodeId} description={description} onClick={toggleNode} 
+                        iconHidden={!children.length}>
+                        <SlideBar id={nodeId} value={answer} answers={props.answers} 
+                            onChange={props.updateSlideBar}/>
+                    </TreeItem>    
+                    <div className="children" id={`children_${nodeId}`}>
                         {buildTree(children)} 
                     </div>
                 </div>                   
@@ -34,11 +38,11 @@ export default props => {
 }
 
 const initializeAnswers = (tree) => {
-    const getAnswers = (accumulator, aTree, parentId) => aTree.reduce(function(accumulator, checklist) {
-        accumulator[checklist.id] = {answer:0, parentId}
+    const getAnswers = (accumulator, aTree, parentId) => aTree.reduce(function(accumulator, node) {
+        accumulator[node.id] = {answer:0, parentId}
 
-        if(checklist.children) {
-            getAnswers(accumulator, checklist.children, checklist.id)
+        if(node.children) {
+            getAnswers(accumulator, node.children, node.id)
         }
 
         return accumulator
@@ -47,52 +51,49 @@ const initializeAnswers = (tree) => {
     return getAnswers({}, tree, null)
 }
 
-const refreshChildrenNodes = (checklistId, answersList) => {
-    Object.getOwnPropertyNames(answersList).forEach(id => {        
-        if(answersList[id].parentId == checklistId) {
-            const parentAnswer = answersList[checklistId].answer
+const refreshChildrenNodes = (nodeId, answers) => {
+    Object.getOwnPropertyNames(answers).forEach(id => {        
+        if(answers[id].parentId == nodeId) {
+            const parentAnswer = answers[nodeId].answer
 
-            const child = answersList[id]
+            const child = answers[id]
             child.answer = parentAnswer
 
             updateSlideBarColor(id, child.answer)
 
-            refreshChildrenNodes(id, answersList)
+            refreshChildrenNodes(id, answers)
         }
     }) 
 }
 
-const refreshParentNodes = (checklistId, answersList) => {
-    const parentId = answersList[checklistId].parentId
+const refreshParentNodes = (nodeId, answers) => {
+    const parentId = answers[nodeId].parentId
     if(parentId) {
-        const brothers = Object.getOwnPropertyNames(answersList).filter(id => answersList[id].parentId == answersList[checklistId].parentId)    
-        const sum = brothers.reduce((accumulator, id) => accumulator + parseInt(answersList[id].answer), 0)
-
+        const brothers = Object.getOwnPropertyNames(answers).filter(id => answers[id].parentId == answers[nodeId].parentId)    
+        const sum = brothers.reduce((accumulator, id) => accumulator + parseInt(answers[id].answer), 0)
         const parentAnswer = sum/(brothers.length)
 
-        answersList[parentId] = {...answersList[parentId], answer: parentAnswer} 
-
+        answers[parentId] = {...answers[parentId], answer: parentAnswer} 
         updateSlideBarColor(parentId, parentAnswer)    
 
-        refreshParentNodes(parentId, answersList)
+        refreshParentNodes(parentId, answers)
     }
 }
 
-const updateSlide = (event, answersList) => {
+const updateSlide = (event, answers) => {
     const slideId = event.target.id
     let answer = event.target.value
 
-    const checklistId = slideId.split('_')[1]
-    const parentId = answersList[checklistId].parentId
+    const nodeId = slideId.split('_')[1]
+    const parentId = answers[nodeId].parentId
 
-    answersList[checklistId] = {answer, parentId}
+    answers[nodeId] = {answer, parentId}
+    updateSlideBarColor(nodeId, answer)
 
-    updateSlideBarColor(checklistId, answer)
+    refreshChildrenNodes(nodeId, answers)
+    refreshParentNodes(nodeId, answers)
 
-    refreshChildrenNodes(checklistId, answersList)
-    refreshParentNodes(checklistId, answersList)
-
-    return answersList
+    return answers
 }
 
 export {initializeAnswers, updateSlide}

@@ -10,13 +10,15 @@ const headerProps = {
     subtitle: 'Assessment: Insert, List, Update and Delete!!'
 }
 
-const baseUrl = 'http://localhost:3001/checklists'
+const baseUrl = 'http://localhost:3001'
 
 const initialState = {
     checklist: { description: '', parentId: '' },
+    assessment: { projectId: '', checklistId: '',  answers: {}},
     list: [],
     tree: [],
-    answerList: {}
+    answers: {},
+    projects: []
 }
 
 export default class checklistCrud extends Component {
@@ -28,13 +30,20 @@ export default class checklistCrud extends Component {
     state = { ...initialState }
 
     componentWillMount() {
-        axios(baseUrl).then(resp => {
+        const checklistsUrl = baseUrl + '/checklists'
+        axios(checklistsUrl).then(resp => {
             this.setState({ list: resp.data })
         })
 
-        const treeUrl = baseUrl + '/tree'
+        const treeUrl = checklistsUrl + '/tree'
         axios(treeUrl).then(resp => {
-            this.setState({ tree: resp.data, answerList: initializeAnswers(resp.data) })            
+            this.setState({ tree: resp.data, answers: initializeAnswers(resp.data) })            
+        })
+
+        const projectUrl = baseUrl + '/projects'
+        axios(projectUrl).then(resp => {
+
+            this.setState({ projects: resp.data })            
         })
     }
 
@@ -60,22 +69,34 @@ export default class checklistCrud extends Component {
     }
 
     updateField(event) {
-        const checklist = { ...this.state.checklist }
-        checklist[event.target.name] = event.target.value
-        this.setState({ checklist })
+        const answers = this.state.answers
+        const assessment = { ...this.state.assessment }
+        assessment[event.target.name] = event.target.value
+        this.setState({ assessment, answers})
     }
 
     updateSlideBar(event, answersList) {
         this.setState({ answersList: updateSlide(event, answersList)})
     }
 
-    createSelectItems() {
-        const list = this.state.list.filter(u => u.parentId === null)
-        let items = []         
-        for (let i = 0; i < list.length; i++) {             
-             items.push(<option key={i} value={list[i].id}>{list[i].path}</option>);   
-        }
-        return items;
+    getProjects() {
+        let projects = this.state.projects.reduce((items, project, index) => {   
+            items.push(<option key={`projects_${index}`} value={project.id}>{project.name}</option>);   
+            return items
+        }, [])
+
+        return projects;
+    }
+
+    getChecklists() {
+        const checklistsWithoutParent = this.state.list.filter(u => u.parentId === null)
+
+        let checklists = checklistsWithoutParent.reduce((items, checklist, index) => {   
+            items.push(<option key={`checklists_${index}`} value={checklist.id}>{checklist.path}</option>);   
+            return items
+        }, [])
+
+        return checklists;
     }
 
     renderForm() {
@@ -85,21 +106,22 @@ export default class checklistCrud extends Component {
                     <div className="col-12 col-md-6">
                         <div className="form-group">
                             <label>Project</label>
-                            <input type="text" className="form-control"
-                                name="description"
-                                value={this.state.checklist.description}
-                                onChange={e => this.updateField(e)}
-                                placeholder="Write the project..." />
+                            <select  className="form-control"
+                                name="projectId"
+                                onChange={e => this.updateField(e)}>
+                                <option key="-1" value="-1">Select one option</option>
+                                {this.getProjects()}
+                            </select>                              
                         </div>
                     </div>
                     <div className="col-12 col-md-6">
                         <div className="form-group">
                             <label>Checklist</label>
                             <select  className="form-control"
-                                name="parentId"
+                                name="checklistId"
                                 onChange={e => this.updateField(e)}>
                                 <option key="-1" value="-1">Select one option</option>
-                                {this.createSelectItems()}
+                                {this.getChecklists()}
                             </select>                            
                         </div>
                     </div>
@@ -135,7 +157,8 @@ export default class checklistCrud extends Component {
     }
 
     renderTree() {
-        return (<Tree tree={this.state.tree} answerList={this.state.answerList} updateSlideBar={this.updateSlideBar}/>)
+        const selectedTree = this.state.tree.filter(checklist => checklist.id == this.state.assessment.checklistId)
+        return (<Tree tree={selectedTree} answers={this.state.answers} updateSlideBar={this.updateSlideBar}/>)
     }
 
     render() {
