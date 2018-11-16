@@ -10,8 +10,9 @@ export default props => (
 )
 
 const toggleIcon = nodeId => { 
+    const downIcon = 'fa fa-angle-down ml-2'
     const linkIcon  = document.getElementById(`link_${nodeId}`)
-    linkIcon.className = linkIcon.className === 'fa fa-angle-down ml-2' ? 'fa fa-angle-right ml-2' : 'fa fa-angle-nodewn ml-2'
+    linkIcon.className = linkIcon.className === downIcon ? 'fa fa-angle-right ml-2' : downIcon
 }
 
 export {toggleIcon}
