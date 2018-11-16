@@ -1,6 +1,6 @@
 import React from 'react'
 import './Tree.css'
-import TreeItem, {toggleIcon}from './TreeItem'
+import TreeItem, {toggleIcon} from './TreeItem'
 import SlideBar, {updateSlideBarColor} from './SlideBar';
 
 export default props => {
@@ -12,6 +12,11 @@ export default props => {
         toggleIcon(nodeId)
     }
 
+    const isGrandparent = node => node.children.reduce((accumulator, child) => {
+        accumulator = accumulator || (child.children.length > 0)
+        return accumulator
+    }, false)
+
     const buildTree = tree => tree.map(node => {
         const nodeId = node.id    
         const description = node.description
@@ -21,15 +26,13 @@ export default props => {
         return (
             <div className="node">    
                 <div key={nodeId} className={children.length ? 'parent' : ''}>
-                    <TreeItem id={nodeId} description={description} onClick={toggleNode} 
-                        iconHidden={!children.length}>
-                        <SlideBar id={nodeId} value={answer} answers={props.answers} 
-                            onChange={props.updateSlideBar}/>
-                    </TreeItem>    
-                    <div className="children" id={`children_${nodeId}`}>
+                    <TreeItem id={nodeId} description={description} onClick={toggleNode} iconHidden={!children.length} shrink={props.shrink && !isGrandparent(node)}>
+                        <SlideBar id={nodeId} value={answer} answers={props.answers} onChange={props.updateSlideBar}/>
+                    </TreeItem>  
+                    <div className="children" id={`children_${nodeId}`} hidden={props.shrink && !isGrandparent(node)}>
                         {buildTree(children)} 
                     </div>
-                </div>                   
+                </div>     
             </div>     
         )
     })
@@ -51,9 +54,13 @@ const initializeAnswers = (tree) => {
     return getAnswers({}, tree, null)
 }
 
-const refreshChildrenNodes = (nodeId, answers) => {
-    Object.getOwnPropertyNames(answers).forEach(id => {        
-        if(answers[id].parentId == nodeId) {
+const refreshChildrenNodes = (nodeId, answers, oldAnswer) => {
+    const newAnswer = answers[nodeId].answer
+    const changeProportion = (newAnswer - oldAnswer)/oldAnswer
+
+    const children = Object.getOwnPropertyNames(answers).filter(id => answers[id].parentId == nodeId)    
+
+    children.forEach(id => {        
             const parentAnswer = answers[nodeId].answer
 
             const child = answers[id]
@@ -62,8 +69,7 @@ const refreshChildrenNodes = (nodeId, answers) => {
             updateSlideBarColor(id, child.answer)
 
             refreshChildrenNodes(id, answers)
-        }
-    }) 
+    })
 }
 
 const refreshParentNodes = (nodeId, answers) => {
@@ -86,11 +92,12 @@ const updateSlide = (event, answers) => {
 
     const nodeId = slideId.split('_')[1]
     const parentId = answers[nodeId].parentId
+    const oldAnswer = answers[nodeId].answer
 
     answers[nodeId] = {answer, parentId}
     updateSlideBarColor(nodeId, answer)
 
-    refreshChildrenNodes(nodeId, answers)
+    refreshChildrenNodes(nodeId, answers, oldAnswer)
     refreshParentNodes(nodeId, answers)
 
     return answers

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Main from '../template/Main'
+import {baseUrl} from '../../Global'
 
 const headerProps = {
     icon: 'check-square',
@@ -8,7 +9,7 @@ const headerProps = {
     subtitle: 'Checklists: Insert, List, Update and Delete!!'
 }
 
-const baseUrl = 'http://localhost:3001/checklists'
+const url = baseUrl + '/checklists'
 
 const initialState = {
     checklist: { description: '', parentId: '' },
@@ -20,7 +21,7 @@ export default class checklistCrud extends Component {
     state = { ...initialState }
 
     componentWillMount() {
-        axios(baseUrl).then(resp => {
+        axios(url).then(resp => {
             this.setState({ list: resp.data })
         })
     }
@@ -32,7 +33,7 @@ export default class checklistCrud extends Component {
     save() {
         const checklist = this.state.checklist
         const method = checklist.id ? 'put' : 'post'
-        const url = checklist.id ? `${baseUrl}/${checklist.id}` : baseUrl
+        const url = checklist.id ? `${url}/${checklist.id}` : url
         axios[method](url, checklist)
             .then(resp => {
                 const list = this.getUpdatedList(resp.data)
@@ -110,7 +111,7 @@ export default class checklistCrud extends Component {
     }
 
     remove(checklist) {
-        axios.delete(`${baseUrl}/${checklist.id}`).then(resp => {
+        axios.delete(`${url}/${checklist.id}`).then(resp => {
             const list = this.getUpdatedList(checklist, false)
             this.setState({ list })
         })

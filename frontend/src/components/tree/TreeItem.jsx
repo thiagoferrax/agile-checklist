@@ -3,7 +3,8 @@ import './TreeItem.css'
 
 export default props => (
     <div className="treeItem">
-        <a onClick={() => props.onClick(props.id)}><i id={`link_${props.id}`} className="fa fa-angle-down ml-2" hidden={props.iconHidden}></i></a>
+        <a onClick={() => props.onClick(props.id)}><i id={`link_${props.id}`} 
+            className={`fa fa-angle-${props.shrink ? 'right' : 'down'} ml-2`} hidden={props.iconHidden}></i></a>
         <div className="ml-2">{props.description}</div> 
         {props.children}        
     </div>

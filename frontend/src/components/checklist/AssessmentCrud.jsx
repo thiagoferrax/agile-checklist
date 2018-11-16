@@ -3,14 +3,13 @@ import axios from 'axios'
 import Main from '../template/Main'
 import Tree, {initializeAnswers, updateSlide} from '../tree/Tree'
 import './AssessmentCrud.css'
+import {baseUrl} from '../../Global'
 
 const headerProps = {
     icon: 'check-square',
     title: 'Assessment',
     subtitle: 'Assessment: Insert, List, Update and Delete!!'
-}
-
-const baseUrl = 'http://localhost:3001'
+} 
 
 const initialState = {
     checklist: { description: '', parentId: '' },
@@ -158,7 +157,7 @@ export default class checklistCrud extends Component {
 
     renderTree() {
         const selectedTree = this.state.tree.filter(checklist => checklist.id == this.state.assessment.checklistId)
-        return (<Tree tree={selectedTree} answers={this.state.answers} updateSlideBar={this.updateSlideBar}/>)
+        return (<Tree tree={selectedTree} answers={this.state.answers} updateSlideBar={this.updateSlideBar} shrink={true}/>)
     }
 
     render() {
