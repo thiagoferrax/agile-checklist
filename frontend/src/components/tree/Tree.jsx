@@ -54,22 +54,49 @@ const initializeAnswers = (tree) => {
     return getAnswers({}, tree, null)
 }
 
-const refreshChildrenNodes = (nodeId, answers, oldAnswer) => {
+const refreshChildrenNodes = (nodeId, answers, oldAnswer = 0) => {
+    const MAX_LIMIT = 100
+    const MIN_LIMIT = 0
+
+    const getChildren = answers => Object.getOwnPropertyNames(answers).filter(id => answers[id].parentId == nodeId)
+
+    const refreshChildren = (delta, children) => {
+        let overcome = 0
+        const innerChildren = []
+        children.forEach(id => {        
+            let oldAnswer = Number(answers[id].answer)
+            let newAnswer = oldAnswer + delta
+
+            if(delta>=0) {
+                if(newAnswer > MAX_LIMIT)  {
+                    overcome += newAnswer - MAX_LIMIT
+                    newAnswer = MAX_LIMIT                    
+                } else {
+                    innerChildren.push(id)
+                }
+            } else {
+                if(newAnswer < MIN_LIMIT)  {
+                    overcome += newAnswer - MIN_LIMIT
+                    newAnswer = MIN_LIMIT                    
+                } else {
+                    innerChildren.push(id)
+                }
+            }
+
+            answers[id].answer = newAnswer
+            updateSlideBarColor(id, newAnswer)            
+            refreshChildrenNodes(id, answers, oldAnswer)
+        })
+
+        if(overcome && innerChildren.length > 0) {
+            delta = overcome / innerChildren.length
+            refreshChildren(delta, innerChildren)
+        }
+    }
+
     const newAnswer = answers[nodeId].answer
-    const changeProportion = (newAnswer - oldAnswer)/oldAnswer
-
-    const children = Object.getOwnPropertyNames(answers).filter(id => answers[id].parentId == nodeId)    
-
-    children.forEach(id => {        
-            const parentAnswer = answers[nodeId].answer
-
-            const child = answers[id]
-            child.answer = parentAnswer
-
-            updateSlideBarColor(id, child.answer)
-
-            refreshChildrenNodes(id, answers)
-    })
+    const delta = newAnswer - oldAnswer    
+    refreshChildren(delta, getChildren(answers))
 }
 
 const refreshParentNodes = (nodeId, answers) => {
