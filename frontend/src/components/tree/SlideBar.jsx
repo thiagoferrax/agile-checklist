@@ -1,10 +1,14 @@
 import React from 'react'
 import './SlideBar.css'
 
+const COLORS = ['#DC3545', '#FF3300', '#ff6600', '#ff9900', '#FFCC00', '#FFC107', '#ccff00', '#ccff00', '#99ff00', '#66ff00', '#28A745'] 
+const MIN = 0
+const MAX = 100
+
 export default props => {
     return (
         <div className="slidecontainer">
-            <input className="slider" type="range" min="0" max="100" value="0" 
+            <input className="slider" type="range" min={MIN} max={MAX} value={MIN} 
                 id={`slide_${props.id}`} 
                 value={props.value}  
                 onChange={e => props.onChange(e, props.answers)}/>
@@ -12,33 +16,31 @@ export default props => {
     )
 }
 
-const updateSlideBarColor = (checklistId, answer) => {
-    const slideId = `slide_${checklistId}`
+const updateSlideBarColor = (nodeId, answer) => {
+    const slideId = `slide_${nodeId}`
     document.getElementById(slideId).style = `background: ${getSlideBarColor(answer)} !important`
 }
 
 const getSlideBarColor = (answer) => {
-    const colors = ['rgb(220, 53, 69)', '#FF3300', '#ff6600', '#ff9900', '#FFCC00', 'rgb(255, 193, 7)', '#ccff00', '#ccff00', '#99ff00', '#66ff00', 'rgb(40, 167, 69)'] 
-    
-    let color = colors[9]
+    let color = COLORS[9]
     if(answer<=10) {
-        color = colors[0]
+        color = COLORS[0]
     } else if(answer<=20) {
-        color = colors[1]
+        color = COLORS[1]
     } else if(answer<=30) {
-        color = colors[2]
+        color = COLORS[2]
     } else if(answer<=40) {
-        color = colors[3]
+        color = COLORS[3]
     } else if(answer<=50) {
-        color = colors[4]
+        color = COLORS[4]
     } else if(answer<=60) {
-        color = colors[5]
+        color = COLORS[5]
     } else if(answer<=70) {
-        color = colors[6]
+        color = COLORS[6]
     } else if(answer<=80) {
-        color = colors[7]
+        color = COLORS[7]
     } else if(answer<=90) {
-        color = colors[8]
+        color = COLORS[8]
     }     
     return color
 }
