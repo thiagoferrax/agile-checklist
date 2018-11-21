@@ -18,7 +18,8 @@ export default props => {
 
 const updateSlideBarColor = (nodeId, answer) => {
     const slideId = `slide_${nodeId}`
-    document.getElementById(slideId).style = `background: ${getSlideBarColor(answer)} !important`
+    const slideElement = document.getElementById(slideId)
+    slideElement.style = `background: ${getSlideBarColor(answer)} !important`
 }
 
 const getSlideBarColor = (answer) => {

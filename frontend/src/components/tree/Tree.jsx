@@ -2,6 +2,7 @@ import React from 'react'
 import './Tree.css'
 import TreeItem, {toggleIcon} from './TreeItem'
 import SlideBar, {updateSlideBarColor} from './SlideBar';
+import If from '../common/operator/If';
 
 export default props => {
   
@@ -23,15 +24,19 @@ export default props => {
         const children = node.children
         const answer = props.answers[nodeId].answer
 
+        const childrenTree = buildTree(children)
+
         return (
             <div className="node">    
                 <div key={nodeId} className={children.length ? 'parent' : ''}>
                     <TreeItem id={nodeId} description={description} onClick={toggleNode} iconHidden={!children.length} shrink={props.shrink && !isGrandparent(node)}>
-                        <SlideBar id={nodeId} value={answer} answers={props.answers} onChange={props.updateSlideBar}/>
-                    </TreeItem>  
-                    <div className="children" id={`children_${nodeId}`} hidden={props.shrink && !isGrandparent(node)}>
-                        {buildTree(children)} 
-                    </div>
+                        <SlideBar id={nodeId} value={answer} answers={props.answers} onChange={props.updateSlideBar}/>                        
+                    </TreeItem>
+                    <If test={childrenTree}>
+                        <div className="children" id={`children_${nodeId}`} hidden={props.shrink && !isGrandparent(node)}>
+                            {childrenTree} 
+                        </div>                  
+                    </If>  
                 </div>     
             </div>     
         )
@@ -95,9 +100,11 @@ const refreshChildrenNodes = (nodeId, answers, oldAnswer = 0) => {
     const children = getChildren(answers)
     if(newAnswer === MIN || newAnswer === MAX) {
         children.forEach(id => {        
+            const childOldAnswer = Number(answers[id].answer)
             answers[id].answer = newAnswer
+
             updateSlideBarColor(id, newAnswer)            
-            refreshChildrenNodes(id, answers, oldAnswer)
+            refreshChildrenNodes(id, answers, childOldAnswer)
         })
     } else {
         const delta = newAnswer - oldAnswer    
