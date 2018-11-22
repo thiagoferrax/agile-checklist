@@ -5,6 +5,7 @@ import { reduxForm, Field, formValueSelector } from 'redux-form'
 
 import { init } from './userActions'
 import LabelAndInput from '../common/form/labelAndInput'
+const  { DOM: { input, select, textarea } } = React
 import ItemList from './itemList'
 import Summary from './summary'
 
@@ -19,8 +20,8 @@ class UserForm extends Component {
                         label='Name' cols='12 4' placeholder='Enter the name' />
                     <Field name='email' component={LabelAndInput} readOnly={readOnly}
                         label='Email' cols='12 4' placeholder='Enter the email' />
-                    <Field name='admin' component={LabelAndInput} type="checkbox" readOnly={readOnly}
-                        label='Administrator' cols='12 4' placeholder='Enter the administrator'/>
+                    <Field name='admin' type="checkbox" component={LabelAndInput} readOnly={readOnly} 
+                        label='Administrator' cols='12 4'/>    
                     <Field name='password' component={LabelAndInput} readOnly={readOnly}
                         label='Password' cols='12 4' placeholder='Enter the password' />
                     <Field name='confirmPassword' component={LabelAndInput} readOnly={readOnly}

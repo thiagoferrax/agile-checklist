@@ -28,14 +28,14 @@ export function remove(values) {
 
 function submit(values, method) {
     return dispatch => {
-        const id = values._id ? values._id : ''
+        const id = values.id ? values.id : ''
         axios[method](`${BASE_URL}/users/${id}`, values)
             .then(resp => {
-                toastr.success('Sucesso', 'Operação Realizada com sucesso.')
+                toastr.success('Sucess', 'Operation performed successfully.')
                 dispatch(init())
             })
             .catch(e => {
-                e.response.data.errors.forEach(error => toastr.error('Erro', error))
+                e.response.data.errors.forEach(error => toastr.error('Error', error))
             })
     }
 }
