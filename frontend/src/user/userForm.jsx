@@ -23,9 +23,9 @@ class UserForm extends Component {
                         label='Email' cols='12 4' placeholder='Enter the email' />
                     <Field name='admin' component={Checkbox} readOnly={readOnly} 
                         label='Administrator' cols='12 4'/>    
-                    <Field name='password' component={LabelAndInput} readOnly={readOnly}
+                    <Field name='password' type='password' component={LabelAndInput} readOnly={readOnly}
                         label='Password' cols='12 4' placeholder='Enter the password' />
-                    <Field name='confirmPassword' component={LabelAndInput} readOnly={readOnly}
+                    <Field name='confirmPassword' type='password' component={LabelAndInput} readOnly={readOnly}
                         label='Confirm the password' cols='12 4' placeholder='Confirm the password' />    
                 </div>
                 <div className='box-footer'>

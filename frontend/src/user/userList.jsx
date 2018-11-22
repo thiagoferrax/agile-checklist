@@ -12,10 +12,9 @@ class UserList extends Component {
     renderRows() {
         const list = this.props.list || []
         return list.map(user => (
-            <tr key={user._id}>
+            <tr key={user.id}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{user.admin}</td>
                 <td>
                     <button className='btn btn-warning' onClick={() => this.props.showUpdate(user)}>
                         <i className='fa fa-pencil'></i>
@@ -36,7 +35,6 @@ class UserList extends Component {
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Administrator</th>
                             <th className='table-actions'>Actions</th>
                         </tr>
                     </thead>

@@ -1,5 +1,5 @@
 module.exports = app => {
-    const {existsOrError, notExistsOrError} = app.api.validation
+    const {existsOrError, notExistsOrError, equalsOrError, isValidEmail} = app.api.validation
     
     const save = (req, res) => {
         const user = {
@@ -16,10 +16,11 @@ module.exports = app => {
         try{
             existsOrError(user.name, 'Name was not informed!')
             existsOrError(user.email, 'Email was not informed!')
+            isValidEmail(user.email, 'Email is not valid!')
             existsOrError(user.password, 'Password was not informed!')
-            existsOrError(user.admin, 'Admin was not informed!')
+            equalsOrError(user.password, user.confirmPassword, 'Password was not confirmed!')
         } catch (msg) {
-            return res.status(400).send(msg)
+            return res.status(400).json({errors: [msg]})
         }        
 
         delete user.confirmPassword
@@ -28,12 +29,12 @@ module.exports = app => {
                 .update(user)
                 .where({id: user.id})
                 .then(_ => res.status(204).send())
-                .catch(err => res.status(500).send(err))     
-        } else {
+                .catch(err => res.status(500).json({errors: [err]}))
+            } else {
             app.db('users')
                 .insert(user)
                 .then(_ => res.status(204).send())
-                .catch(err => res.status(500).send(err))
+                .catch(err => res.status(500).json({errors: [err]}))
         }
     }
 
@@ -58,7 +59,7 @@ module.exports = app => {
     const get = (req, res) => {
         app.db('users')
             .then(users => res.json(users))
-            .catch(err => res.status(500).send(err))
+            .catch(err => res.status(500).json({errors: [err]}))
     }
 
     const getById = (req, res) => {
@@ -66,7 +67,7 @@ module.exports = app => {
         .where({ id: req.params.id })
         .first()
         .then(user => res.json(user))
-        .catch(err => res.status(500).send(err))
+        .catch(err => res.status(500).json({errors: [err]}))
     }
 
     return {save, remove, get, getById}

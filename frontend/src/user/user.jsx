@@ -23,7 +23,7 @@ class User extends Component {
     render() {
         return (
             <div> 
-                <ContentHeader title='User' small='Register' />
+                <ContentHeader title='User' small='Management' />
                 <Content> 
                     <Tabs> 
                         <TabsHeader> 
