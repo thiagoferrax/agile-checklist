@@ -6,8 +6,8 @@ module.exports = app => {
             id: req.body.id,
             description: req.body.description,
             parentId: req.body.parentId
-        }
-      
+        }  
+    
         if(req.params.id) checklist.id = req.params.id
 
         try{

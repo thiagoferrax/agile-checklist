@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Main from '../template/Main'
 import Tree, {initializeAnswers, updateSlide} from '../tree/Tree'
-import './AssessmentCrud.css'
 import {baseUrl} from '../../Global'
 
 const headerProps = {
