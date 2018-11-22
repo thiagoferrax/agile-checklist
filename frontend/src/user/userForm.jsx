@@ -10,38 +10,28 @@ import Summary from './summary'
 
 class UserForm extends Component {
 
-    calculateSummary() {
-        const sum = (t, v) => t + v
-        return {
-            sumOfCredits: this.props.credits.map(c => +c.value || 0).reduce(sum),
-            sumOfDebts: this.props.debts.map(d => +d.value || 0).reduce(sum)
-        }
-    }
-
     render() {
-        const { handleSubmit, readOnly, credits, debts } = this.props
-        const { sumOfCredits, sumOfDebts } = this.calculateSummary()
+        const { handleSubmit, readOnly, credits, debts } = this.props        
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
                     <Field name='name' component={LabelAndInput} readOnly={readOnly}
-                        label='Nome' cols='12 4' placeholder='Informe o nome' />
-                    <Field name='month' component={LabelAndInput} type='number' readOnly={readOnly}
-                        label='Mês' cols='12 4' placeholder='Informe o mês' />
-                    <Field name='year' component={LabelAndInput} type='number' readOnly={readOnly}
-                        label='Ano' cols='12 4' placeholder='Informe o ano' />
-                    <Summary credit={sumOfCredits} debt={sumOfDebts} />
-                    <ItemList cols='12 6' list={credits} readOnly={readOnly}
-                        field='credits' legend='Créditos' />
-                    <ItemList cols='12 6' list={debts} readOnly={readOnly}
-                        field='debts' legend='Débitos' showStatus={true} />
+                        label='Name' cols='12 4' placeholder='Enter the name' />
+                    <Field name='email' component={LabelAndInput} readOnly={readOnly}
+                        label='Email' cols='12 4' placeholder='Enter the email' />
+                    <Field name='admin' component={LabelAndInput} type="checkbox" readOnly={readOnly}
+                        label='Administrator' cols='12 4' placeholder='Enter the administrator'/>
+                    <Field name='password' component={LabelAndInput} readOnly={readOnly}
+                        label='Password' cols='12 4' placeholder='Enter the password' />
+                    <Field name='confirmPassword' component={LabelAndInput} readOnly={readOnly}
+                        label='Confirm the password' cols='12 4' placeholder='Confirm the password' />    
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>
                         {this.props.submitLabel}
                     </button>
                     <button type='button' className='btn btn-default'
-                        onClick={this.props.init}>Cancelar</button>
+                        onClick={this.props.init}>Cancel</button>
                 </div>
             </form>
         )

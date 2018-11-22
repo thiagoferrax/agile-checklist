@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Main from '../template/Main'
 import Tree, {initializeAnswers, updateSlide} from '../tree/Tree'
-import {baseUrl} from '../../Global'
+import {BASE_URL} from '../../Global'
 
 const headerProps = {
     icon: 'check-square',
@@ -28,7 +28,7 @@ export default class checklistCrud extends Component {
     state = { ...initialState }
 
     componentWillMount() {
-        const checklistsUrl = baseUrl + '/checklists'
+        const checklistsUrl = BASE_URL + '/checklists'
         axios(checklistsUrl).then(resp => {
             this.setState({ list: resp.data })
         })
@@ -38,7 +38,7 @@ export default class checklistCrud extends Component {
             this.setState({ tree: resp.data, answers: initializeAnswers(resp.data) })            
         })
 
-        const projectUrl = baseUrl + '/projects'
+        const projectUrl = BASE_URL + '/projects'
         axios(projectUrl).then(resp => {
 
             this.setState({ projects: resp.data })            
@@ -52,7 +52,7 @@ export default class checklistCrud extends Component {
     save() {
         const checklist = this.state.checklist
         const method = checklist.id ? 'put' : 'post'
-        const url = checklist.id ? `${baseUrl}/${checklist.id}` : baseUrl
+        const url = checklist.id ? `${BASE_URL}/${checklist.id}` : BASE_URL
         axios[method](url, checklist)
             .then(resp => {
                 const list = this.getUpdatedList(resp.data)
@@ -148,7 +148,7 @@ export default class checklistCrud extends Component {
     }
 
     remove(checklist) {
-        axios.delete(`${baseUrl}/${checklist.id}`).then(resp => {
+        axios.delete(`${BASE_URL}/${checklist.id}`).then(resp => {
             const list = this.getUpdatedList(checklist, false)
             this.setState({ list })
         })

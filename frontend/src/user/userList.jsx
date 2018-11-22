@@ -11,16 +11,16 @@ class UserList extends Component {
 
     renderRows() {
         const list = this.props.list || []
-        return list.map(bc => (
-            <tr key={bc._id}>
-                <td>{bc.name}</td>
-                <td>{bc.month}</td>
-                <td>{bc.year}</td>
+        return list.map(user => (
+            <tr key={user._id}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.admin}</td>
                 <td>
-                    <button className='btn btn-warning' onClick={() => this.props.showUpdate(bc)}>
+                    <button className='btn btn-warning' onClick={() => this.props.showUpdate(user)}>
                         <i className='fa fa-pencil'></i>
                     </button>
-                    <button className='btn btn-danger' onClick={() => this.props.showDelete(bc)}>
+                    <button className='btn btn-danger' onClick={() => this.props.showDelete(user)}>
                         <i className='fa fa-trash-o'></i>
                     </button>
                 </td>
@@ -34,10 +34,10 @@ class UserList extends Component {
                 <table className='table'>
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Mês</th>
-                            <th>Ano</th>
-                            <th className='table-actions'>Ações</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Administrator</th>
+                            <th className='table-actions'>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
