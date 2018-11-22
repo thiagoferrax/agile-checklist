@@ -11,3 +11,18 @@ button {
 .table-actions {
     width: 150px;
 }
+
+.form-checklist-control {
+    display: block;
+    width: 34px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+}
+
+input[type=checkbox], input[type=radio] {
+    margin: 0px;
+}
