@@ -15,6 +15,14 @@ class EvaluationForm extends Component {
         this.props.getProjects()
     }
 
+    getSprintList() {
+        const sprints = []
+        for(let i = 0; i < 20; i++) {
+            sprints.push({id:i+1, name:`Sprint ${i+1}`})
+        }
+        return sprints
+    }
+
     render() {
         const { handleSubmit, readOnly} = this.props        
         return (
@@ -22,6 +30,8 @@ class EvaluationForm extends Component {
                 <div className='box-body'>
                     <Field name='project' component={Select} readOnly={readOnly}
                         label='Project' cols='12 4' list={this.props.projects} optionValue="id" optionLabel="name" />
+                    <Field name='sprint' component={Select} readOnly={readOnly}
+                        label='Sprint' cols='12 4' list={this.getSprintList()} optionValue="id" optionLabel="name" />    
                     <Field name='checklist' component={Select} readOnly={readOnly}
                         label='Checklist' cols='12 4' list={this.props.checklists.filter(u => u.parentId === null)} optionValue="id" optionLabel="description" />                            
                 </div>
