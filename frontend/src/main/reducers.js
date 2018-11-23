@@ -6,13 +6,15 @@ import DashboardReducer from '../dashboard/dashboardReducer'
 import TabReducer from '../common/tab/tabReducer'
 import UserReducer from '../user/userReducer'
 import ProjectReducer from '../project/projectReducer'
+import ChecklistReducer from '../checklist/checklistReducer'
 
 const rootReducer = combineReducers({
     dashboard: DashboardReducer,
     tab: TabReducer,
     user: UserReducer,
     project: ProjectReducer,
-    form: formReducer,
+    checklist: ChecklistReducer,
+    form: formReducer,    
     toastr: toastrReducer
 })
 

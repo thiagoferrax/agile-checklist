@@ -10,6 +10,8 @@ export default props => (
                 label='Users' icon='users' />
             <MenuItem path='projects'
                 label='Projects' icon='cubes' />    
+            <MenuItem path='checklists'
+                label='Checklists' icon='check-square-o' />     
         </MenuTree>
     </ul>
 )
