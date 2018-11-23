@@ -51,7 +51,20 @@ module.exports = app => {
     }
 
     const get = (req, res) => {
-        app.db('evaluations')
+        app.db.select(
+            {
+                id: 'evaluations.id',
+                projectId: 'evaluations.projectId',
+                sprint: 'evaluations.sprint',
+                checklistId: 'evaluations.checklistId',
+                userId: 'evaluations.userId',
+                date: 'evaluations.date',
+                projectName: 'projects.name',
+                checklistDescription: 'checklists.description' 
+            }
+        ).from('evaluations')
+            .leftJoin('projects','evaluations.projectId','projects.id')
+            .leftJoin('checklists','evaluations.checklistId','checklists.id')
             .then(evaluations => res.json(evaluations))
             .catch(err => res.status(500).json({errors: [err]}))
     }

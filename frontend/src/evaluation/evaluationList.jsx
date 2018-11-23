@@ -9,15 +9,20 @@ class EvaluatonList extends Component {
         this.props.getList()
     }
 
+    getFormatedDate(isoDate) {
+        const date = new Date(isoDate)
+        return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()} `
+    }
+
     renderRows() {
         const list = this.props.list || []
         return list.map(evaluation => (
             <tr key={evaluation.id}>
-                <td>{evaluation.projectId}</td>                
-                <td>{evaluation.sprint}</td>
-                <td>{evaluation.checklistId}</td>                                
-                <td>{evaluation.score}</td>
-                <td>{evaluation.date}</td>
+                <td>{evaluation.projectName}</td>                
+                <td>{`Sprint ${evaluation.sprint}`}</td>
+                <td>{evaluation.checklistDescription}</td>                                
+                <td>{evaluation.score || '0.0'}</td>
+                <td>{this.getFormatedDate(evaluation.date)}</td>
                 <td>
                     <button className='btn btn-warning' onClick={() => this.props.showUpdate(evaluation)}>
                         <i className='fa fa-pencil'></i>
