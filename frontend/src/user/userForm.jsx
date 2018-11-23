@@ -6,14 +6,11 @@ import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { init } from './userActions'
 import LabelAndInput from '../common/form/labelAndInput'
 import Checkbox from '../common/form/checkbox'
-const  { DOM: { input, select, textarea } } = React
-import ItemList from './itemList'
-import Summary from './summary'
 
 class UserForm extends Component {
 
     render() {
-        const { handleSubmit, readOnly, credits, debts } = this.props        
+        const { handleSubmit, readOnly} = this.props        
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
@@ -42,9 +39,6 @@ class UserForm extends Component {
 
 UserForm = reduxForm({form: 'userForm', destroyOnUnmount: false})(UserForm)
 const selector = formValueSelector('userForm')
-const mapStateToProps = state => ({
-    credits: selector(state, 'credits'),
-    debts: selector(state, 'debts')
-})
+const mapStateToProps = state => ({})
 const mapDispatchToProps = dispatch => bindActionCreators({init}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(UserForm)
