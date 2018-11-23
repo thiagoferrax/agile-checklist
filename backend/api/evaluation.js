@@ -22,7 +22,6 @@ module.exports = app => {
             return res.status(400).json({errors: [msg]})
         }        
 
-        delete evaluation.userId
         if(evaluation.id) {
             app.db('evaluations')
                 .update(evaluation)

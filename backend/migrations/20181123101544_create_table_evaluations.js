@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
         table.string('sprint').notNull()
         table.integer('checklistId').references('id').inTable('checklists').notNull()
         table.integer('userId').references('id').inTable('users').notNull()
-        table.date('date').notNull().defaultTo(Date.now().date)        
+        table.date('date').notNull().defaultTo(new Date().toISOString())        
     })
 };
 

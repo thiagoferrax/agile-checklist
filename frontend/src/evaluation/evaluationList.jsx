@@ -13,9 +13,9 @@ class EvaluatonList extends Component {
         const list = this.props.list || []
         return list.map(evaluation => (
             <tr key={evaluation.id}>
-                <td>{evaluation.project}</td>                
+                <td>{evaluation.projectId}</td>                
                 <td>{evaluation.sprint}</td>
-                <td>{evaluation.checklist}</td>                                
+                <td>{evaluation.checklistId}</td>                                
                 <td>{evaluation.score}</td>
                 <td>{evaluation.date}</td>
                 <td>
