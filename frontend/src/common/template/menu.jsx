@@ -13,5 +13,6 @@ export default props => (
             <MenuItem path='checklists'
                 label='Checklists' icon='check-square-o' />     
         </MenuTree>
+        <MenuItem path='evaluations' label='Evaluations' icon='sliders' />        
     </ul>
 )

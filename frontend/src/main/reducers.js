@@ -7,6 +7,7 @@ import TabReducer from '../common/tab/tabReducer'
 import UserReducer from '../user/userReducer'
 import ProjectReducer from '../project/projectReducer'
 import ChecklistReducer from '../checklist/checklistReducer'
+import EvaluationReducer from '../checklist/checklistReducer'
 
 const rootReducer = combineReducers({
     dashboard: DashboardReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     user: UserReducer,
     project: ProjectReducer,
     checklist: ChecklistReducer,
+    evaluation: EvaluationReducer,
     form: formReducer,    
     toastr: toastrReducer
 })
