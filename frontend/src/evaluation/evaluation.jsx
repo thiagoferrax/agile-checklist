@@ -23,7 +23,7 @@ class Evaluation extends Component {
     render() {
         return (
             <div> 
-                <ContentHeader title='Evaluation' small='Management' />
+                <ContentHeader title='Evaluations' small='Management' />
                 <Content>
                     <Tabs> 
                         <TabsHeader> 

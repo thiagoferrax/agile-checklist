@@ -23,7 +23,7 @@ class Checklist extends Component {
     render() {
         return (
             <div> 
-                <ContentHeader title='Checklist' small='Management' />
+                <ContentHeader title='Checklists' small='Management' />
                 <Content> 
                     <Tabs> 
                         <TabsHeader> 
