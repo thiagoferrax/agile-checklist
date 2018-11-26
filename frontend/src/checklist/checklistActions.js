@@ -14,6 +14,15 @@ export function getList() {
     }
 }
 
+export function getTree() {
+    const request = axios.get(`${BASE_URL}/checklists/tree`)
+    console.log('getTree'  + request)
+    return {
+        type: 'TREE_FETCHED',
+        payload: request
+    }
+}
+
 export function create(values) {
     return submit(values, 'post')
 }

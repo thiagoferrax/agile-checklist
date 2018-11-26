@@ -4,9 +4,10 @@ import { bindActionCreators } from 'redux'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 
 import { init} from './evaluationActions'
-import { getList as getChecklists} from '../checklist/checklistActions'
+import { getList as getChecklists, getTree} from '../checklist/checklistActions'
 import { getList as getProjects} from '../project/projectActions'
 import { getList as getUsers} from '../user/userActions'
+import Tree from '../common/tree/tree'
 
 import LabelAndInput from '../common/form/labelAndInput'
 
@@ -15,6 +16,7 @@ import Select from '../common/form/select'
 class EvaluationForm extends Component {
     componentWillMount() {
         this.props.getChecklists()
+        this.props.getTree()
         this.props.getProjects()
         this.props.getUsers()
     }
@@ -28,7 +30,9 @@ class EvaluationForm extends Component {
     }
 
     render() {
-        const { handleSubmit, readOnly} = this.props        
+        const { handleSubmit, readOnly, tree} = this.props    
+        
+        console.log('aqui!' + tree)
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
@@ -40,7 +44,7 @@ class EvaluationForm extends Component {
                         label='Checklist' cols='12 4' list={this.props.checklists.filter(u => u.parentId === null)} optionValue="id" optionLabel="description" />                            
                     <Field name='userId' component={Select} readOnly={readOnly}
                         label='User' cols='12 4' list={this.props.users} optionValue="id" optionLabel="name" /> 
-
+                    <Tree legend='My checklist' tree={tree} shrink={true}/>
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>
@@ -57,10 +61,12 @@ class EvaluationForm extends Component {
 EvaluationForm = reduxForm({form: 'evaluationForm', destroyOnUnmount: false})(EvaluationForm)
 const selector = formValueSelector('evaluationForm')
 
+
 const mapStateToProps = state => ({
     projects: state.project.list, 
     checklists: state.checklist.list,
     users: state.user.list, 
+    tree: state.checklist.tree
 })
-const mapDispatchToProps = dispatch => bindActionCreators({init, getChecklists, getProjects, getUsers}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({init, getChecklists, getTree, getProjects, getUsers}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(EvaluationForm)

@@ -20,7 +20,7 @@ class ChecklistForm extends Component {
                     <Field name='description' component={LabelAndInput} readOnly={readOnly}
                         label='Description' cols='12 4' placeholder='Enter the description' />
                     <Field name='parentId' component={Select} readOnly={readOnly}
-                        label='Parent path' cols='12 4' list={this.props.list} optionValue="parentId" optionLabel="path" />                            
+                        label='Parent path' cols='12 4' list={this.props.list} optionValue="id" optionLabel="path" />                            
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>

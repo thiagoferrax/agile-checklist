@@ -10,13 +10,14 @@ export default props => {
         return options;
     }
 
+    console.log(props.onChange)
+
     return (
     <Grid cols={props.cols}>
         <div className='form-group'>
             <label htmlFor={props.name}>{props.label}</label>
-            <select {...props.input} 
-                className='form-control' readOnly={props.readOnly}>
-                <option key="form-control-key" value={null}>Select an option</option>
+            <select {...props.input} className='form-control' readOnly={props.readOnly}>
+                <option key="form-control-key" value=''>Select an option</option>
                 {createSelectItems()}
                 {props.children}    
             </select>                                        
