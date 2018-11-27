@@ -1,7 +1,13 @@
 .treeItem {
     display: flex;
     flex-direction: row;
+    position:relative;
     padding: 10px 5px;
+    vertical-align: middle;
+}
+
+.treeItemDescription {
+    margin-left: 5px;
 }
 
 .rowItem > div {

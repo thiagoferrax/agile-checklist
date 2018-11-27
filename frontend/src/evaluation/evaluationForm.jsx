@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field, formValueSelector } from 'redux-form'
+import { reduxForm, Field, formValueSelector, initialize } from 'redux-form'
 
 import { init, selectChecklist} from './evaluationActions'
 import { getList as getChecklists, getTree} from '../checklist/checklistActions'
 import { getList as getProjects} from '../project/projectActions'
 import { getList as getUsers} from '../user/userActions'
-import Tree from '../common/tree/tree'
+import Tree, {initializeAnswers} from '../common/tree/tree'
 
 import Select from '../common/form/select'
 
@@ -32,6 +32,8 @@ class EvaluationForm extends Component {
                 selectChecklist, checklistId,
                 projects, tree, checklists, users } = this.props    
         
+        const selectedChecklist = getSelectedChecklist(tree, checklistId)   
+
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
@@ -43,7 +45,7 @@ class EvaluationForm extends Component {
                         label='Checklist' cols='12 4' list={checklists.filter(u => u.parentId === null)} optionValue="id" optionLabel="description" />
                     <Field name='userId' component={Select} readOnly={readOnly}
                         label='User' cols='12 4' list={users} optionValue="id" optionLabel="name" /> 
-                    <Tree legend='My checklist' tree={getSelectedChecklist(tree, checklistId)} shrink={true}/>
+                    <Tree legend='My checklist' tree={selectedChecklist} answers={initializeAnswers(selectedChecklist)} shrink={true}/>
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>

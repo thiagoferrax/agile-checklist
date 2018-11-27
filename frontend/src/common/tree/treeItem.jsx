@@ -8,7 +8,7 @@ export default props => (
             <a onClick={() => props.onClick(props.id)}><i id={`link_${props.id}`} 
                 className={`fa fa-angle-${props.shrink ? 'right' : 'down'} ml-2`} hidden={props.iconHidden}></i></a>
         </If>    
-        <div className="ml-2">{props.description}</div> 
+        <div className="treeItemDescription">{props.description}</div> 
         {props.children}        
     </div>
 )

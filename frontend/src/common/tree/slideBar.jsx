@@ -8,7 +8,8 @@ const MAX = 100
 export default props => {
     return (
         <div className="slidecontainer">
-            <input className="slider" type="range" min={MIN} max={MAX} value={MIN} id={`slide_${props.id}`} value={props.value} />
+            <input className="slider" type="range" min={MIN} max={MAX} value={MIN} id={`slide_${props.id}`} value={props.value} 
+                onChange={e => props.onChange(e, props.answers)} />
         </div>
     )
 }

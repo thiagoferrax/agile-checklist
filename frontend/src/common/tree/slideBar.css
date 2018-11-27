@@ -1,12 +1,13 @@
 .slidecontainer {
     margin-bottom: 0px;
     padding-left: 10px;
+    padding-top: 5px;
 }
 
 .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
-    width: 70px;
+    width: 70px !important;
     height: 10px; /* Specified height */
     background: #d3d3d3; /* Grey background */
     outline: none; /* Remove outline */
