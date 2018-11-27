@@ -9,8 +9,6 @@ import { getList as getProjects} from '../project/projectActions'
 import { getList as getUsers} from '../user/userActions'
 import Tree from '../common/tree/tree'
 
-import LabelAndInput from '../common/form/labelAndInput'
-
 import Select from '../common/form/select'
 
 class EvaluationForm extends Component {
@@ -30,19 +28,21 @@ class EvaluationForm extends Component {
     }
 
     render() {
-        const { handleSubmit, readOnly, tree, selectChecklist, checklistId} = this.props    
+        const { handleSubmit, readOnly, 
+                selectChecklist, checklistId,
+                projects, tree, checklists, users } = this.props    
         
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
                     <Field name='projectId' component={Select} readOnly={readOnly}
-                        label='Project' cols='12 4' list={this.props.projects} optionValue="id" optionLabel="name" />
+                        label='Project' cols='12 4' list={projects} optionValue="id" optionLabel="name" />
                     <Field name='sprint' component={Select} readOnly={readOnly}
                         label='Sprint' cols='12 4' list={this.getSprintList()} optionValue="id" optionLabel="name" />    
-                    <Field name='checklistId' value={this.props.checklistId} component={Select} readOnly={readOnly} onChange={e => selectChecklist(e)}
-                        label='Checklist' cols='12 4' list={this.props.checklists.filter(u => u.parentId === null)} optionValue="id" optionLabel="description" />                            
+                    <Field name='checklistId' component={Select} readOnly={readOnly} inputOnChange={selectChecklist}
+                        label='Checklist' cols='12 4' list={checklists.filter(u => u.parentId === null)} optionValue="id" optionLabel="description" />
                     <Field name='userId' component={Select} readOnly={readOnly}
-                        label='User' cols='12 4' list={this.props.users} optionValue="id" optionLabel="name" /> 
+                        label='User' cols='12 4' list={users} optionValue="id" optionLabel="name" /> 
                     <Tree legend='My checklist' tree={getSelectedChecklist(tree, checklistId)} shrink={true}/>
                 </div>
                 <div className='box-footer'>
@@ -59,13 +59,11 @@ class EvaluationForm extends Component {
 
 const getSelectedChecklist = (tree, id) => {
     let checklists = tree || []
-    console.log(`getSelectedChecklist ${checklists} ${id}`)
-    return checklists.filter(aChecklist => aChecklist.id === id)
+    return checklists.filter(aChecklist => aChecklist.id === +id)
 }
 
 EvaluationForm = reduxForm({form: 'evaluationForm', destroyOnUnmount: false})(EvaluationForm)
 const selector = formValueSelector('evaluationForm')
-
 
 const mapStateToProps = state => ({
     projects: state.project.list, 
@@ -74,5 +72,6 @@ const mapStateToProps = state => ({
     tree: state.checklist.tree,
     checklistId: state.evaluation.checklistId
 })
-const mapDispatchToProps = dispatch => bindActionCreators({init, getChecklists, selectChecklist, getTree, getProjects, getUsers}, dispatch)
+const mapDispatchToProps = dispatch => 
+    bindActionCreators({init, getChecklists, selectChecklist, getTree, getProjects, getUsers}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(EvaluationForm)

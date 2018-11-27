@@ -14,11 +14,12 @@ export function getList() {
     }
 }
 
-export function selectChecklist(e) {
-    const checklistId = e.target.value
+export function selectChecklist(value) {
+    console.log('Did someone call this function? selectChecklist' + value)
+
     return {
         type: 'CHECKLIST_SELECTED',
-        payload: checklistId
+        payload: value
     }
 }
 
