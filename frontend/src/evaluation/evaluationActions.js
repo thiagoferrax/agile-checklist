@@ -14,6 +14,14 @@ export function getList() {
     }
 }
 
+export function selectChecklist(e) {
+    const checklistId = e.target.value
+    return {
+        type: 'CHECKLIST_SELECTED',
+        payload: checklistId
+    }
+}
+
 export function create(values) {
     return submit(values, 'post')
 }
