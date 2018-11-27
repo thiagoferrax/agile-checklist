@@ -14,6 +14,17 @@ class ProjectForm extends Component {
     }
 
     render() {
+        const types = [
+            {value: 'Research', label: 'Research'},
+            {value: 'Research and development', label: 'Research and development'},
+            {value: 'Development', label: 'Development'}]
+
+        const complexities = [
+            {value: 'Low', label: 'Low'},
+            {value: 'Medium', label: 'Medium'},
+            {value: 'High', label: 'High'}]
+        
+
         const { handleSubmit, readOnly} = this.props        
         return (
             <form role='form' onSubmit={handleSubmit}>
@@ -23,17 +34,9 @@ class ProjectForm extends Component {
                     <Field name='description' component={LabelAndInput} readOnly={readOnly}
                         label='Description' cols='12 4' placeholder='Enter the description' />
                     <Field name='type' component={Select} readOnly={readOnly}
-                        label='Type' cols='12 4'>
-                        <option key='type_1' value='Low'>Research</option>
-                        <option key='type_2' value='Low'>Research and development</option>
-                        <option key='type_3' value='Low'>Development</option>
-                    </Field>
+                        label='Type' cols='12 4' list={types}/>
                     <Field name='complexity' component={Select} readOnly={readOnly}
-                        label='Complexity' cols='12 4'>    
-                        <option key='complexity_1' value='Low'>Low</option>
-                        <option key='complexity_2' value='Low'>Medium</option>
-                        <option key='complexity_3' value='Low'>High</option>
-                    </Field>    
+                        label='Complexity' cols='12 4' list={complexities} />                                                
                     <Field name='estimatedDuration' component={LabelAndInput} readOnly={readOnly}
                         label='Estimated duration (months)' cols='12 4' placeholder='Enter the estimated duration' />
                     <Field name='userId' component={Select} readOnly={readOnly}

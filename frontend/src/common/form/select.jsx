@@ -20,7 +20,13 @@ export default class Select extends Component {
     }
 
     createSelectItems() {
-        return this.props.list && this.props.list.map(element => ({value:element[this.props.optionValue], label:element[this.props.optionLabel]}));
+        return this.props.list && 
+            this.props.list.map(
+                element => 
+                    ({  value:element[this.props.optionValue || 'value'], 
+                        label:element[this.props.optionLabel || 'label']
+                    })
+            );
     }
 
     render() {
@@ -39,11 +45,11 @@ export default class Select extends Component {
             })
         }
 
-        return (
+        return (            
             <Grid cols={this.props.cols}>
                 <div className='form-group'>
                     <label htmlFor={this.props.name}>{this.props.label}</label>
-                    <ReactSelect value={this.state.selectedOption} options={this.createSelectItems()}  onChange={this.handleChange} styles={customStyles}/>                                       
+                    <ReactSelect {...this.props} value={this.state.selectedOption} options={this.createSelectItems()}  onChange={this.handleChange} styles={customStyles} />                                       
                 </div>
             </Grid>
         )
