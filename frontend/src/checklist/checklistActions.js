@@ -23,6 +23,7 @@ export function getTree() {
 }
 
 export function selectParent(parentId) {
+    console.log('Redux Action', parentId)
     return {
         type: 'PARENT_SELECTED',
         payload: parentId
