@@ -47,6 +47,8 @@ class ChecklistList extends Component {
     }
 }
 
-const mapStateToProps = state => ({list: state.checklist.list})
+const mapStateToProps = state => ({
+        list: state.checklist.list
+})
 const mapDispatchToProps = dispatch => bindActionCreators({getList, showUpdate, showDelete}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ChecklistList)

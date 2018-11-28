@@ -4,7 +4,7 @@ import { reset as resetForm, initialize } from 'redux-form'
 import { showTabs, selectTab } from '../common/tab/tabActions'
 import {BASE_URL} from '../../Global'
 
-const INITIAL_VALUES = {}
+const INITIAL_VALUES = {description: '', parentId: null, list: ''}
 
 export function getList() {
     const request = axios.get(`${BASE_URL}/checklists`)
@@ -16,10 +16,16 @@ export function getList() {
 
 export function getTree() {
     const request = axios.get(`${BASE_URL}/checklists/tree`)
-    console.log('getTree'  + request)
     return {
         type: 'TREE_FETCHED',
         payload: request
+    }
+}
+
+export function selectParent(parentId) {
+    return {
+        type: 'PARENT_SELECTED',
+        payload: parentId
     }
 }
 
@@ -36,6 +42,7 @@ export function remove(values) {
 }
 
 function submit(values, method) {
+    console.log('Submit', values)
     return dispatch => {
         const id = values.id ? values.id : ''
         axios[method](`${BASE_URL}/checklists/${id}`, values)
