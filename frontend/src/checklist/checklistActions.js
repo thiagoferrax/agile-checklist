@@ -22,14 +22,6 @@ export function getTree() {
     }
 }
 
-export function selectParent(parentId) {
-    console.log('Redux Action', parentId)
-    return {
-        type: 'PARENT_SELECTED',
-        payload: parentId
-    }
-}
-
 export function create(values) {
     return submit(values, 'post')
 }
@@ -43,7 +35,6 @@ export function remove(values) {
 }
 
 function submit(values, method) {
-    console.log('Submit', values)
     return dispatch => {
         const id = values.id ? values.id : ''
         axios[method](`${BASE_URL}/checklists/${id}`, values)

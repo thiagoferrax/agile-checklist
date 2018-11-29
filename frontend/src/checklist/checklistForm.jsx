@@ -14,14 +14,14 @@ class ChecklistForm extends Component {
 
     render() {
         const { handleSubmit, readOnly, list, description, parentId, selectParent} = this.props
-        console.log('Parent ID Render', parentId)
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
                     <Field name='description' value={description} component={LabelAndInput} readOnly={readOnly}
                         label='Description' cols='12 4' placeholder='Enter the description' />
                     <Field name='parentId' value={parentId} component={Select} readOnly={readOnly}
-                        label='Parent path' cols='12 4' list={list} optionValue="id" optionLabel="path" inputOnChange={selectParent}/>
+                        label='Parent path' cols='12 4' options={list} 
+                        optionValue='id' optionLabel='path' />
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>
@@ -44,5 +44,5 @@ const mapStateToProps = state => ({
         list: state.checklist.list
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({init, getList, selectParent}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({init, getList}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ChecklistForm)

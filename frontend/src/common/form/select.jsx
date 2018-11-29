@@ -2,50 +2,19 @@ import React, {Component} from 'react'
 import Grid from '../layout/grid'
 import ReactSelect from 'react-select';
 
-export default class Select extends Component {
+export default class Select extends Component {    
 
-    constructor(props) {
-        super(props)
-        this.state = { selectedOption: null }
-        this.handleChange = this.handleChange.bind(this)
-    }
+    handleChange(selectedOption) {
+        const {input, optionValue, inputOnChange} = this.props
 
-    componentWillMount() {
-        const {list, optionValue, optionLabel, input} = this.props
-        const options = this.getOptions(list, optionValue, optionLabel)
-        const selectedOption = this.getSelectedOption(options, input.value)
-    
-        this.setState({ options, selectedOption })
-    }
-
-    componentWillReceiveProps(nextProps) {
-		if ((nextProps.input.value != this.props.input.value) || (nextProps.list != this.props.list)) {
-            const {list, optionValue, optionLabel, input} = nextProps
-            const options = this.getOptions(list, optionValue, optionLabel)
-            const selectedOption = this.getSelectedOption(options, input.value)
-
-            this.setState({ options, selectedOption })
-        }
-    }
-    
-    getSelectedOption(options, value) {
-        return options && options.filter(o => o.value == value)
-    }
-
-    getOptions(list, optionValue, optionLabel) {
-        return list && list.map(e => ({value:e[optionValue || 'value'], label:e[optionLabel || 'label']}));
-    }
-
-    handleChange(selectedOption) {        
-        this.props.input.onChange(selectedOption.value);
-
-        if(this.props.inputOnChange) {
-            this.props.inputOnChange(selectedOption.value)
+        input.onChange(selectedOption[optionValue || 'value']);
+        if(inputOnChange) {
+            inputOnChange(selectedOption[optionValue || 'value'])
         }
     }
 
-    render() {
-        const customStyles = {
+    getCustomStyles() {
+        return {
             option: provided => ({
               ...provided,
             }),
@@ -59,11 +28,25 @@ export default class Select extends Component {
                 ...provided,            
             })
         }
+    }
+
+    getValue() {
+        const {options, optionValue, input} = this.props
+        return options && options.filter(opt => opt[optionValue || 'value'] == input.value)
+    }
+
+    render() {
+        const {cols, name, label, optionValue, optionLabel} = this.props
         return (            
-            <Grid cols={this.props.cols}>
+            <Grid cols={cols}>
                 <div className='form-group'>
-                    <label htmlFor={this.props.name}>{this.props.label}</label>
-                    <ReactSelect {...this.props.input} value={this.state.selectedOption} styles={customStyles} options={this.state.options} onChange={this.handleChange} onBlur={() => {}}/>
+                    <label htmlFor={name}>{label}</label>
+                    <ReactSelect {...this.props} 
+                        styles={this.getCustomStyles()} 
+                        onChange={e => this.handleChange(e)} 
+                        getOptionValue={opt=>opt[optionValue || 'value']} 
+                        getOptionLabel={opt=>opt[optionLabel || 'label']} 
+                        value={this.getValue()}/>
                 </div>
             </Grid>
         )

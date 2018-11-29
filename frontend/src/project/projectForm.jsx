@@ -29,18 +29,18 @@ class ProjectForm extends Component {
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
-                    <Field name='name' component={LabelAndInput} readOnly={readOnly}
-                        label='Name' cols='12 4' placeholder='Enter the name' />
-                    <Field name='description' component={LabelAndInput} readOnly={readOnly}
-                        label='Description' cols='12 4' placeholder='Enter the description' />
-                    <Field name='type' component={Select} readOnly={readOnly}
-                        label='Type' cols='12 4' list={types}/>
-                    <Field name='complexity' component={Select} readOnly={readOnly}
-                        label='Complexity' cols='12 4' list={complexities} />                                                
-                    <Field name='estimatedDuration' component={LabelAndInput} readOnly={readOnly}
-                        label='Estimated duration (months)' cols='12 4' placeholder='Enter the estimated duration' />
-                    <Field name='userId' component={Select} readOnly={readOnly}
-                        label='User' cols='12 4' list={this.props.userList} optionValue="id" optionLabel="name" />                            
+                    <Field name='name' label='Name' cols='12 4' placeholder='Enter the name'
+                        component={LabelAndInput} readOnly={readOnly} />
+                    <Field name='description' label='Description' cols='12 4' placeholder='Enter the description'
+                        component={LabelAndInput} readOnly={readOnly} />
+                    <Field name='type' label='Type' cols='12 4' 
+                        component={Select} readOnly={readOnly} options={types}/>
+                    <Field name='complexity' label='Complexity' cols='12 4' 
+                        component={Select} readOnly={readOnly} options={complexities} />                                                
+                    <Field name='estimatedDuration' label='Estimated duration (months)' cols='12 4' placeholder='Enter the estimated duration'
+                        component={LabelAndInput} readOnly={readOnly} />
+                    <Field name='userId' label='User' cols='12 4' 
+                        component={Select} readOnly={readOnly} options={this.props.userList} optionValue='id' optionLabel='name' />                            
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>

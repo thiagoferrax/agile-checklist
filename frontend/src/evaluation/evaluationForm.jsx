@@ -37,15 +37,20 @@ class EvaluationForm extends Component {
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
-                    <Field name='projectId' component={Select} readOnly={readOnly}
-                        label='Project' cols='12 4' list={projects} optionValue="id" optionLabel="name" />
-                    <Field name='sprint' component={Select} readOnly={readOnly}
-                        label='Sprint' cols='12 4' list={this.getSprintList()} optionValue="id" optionLabel="name" />    
-                    <Field name='checklistId' component={Select} readOnly={readOnly} inputOnChange={selectChecklist}
-                        label='Checklist' cols='12 4' list={checklists.filter(u => u.parentId === null)} optionValue="id" optionLabel="description" />
-                    <Field name='userId' component={Select} readOnly={readOnly}
-                        label='User' cols='12 4' list={users} optionValue="id" optionLabel="name" /> 
-                    <Tree legend='My checklist' tree={selectedChecklist} answers={initializeAnswers(selectedChecklist)} shrink={true}/>
+                    <Field name='projectId' label='Project' cols='12 4' 
+                        component={Select} readOnly={readOnly} options={projects} optionValue='id' optionLabel='name' />
+                    <Field name='sprint' label='Sprint' cols='12 4' 
+                        component={Select} readOnly={readOnly}
+                        options={this.getSprintList()} optionValue='id' optionLabel='name' />    
+                    <Field name='checklistId' label='Checklist' cols='12 4' 
+                        component={Select} readOnly={readOnly} inputOnChange={selectChecklist}
+                        options={checklists.filter(u => u.parentId === null)} optionValue='id' optionLabel='description' />
+                    <Field name='userId' label='User' cols='12 4' 
+                        component={Select} readOnly={readOnly} options={users} optionValue='id' optionLabel='name' /> 
+                    <Tree legend='My checklist' 
+                        tree={selectedChecklist} 
+                        answers={initializeAnswers(selectedChecklist)} 
+                        shrink={true}/>
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>
