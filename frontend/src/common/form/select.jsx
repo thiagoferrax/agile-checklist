@@ -6,48 +6,42 @@ export default class Select extends Component {
 
     constructor(props) {
         super(props)
-
         this.state = { selectedOption: null }
-
         this.handleChange = this.handleChange.bind(this)
-        this.createSelectItems = this.createSelectItems.bind(this)
     }
 
     componentWillMount() {
-        console.log('componentWillMount', this.props)
-
         const {list, optionValue, optionLabel, input} = this.props
-
-        const options = list &&  list.map(element => ({value:element[optionValue || 'value'], label:element[optionLabel || 'label']}))
-        const selectedOption = options && options.filter(o => o.value == input.value)
-        this.setState({ selectedOption })
-        console.log('Selected Option', selectedOption)
+        const options = this.getOptions(list, optionValue, optionLabel)
+        const selectedOption = this.getSelectedOption(options, input.value)
+    
+        this.setState({ options, selectedOption })
     }
 
     componentWillReceiveProps(nextProps) {
-		if (nextProps.inputValue != this.props.inputValue) {
-            const {list, optionValue, optionLabel} = nextProps
-            const options = list &&  list.map(element => ({value:element[optionValue || 'value'], label:element[optionLabel || 'label']}))
-            const selectedOption = options && options.filter(o => o.value == nextProps.inputValue)
-            this.setState({ selectedOption })
-        }
-	}
+		if ((nextProps.input.value != this.props.input.value) || (nextProps.list != this.props.list)) {
+            const {list, optionValue, optionLabel, input} = nextProps
+            const options = this.getOptions(list, optionValue, optionLabel)
+            const selectedOption = this.getSelectedOption(options, input.value)
 
-    handleChange(selectedOption) {
+            this.setState({ options, selectedOption })
+        }
+    }
+    
+    getSelectedOption(options, value) {
+        return options && options.filter(o => o.value == value)
+    }
+
+    getOptions(list, optionValue, optionLabel) {
+        return list && list.map(e => ({value:e[optionValue || 'value'], label:e[optionLabel || 'label']}));
+    }
+
+    handleChange(selectedOption) {        
+        this.props.input.onChange(selectedOption.value);
+
         if(this.props.inputOnChange) {
-            this.props.inputOnChange(selectedOption.value); 
+            this.props.inputOnChange(selectedOption.value)
         }
-    }
-
-    handleBlur(selectedOption) {
-        console.log(`handleBlur`, selectedOption)
-    }
-
-
-    createSelectItems() {
-        const {list, optionValue, optionLabel} = this.props
-        return list &&  list.map(
-            element => ({value:element[optionValue || 'value'], label:element[optionLabel || 'label']}));
     }
 
     render() {
@@ -65,12 +59,11 @@ export default class Select extends Component {
                 ...provided,            
             })
         }
-
         return (            
             <Grid cols={this.props.cols}>
                 <div className='form-group'>
                     <label htmlFor={this.props.name}>{this.props.label}</label>
-                    <ReactSelect {...this.props.input} styles={customStyles} value={this.state.selectedOption} options={this.createSelectItems()} onChange={this.handleChange} onBlur={this.handleBlur}/>
+                    <ReactSelect {...this.props.input} value={this.state.selectedOption} styles={customStyles} options={this.state.options} onChange={this.handleChange} onBlur={() => {}}/>
                 </div>
             </Grid>
         )

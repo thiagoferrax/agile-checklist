@@ -20,7 +20,7 @@ class ChecklistForm extends Component {
                 <div className='box-body'>
                     <Field name='description' value={description} component={LabelAndInput} readOnly={readOnly}
                         label='Description' cols='12 4' placeholder='Enter the description' />
-                    <Field name='parentId' value={parentId} inputValue={parentId} component={Select} readOnly={readOnly}
+                    <Field name='parentId' value={parentId} component={Select} readOnly={readOnly}
                         label='Parent path' cols='12 4' list={list} optionValue="id" optionLabel="path" inputOnChange={selectParent}/>
                 </div>
                 <div className='box-footer'>
