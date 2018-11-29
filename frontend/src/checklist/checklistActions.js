@@ -4,7 +4,7 @@ import { reset as resetForm, initialize } from 'redux-form'
 import { showTabs, selectTab } from '../common/tab/tabActions'
 import {BASE_URL} from '../../Global'
 
-const INITIAL_VALUES = {description: '', parentId: null, list: ''}
+const INITIAL_VALUES = {description: '', parentId: null, list: [], tree:[]}
 
 export function getList() {
     const request = axios.get(`${BASE_URL}/checklists`)

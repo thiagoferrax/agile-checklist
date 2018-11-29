@@ -6,11 +6,14 @@ export default class Select extends Component {
 
     constructor(props) {
         super(props)
+
+        this.state = { selectedOption: null }
+
         this.handleChange = this.handleChange.bind(this)
+        this.createSelectItems = this.createSelectItems.bind(this)
     }
 
     componentWillMount() {
-
         console.log('componentWillMount', this.props)
 
         const {list, optionValue, optionLabel, input} = this.props
@@ -22,13 +25,11 @@ export default class Select extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-		if (nextProps.value2 != this.props.value2) {
-            console.log('Entrou 2:', nextProps.input)
+		if (nextProps.inputValue != this.props.inputValue) {
             const {list, optionValue, optionLabel} = nextProps
             const options = list &&  list.map(element => ({value:element[optionValue || 'value'], label:element[optionLabel || 'label']}))
-            const selectedOption = options && options.filter(o => o.value == nextProps.value2)
+            const selectedOption = options && options.filter(o => o.value == nextProps.inputValue)
             this.setState({ selectedOption })
-            console.log('Selected Option', selectedOption)
         }
 	}
 
@@ -37,6 +38,11 @@ export default class Select extends Component {
             this.props.inputOnChange(selectedOption.value); 
         }
     }
+
+    handleBlur(selectedOption) {
+        console.log(`handleBlur`, selectedOption)
+    }
+
 
     createSelectItems() {
         const {list, optionValue, optionLabel} = this.props
@@ -64,7 +70,7 @@ export default class Select extends Component {
             <Grid cols={this.props.cols}>
                 <div className='form-group'>
                     <label htmlFor={this.props.name}>{this.props.label}</label>
-                    <ReactSelect id={this.props.name} {...this.props.input} styles={customStyles} value={this.state.selectedOption} options={this.createSelectItems()} onChange={this.handleChange} />
+                    <ReactSelect {...this.props.input} styles={customStyles} value={this.state.selectedOption} options={this.createSelectItems()} onChange={this.handleChange} onBlur={this.handleBlur}/>
                 </div>
             </Grid>
         )
