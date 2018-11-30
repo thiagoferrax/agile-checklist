@@ -1,49 +1,29 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import Grid from '../layout/grid'
-import Row from '../layout/row'
 import TreeItem, {toggleIcon} from './treeItem'
-import {updateSlideBarColor} from './slideBar'
 import './tree.css'
-import SlideBar from './slideBar'
-import If from '../operator/if'
 
-class Tree extends Component {
+export default class Tree extends Component {   
     render() {
         return (
             <Grid cols='12'>
                 <fieldset>
                 <legend>{this.props.legend}</legend>
-                {buildTree(this.props.tree, this.props.answers)}     
+                {buildTree(this.props.tree, this.props.onChange)}     
                 </fieldset>
             </Grid>            
         )
     }
 }
 
-const buildTree = (tree, answers) => tree.map(node => {
-    const nodeId = node.id    
-    const parentId = node.parentId    
-
-    const description = node.description
+const buildTree = (tree, onChange) => tree && tree.map(node => {
     const children = node.children
-    const answer = answers[nodeId].answer
-
-    const childrenTree = buildTree(children, answers)
+    const childrenTree = children.length && buildTree(children, onChange)
 
     return (
-        <div key={nodeId} className="node">    
-            <div className={children.length ? 'parent' : ''}>
-                <TreeItem id={nodeId} description={description} onClick={toggleNode} iconHidden={!children.length} >
-                    <SlideBar id={nodeId} value={answer} answers={answers} onChange={updateSlide} />
-                </TreeItem>               
-            </div>
-            <If test={childrenTree}>
-                <div className="children" id={`children_${nodeId}`}>
-                    {childrenTree} 
-                </div>                  
-            </If>  
-        </div>     
+        <TreeItem key={`node_${node.id}`} node={node} onChange={onChange}>
+            {childrenTree}
+        </TreeItem>          
     )
 })
 
@@ -156,6 +136,3 @@ const refreshParentNodes = (nodeId, answers) => {
         refreshParentNodes(parentId, answers)
     }
 }
-
-const mapStateToProps = state => ({})
-export default connect(mapStateToProps)(Tree)

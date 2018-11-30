@@ -1,22 +1,44 @@
-import React from 'react'
+import React, {Component} from 'react'
 import './treeItem.css'
 import If from '../operator/if'
+import SlideBar from './slideBar'
 
-export default props => (
-    <div className="treeItem">
-        <If test={!props.iconHidden}>
-            <a onClick={() => props.onClick(props.id)}><i id={`link_${props.id}`} 
-                className={`fa fa-angle-${props.shrink ? 'right' : 'down'} ml-2`} hidden={props.iconHidden}></i></a>
-        </If>    
-        <div className="treeItemDescription">{props.description}</div> 
-        {props.children}        
-    </div>
-)
+export default class TreeItem extends Component {
+    constructor(props) {
+        super(props)  
+        this.state = {
+            hideChildren: false
+        }      
+    }
 
-const toggleIcon = nodeId => { 
-    const downIcon = 'fa fa-angle-down ml-2'
-    const linkIcon  = document.getElementById(`link_${nodeId}`)
-    linkIcon.className = linkIcon.className === downIcon ? 'fa fa-angle-right ml-2' : downIcon
+    toggleIcon(node) { 
+        console.log('node', node)
+        console.log('hideChildren', this.state.hideChildren)
+        this.setState ({
+            hideChildren: !this.state.hideChildren
+        })        
+    }
+
+    render() {
+        return (
+            <div key={`item_${this.props.node.id}`} className="node">    
+                <div className={this.props.children ? 'parent' : ''}>
+                    <div className="treeItem">
+                        <If test={this.props.children}>
+                            <a onClick={() => this.toggleIcon(this.props.node)}>
+                                <i className={`fa fa-angle-${this.state.hideChildren ? 'right' : 'down'} ml-2`}/>
+                            </a>
+                        </If>
+                        <div className="treeItemDescription">{this.props.node.description}</div> 
+                        <SlideBar node={this.props.node} onChange={this.props.onChange}/>
+                    </div>            
+                </div>
+                <If test={this.props.children && !this.state.hideChildren}>
+                    <div className='children'>
+                        {this.props.children}
+                    </div>                  
+                </If>
+            </div>            
+        )
+    }     
 }
-
-export {toggleIcon}

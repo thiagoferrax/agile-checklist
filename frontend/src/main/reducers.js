@@ -8,8 +8,6 @@ import UserReducer from '../user/userReducer'
 import ProjectReducer from '../project/projectReducer'
 import ChecklistReducer from '../checklist/checklistReducer'
 import EvaluationReducer from '../evaluation/evaluationReducer'
-import TreeReducer from '../common/tree/treeReducer'
-
 
 const rootReducer = combineReducers({
     dashboard: DashboardReducer,
@@ -19,8 +17,7 @@ const rootReducer = combineReducers({
     checklist: ChecklistReducer,
     evaluation: EvaluationReducer,
     form: formReducer,    
-    toastr: toastrReducer,
-    tree: TreeReducer
+    toastr: toastrReducer
 })
 
 export default rootReducer
