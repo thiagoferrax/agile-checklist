@@ -8,9 +8,12 @@ module.exports = app => {
             sprint: req.body.sprint,
             checklistId: req.body.checklistId,
             userId: req.body.userId,
-            date: req.body.date
+            date: req.body.date,
+            checklist: req.body.checklist
         }
       
+        console.log('evaluation.checklist', evaluation.checklist)
+
         if(req.params.id) evaluation.id = req.params.id
 
         try{
@@ -22,6 +25,7 @@ module.exports = app => {
             return res.status(400).json({errors: [msg]})
         }        
 
+        delete evaluation.checklist
         if(evaluation.id) {
             app.db('evaluations')
                 .update(evaluation)

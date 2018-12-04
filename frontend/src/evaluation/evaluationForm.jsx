@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { reduxForm, Field, formValueSelector, initialize } from 'redux-form'
 
-import { init, selectChecklist, changeChecklist } from './evaluationActions'
+import { init, selectChecklist} from './evaluationActions'
 import { getList as getChecklists, getTree} from '../checklist/checklistActions'
 import { getList as getProjects} from '../project/projectActions'
 import { getList as getUsers} from '../user/userActions'
@@ -12,12 +12,6 @@ import Tree from '../common/tree/tree'
 import Select from '../common/form/select'
 
 class EvaluationForm extends Component {
-
-    selectedChecklist;
-
-    constructor(props) {
-        super(props)
-    }
 
     componentWillMount() {
         this.props.getChecklists()
@@ -37,7 +31,7 @@ class EvaluationForm extends Component {
 
     render() {
 
-        const { handleSubmit, readOnly, projects, selectChecklist, checklists, users, changeChecklist, checklist } = this.props    
+        const { handleSubmit, readOnly, projects, selectChecklist, checklists, users, checklist } = this.props    
 
         return (
             <form role='form' onSubmit={handleSubmit}>
@@ -52,7 +46,7 @@ class EvaluationForm extends Component {
                         options={checklists.filter(u => u.parentId === null)} optionValue='id' optionLabel='description' />
                     <Field name='userId' label='User' cols='12 4' 
                         component={Select} readOnly={readOnly} options={users} optionValue='id' optionLabel='name' /> 
-                    <Tree legend='My checklist' tree={checklist} onChange={changeChecklist}/>
+                    <Field name='checklist' legend='My checklist' component={Tree} tree={checklist} />
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>
@@ -76,6 +70,5 @@ const mapStateToProps = state => ({
     tree: state.checklist.tree,
     checklist: state.evaluation.checklist
 })
-const mapDispatchToProps = dispatch => 
-    bindActionCreators({init, getChecklists, selectChecklist, changeChecklist, getTree, getProjects, getUsers}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({init, getChecklists, selectChecklist, getTree, getProjects, getUsers}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(EvaluationForm)

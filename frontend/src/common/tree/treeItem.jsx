@@ -6,31 +6,35 @@ import SlideBar from './slideBar'
 export default class TreeItem extends Component {
     constructor(props) {
         super(props)  
-        this.state = {
-            hideChildren: false
-        }      
+        this.state = {hideChildren: false}
+    }
+
+    componentWillMount() {
+        this.setState({...this.state, node: this.props.node})
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.node != nextProps.node) {
+            this.setState({...this.state, node: nextProps.node})
+        }
     }
 
     toggleIcon(node) { 
-        console.log('node', node)
-        console.log('hideChildren', this.state.hideChildren)
-        this.setState ({
-            hideChildren: !this.state.hideChildren
-        })        
+        this.setState ({...this.state,  hideChildren: !this.state.hideChildren})        
     }
 
     render() {
         return (
-            <div key={`item_${this.props.node.id}`} className="node">    
+            <div key={`item_${this.state.node.id}`} className="node">    
                 <div className={this.props.children ? 'parent' : ''}>
                     <div className="treeItem">
                         <If test={this.props.children}>
-                            <a onClick={() => this.toggleIcon(this.props.node)}>
+                            <a onClick={() => this.toggleIcon(this.state.node)}>
                                 <i className={`fa fa-angle-${this.state.hideChildren ? 'right' : 'down'} ml-2`}/>
                             </a>
                         </If>
-                        <div className="treeItemDescription">{this.props.node.description}</div> 
-                        <SlideBar node={this.props.node} onChange={this.props.onChange}/>
+                        <div className="treeItemDescription">{this.state.node.description}</div> 
+                        <SlideBar node={this.state.node} onChange={this.props.onChange} />
                     </div>            
                 </div>
                 <If test={this.props.children && !this.state.hideChildren}>

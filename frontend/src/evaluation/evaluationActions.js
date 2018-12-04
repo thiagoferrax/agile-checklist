@@ -21,16 +21,6 @@ export function selectChecklist(value) {
     }
 }
 
-export function changeChecklist(event, checklist) {
-    checklist.value = event.target.value
-
-    // Logic
-    return {
-        type: 'CHECKLIST_CHANGED',
-        payload: checklist
-    }
-}
-
 export function create(values) {
     return submit(values, 'post')
 }
