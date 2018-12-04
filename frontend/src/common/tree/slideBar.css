@@ -37,3 +37,32 @@
     background: rgba(0, 0, 0, 0.3); /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
+
+.red{
+    background: #DC3545;
+}
+
+.orange {
+    background: #ff6600;
+}
+
+.light_orange {
+    background: #ff9900;
+}
+
+.yellow{
+    background: #FFCC00;
+}
+
+.yellow_green {
+    background: #99ff00;
+}
+
+
+.light_green{
+    background: #66ff00;
+}
+
+.green{
+    background: #28A745;
+}

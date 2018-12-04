@@ -31,11 +31,11 @@ export default class Tree extends Component {
 
     handleChange(value, node) {
         const tree = this.refreshTree(this.state.tree, node.id, value)
-        this.setState({tree})
-
-        if (this.props.input.onChange) {
-            this.props.input.onChange(this.state.tree)
-        }
+        this.setState({tree}, () => {
+            if (this.props.input.onChange) {
+                this.props.input.onChange(this.state.tree)
+            }  
+        })
     }
 
     render() {

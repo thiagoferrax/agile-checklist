@@ -34,6 +34,7 @@ export function remove(values) {
 }
 
 function submit(values, method) {
+    console.log('submit', values)
     return dispatch => {
         const id = values.id ? values.id : ''
         axios[method](`${BASE_URL}/evaluations/${id}`, values)
