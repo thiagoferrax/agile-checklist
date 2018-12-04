@@ -9,6 +9,8 @@ export default class Tree extends Component {
         super(props)
         this.state = {tree: []}
         this.handleChange = this.handleChange.bind(this)
+        this.getInitialValuesMap = this.getInitialValuesMap.bind(this)
+        this.getValuesMap = this.getValuesMap.bind(this)
     }
 
     componentWillMount() {
@@ -21,19 +23,112 @@ export default class Tree extends Component {
         }
     }
 
-    refreshTree(tree, id, value) {        
+    refreshTree(tree, valuesMap) {        
         return tree.map(
             node => {
-                const children = this.refreshTree(node.children, id, value)            
-                return (node.id == id) ? {...node, value, children} : {...node, children}
-            }) 
+                const children = this.refreshTree(node.children, valuesMap)            
+                return valuesMap.hasOwnProperty(node.id) ? {...node, value:valuesMap[node.id].value, children} : {...node, children}
+            })
+    }
+
+    getInitialValuesMap(tree, initialMap={}) {
+        return tree.reduce((map, node) => {
+                map[node.id] = {value:node.value, parentId:node.parentId}
+                return this.getInitialValuesMap(node.children, map)
+            }, initialMap)
+    }
+
+    getValuesMap(tree, node, value) {
+        const initialValuesMap = this.getInitialValuesMap(tree)      
+        const valuesMap = this.refreshNodesValues(initialValuesMap, node, value)
+        return valuesMap
+    }
+
+    refreshNodesValues(valuesMap, node, value) {    
+        const nodeId = node.id
+        const parentId = valuesMap[nodeId].parentId
+        const oldValue = valuesMap[nodeId].value
+    
+        valuesMap[nodeId] = {value, parentId}
+       
+        this.refreshChildrenNodes(nodeId, valuesMap, oldValue)
+        this.refreshParentNodes(nodeId, valuesMap)
+
+        return valuesMap
+    }
+
+    refreshParentNodes(nodeId, valuesMap) {
+        const parentId = valuesMap[nodeId].parentId
+        if(parentId) {
+            const brothers = Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId == valuesMap[nodeId].parentId)
+            const sum = brothers.reduce((accumulator, id) => accumulator + parseInt(valuesMap[id].value), 0)
+            const parentValue = sum/(brothers.length)
+    
+            valuesMap[parentId] = {...valuesMap[parentId], value: parentValue} 
+    
+            this.refreshParentNodes(parentId, valuesMap)
+        }
+    }
+
+    refreshChildrenNodes(nodeId, valuesMap, oldValue = 0) {
+        const MAX = 10
+        const MIN = 0
+    
+        const getChildren = valuesMap => 
+            Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId == nodeId)
+    
+        const refreshChildren = (delta, children) => {
+            let overcome = 0
+            const innerChildren = []
+            children.forEach(id => {        
+                let oldValue = Number(valuesMap[id].value)
+                let newAnswer = oldValue + delta
+    
+                if(delta >= 0 && newAnswer > MAX) {
+                    overcome += newAnswer - MAX
+                    newAnswer = MAX                    
+                } else if(delta < 0 && newAnswer < MIN)  {
+                    overcome += newAnswer - MIN
+                    newAnswer = MIN                                    
+                }
+    
+                if(newAnswer > MIN && newAnswer < MAX) {
+                    innerChildren.push(id)
+                }
+    
+                valuesMap[id].value = newAnswer
+                this.refreshChildrenNodes(id, valuesMap, oldValue)
+            })
+    
+            if(overcome && innerChildren.length > 0) {
+                delta = overcome / innerChildren.length
+                refreshChildren(delta, innerChildren)
+            }
+        }
+    
+        const newAnswer = Number(valuesMap[nodeId].value)
+        const children = getChildren(valuesMap)
+        if(newAnswer === MIN || newAnswer === MAX) {
+            children.forEach(id => {        
+                const childOldAnswer = Number(valuesMap[id].value)
+                valuesMap[id].value = newAnswer
+    
+                this.refreshChildrenNodes(id, valuesMap, childOldAnswer)
+            })
+        } else {
+            const delta = newAnswer - oldValue    
+            refreshChildren(delta, children)
+        }
     }
 
     handleChange(value, node) {
-        const tree = this.refreshTree(this.state.tree, node.id, value)
-        this.setState({tree}, () => {
+        const {tree} = this.state
+        const valuesMap = this.getValuesMap(tree, node, value)
+        const refreshedTree = this.refreshTree(tree, valuesMap)
+
+        this.setState({tree:refreshedTree}, () => {
             if (this.props.input.onChange) {
-                this.props.input.onChange(this.state.tree)
+                this.props.input.onChange(tree)
             }  
         })
     }
