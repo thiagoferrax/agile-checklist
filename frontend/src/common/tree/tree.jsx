@@ -112,11 +112,19 @@ export default class Tree extends Component {
             refreshChildren(delta, children)
         }
     }
+    
+    refreshTree(tree, valuesMap) {        
+        return tree.map(
+            node => {
+                const children = this.refreshTree(node.children, valuesMap)            
+                return valuesMap.hasOwnProperty(node.id) ? {...node, value:valuesMap[node.id].value, children} : {...node, children}
+            })
+    }
 
     handleChange(value, node) {
         const {tree} = this.state
         const valuesMap = this.getValuesMap(tree, node, value)
-        const refreshedTree = refreshTree(tree, valuesMap)
+        const refreshedTree = this.refreshTree(tree, valuesMap)
 
         this.setState({tree:refreshedTree}, () => {
             if (this.props.input.onChange) {
@@ -146,11 +154,3 @@ const buildTree = (tree, onChange, props) => tree && tree.map(node => {
         </TreeItem>          
     )
 })
-
-export function refreshTree(tree, valuesMap) {        
-    return tree.map(
-        node => {
-            const children = this.refreshTree(node.children, valuesMap)            
-            return valuesMap.hasOwnProperty(node.id) ? {...node, value:valuesMap[node.id].value, children} : {...node, children}
-        })
-}

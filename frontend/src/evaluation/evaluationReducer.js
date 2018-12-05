@@ -8,8 +8,10 @@ export default (state = INITIAL_STATE, action) => {
             let tree = state.tree || []
             let checklist = tree.filter(checklist => checklist.id === action.payload)
             
-            if(state.answers) {
+            console.log(`state.answers`, state.answers)
+            if(state.answers.length) {
                 const refreshTree = (tree, valuesMap) => {        
+                    console.log(`refreshTree`, tree, valuesMap)
                     return tree.map(
                         node => {
                             console.log('node', node, valuesMap.hasOwnProperty(node.id))
@@ -31,6 +33,8 @@ export default (state = INITIAL_STATE, action) => {
                 map[answer.checklistId] = {value:answer.value}
                 return map
             }, {})    
+
+            console.log(`ANSWERS_FETCHED`, answers)
             return { ...state, answers}
         default:
             return state
