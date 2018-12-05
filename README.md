@@ -6,7 +6,7 @@ How to Configure Development Environment and Run agile-checklist in Linux Enviro
 1. sudo apt-get update && sudo apt-get upgrade
 2. Browser https://code.visualstudio.com/download Download .deb and install (dpkg -i <your>.deb)
 3. In a console (ctrl + alt + t): mkdir Projects && cd Projects
-4. git clone --single-branch -b frontend_admin_lte https://github.com/thiagoferrax/agile-checklist.git
+4. git clone https://github.com/thiagoferrax/agile-checklist.git
 5. git config --global user.name "thiagoferrax"
 6. sudo apt install nodejs
 7. node -v
