@@ -22,7 +22,7 @@ module.exports = app => {
             existsOrError(project.estimatedDuration, 'Estimated Duration was not informed!')
             existsOrError(project.userId, 'User was not informed!')
         } catch (msg) {
-            return res.status(400).send(msg)
+            return res.status(400).json({errors: [msg]})
         }        
 
         if(project.id) {
@@ -30,12 +30,12 @@ module.exports = app => {
                 .update(project)
                 .where({id: project.id})
                 .then(_ => res.status(204).send())
-                .catch(err => res.status(500).send(err))     
+                .catch(err => res.status(500).json({errors: [err]}))     
         } else {
             app.db('projects')
                 .insert(project)
                 .then(_ => res.status(204).send())
-                .catch(err => res.status(500).send(err))
+                .catch(err => res.status(500).json({errors: [err]}))
         }
     }
 
@@ -53,14 +53,14 @@ module.exports = app => {
 
             res.status(204).send()
         } catch (msg) {
-            res.status(400).send(msg)
+            res.status(400).json({errors: [msg]})
         }
     }
 
     const get = (req, res) => {
         app.db('projects')
             .then(projects => res.json(projects))
-            .catch(err => res.status(500).send(err))
+            .catch(err => res.status(500).json({errors: [err]}))
     }
 
     const getById = (req, res) => {
@@ -68,7 +68,7 @@ module.exports = app => {
         .where({ id: req.params.id })
         .first()
         .then(project => res.json(project))
-        .catch(err => res.status(500).send(err))
+        .catch(err => res.status(500).json({errors: [err]}))
     }
 
     return {save, remove, get, getById}

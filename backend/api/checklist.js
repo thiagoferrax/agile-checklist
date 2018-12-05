@@ -6,14 +6,16 @@ module.exports = app => {
             id: req.body.id,
             description: req.body.description,
             parentId: req.body.parentId
-        }
-      
+        }  
+        
+        console.log(`ParentId`,  checklist.parentId)
+
         if(req.params.id) checklist.id = req.params.id
 
         try{
             existsOrError(checklist.description, 'Description was not informed!')
         } catch (msg) {
-            return res.status(400).send(msg)
+            return res.status(400).json({errors: [msg]})
         }        
 
         if(checklist.id) {
@@ -21,12 +23,12 @@ module.exports = app => {
                 .update(checklist)
                 .where({id: checklist.id})
                 .then(id => res.json({...checklist, id:Number(checklist.id)}))
-                .catch(err => res.status(500).send(err))     
+                .catch(err => res.status(500).json({errors: [err]}))     
         } else {
             app.db('checklists')
                 .insert(checklist, 'id')
                 .then(id => res.json({...checklist, id:Number(id[0])}))
-                .catch(err => res.status(500).send(err))
+                .catch(err => res.status(500).json({errors: [err]}))
         }
     }
 
@@ -44,7 +46,7 @@ module.exports = app => {
 
             res.status(204).send()
         } catch (msg) {
-            res.status(400).send(msg)
+            res.status(400).json({errors: [msg]})
         }
     }
 
@@ -78,7 +80,7 @@ module.exports = app => {
     const get = (req, res) => {
         app.db('checklists')
             .then(checklists => res.json(withPath(checklists)))
-            .catch(err => res.status(500).send(err))
+            .catch(err => res.status(500).json({errors: [err]}))
     }
 
     const getById = (req, res) => {
@@ -86,7 +88,7 @@ module.exports = app => {
         .where({ id: req.params.id })
         .first()
         .then(checklist => res.json(checklist))
-        .catch(err => res.status(500).send(err))
+        .catch(err => res.status(500).json({errors: [err]}))
     }
 
     const toTree = (checklists, tree) => {
@@ -94,6 +96,7 @@ module.exports = app => {
         tree = tree.map(parentNode => {
             const isChild = node => node.parentId == parentNode.id
             parentNode.children = toTree(checklists, checklists.filter(isChild))
+            parentNode.value = 0
             return parentNode
         })
         return tree
@@ -102,7 +105,7 @@ module.exports = app => {
     const getTree = (req, res) => {
         app.db('checklists')
             .then(checklists => res.json(toTree(checklists)))
-            .catch(err => res.status(500).send(err))
+            .catch(err => res.status(500).json({errors: [err]}))
     }
 
     return {save, remove, get, getById, getTree}

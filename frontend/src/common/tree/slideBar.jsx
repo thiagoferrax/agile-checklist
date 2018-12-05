@@ -1,0 +1,41 @@
+import React from 'react'
+import './slideBar.css'
+
+
+const MIN = 0
+const MAX = 10
+
+export default props => {
+    return (
+        <div className="slidecontainer">
+            <input className={`slider ${getColor(props.node.value)}`} type="range" min={MIN} max={MAX} value={MIN}
+                id={`slide_${props.node.id}`} value={props.node.value} onChange={e => handleChange(e, props)} />
+        </div>
+    )
+}
+
+const handleChange = (event, props) => {
+    if (props.onChange) {
+        props.onChange(event.target.value, props.node)
+    }
+}
+
+const getColor = (value) => {
+    let color = ''
+    if (value == 0) {
+        color = 'red'
+    } else if (value < 3) {
+        color = 'orange'
+    } else if (value < 5) {
+        color = 'light_orange'
+    } else if (value == 5) {
+        color = 'yellow'
+    } else if (value < 8) {
+        color = 'yellow_green'
+    } else if (value < 10) {
+        color = 'light_green'
+    } else if (value == 10) {
+        color = 'green'
+    }
+    return color
+}

@@ -1,0 +1,12 @@
+.form-checklist-control {
+    display: block;
+    width: 34px;
+    height: 34px;
+    padding: 6px 12px;
+    background-color: #fff;
+    background-image: none;
+}
+
+input[type=checkbox] {
+    margin: 0px;
+}

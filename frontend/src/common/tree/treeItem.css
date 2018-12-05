@@ -1,0 +1,36 @@
+.node {
+    margin-top: 0px;
+}
+
+.parent {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;    
+}
+
+.children {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0px;
+    padding-left: 0px;
+    font-weight: normal;    
+}
+
+.treeItem {
+    display: flex;
+    flex-direction: row;
+    position:relative;
+    padding: 10px 5px;
+    vertical-align: middle;
+}
+
+.treeItemDescription {
+    margin-left: 5px;
+}
+
+.rowItem > div {
+    margin-left: 2px;
+}
+.treeItem:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}

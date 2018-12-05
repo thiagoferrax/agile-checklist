@@ -18,5 +18,11 @@ module.exports = app => {
         if(valueA !== valueB) throw msg
     }
 
-    return { existsOrError, notExistsOrError, equalsOrError }
+    function isValidEmail(email, msg) {
+        if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+            throw msg
+        }
+    }
+
+    return { existsOrError, notExistsOrError, equalsOrError, isValidEmail }    
 }
