@@ -12,8 +12,6 @@ module.exports = app => {
             checklist: req.body.checklist
         }
 
-        console.log('evaluation.checklist', evaluation.checklist)
-
         if (req.params.id) evaluation.id = req.params.id
 
         try {

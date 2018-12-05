@@ -21,7 +21,7 @@ class EvaluatonList extends Component {
                 <td>{evaluation.projectName}</td>                
                 <td>{`Sprint ${evaluation.sprint}`}</td>
                 <td>{evaluation.checklistDescription}</td>                                
-                <td>{evaluation.score || '0.0'}</td>
+                <td>{evaluation.score ? parseFloat(evaluation.score).toFixed(2) : '0.0'}</td>
                 <td>{this.getFormatedDate(evaluation.date)}</td>
                 <td>
                     <button className='btn btn-warning' onClick={() => this.props.showUpdate(evaluation)}>

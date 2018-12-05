@@ -1,16 +1,18 @@
 import React from 'react'
 import './slideBar.css'
-
+import If from '../operator/if'
 
 const MIN = 0
 const MAX = 10
 
 export default props => {
     return (
-        <div className="slidecontainer">
-            <input className={`slider ${getColor(props.node.value)}`} type="range" min={MIN} max={MAX} value={MIN}
-                id={`slide_${props.node.id}`} value={props.node.value} onChange={e => handleChange(e, props)} />
-        </div>
+        <If test={!props.hideSlideBar}>
+            <div className="slidecontainer ">
+                <input className={`slider ${getColor(props.node.value)}`} type="range" min={MIN} max={MAX} value={MIN}
+                    id={`slide_${props.node.id}`} value={props.node.value} onChange={e => handleChange(e, props)} />
+            </div>
+        </If>        
     )
 }
 

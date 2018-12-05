@@ -14,7 +14,7 @@ export function getList() {
     }
 }
 
-export function getTree() {
+export function getTree() {  
     const request = axios.get(`${BASE_URL}/checklists/tree`)
     return {
         type: 'TREE_FETCHED',
@@ -67,8 +67,9 @@ export function showDelete(checklist) {
 export function init() {
     return [
         showTabs('tabList', 'tabCreate'),
-        selectTab('tabList'),
+        selectTab('tabCreate'),
         getList(),
+        getTree(),
         initialize('checklistForm', INITIAL_VALUES)
     ]
 }

@@ -27,8 +27,8 @@ class Evaluation extends Component {
                 <Content>
                     <Tabs> 
                         <TabsHeader> 
-                            <TabHeader label='Evaluate' icon='plus' target='tabEvaluate' />
                             <TabHeader label='List' icon='bars' target='tabList' />
+                            <TabHeader label='Evaluate' icon='plus' target='tabEvaluate' />
                             <TabHeader label='Update' icon='pencil' target='tabUpdate' />
                             <TabHeader label='Delete' icon='trash-o' target='tabDelete' />
                         </TabsHeader> 

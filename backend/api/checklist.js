@@ -8,8 +8,6 @@ module.exports = app => {
             parentId: req.body.parentId
         }  
         
-        console.log(`ParentId`,  checklist.parentId)
-
         if(req.params.id) checklist.id = req.params.id
 
         try{

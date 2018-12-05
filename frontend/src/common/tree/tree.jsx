@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Grid from '../layout/grid'
-import TreeItem, {toggleIcon} from './treeItem'
+import TreeItem from './treeItem'
 import './tree.css'
 
 export default class Tree extends Component {  
@@ -81,7 +81,7 @@ export default class Tree extends Component {
             let overcome = 0
             const innerChildren = []
             children.forEach(id => {        
-                let oldValue = valuesMap[id].value
+                let oldValue = +valuesMap[id].value
                 let newValue = oldValue + delta
     
                 if(delta >= 0 && newValue > MAX) {
@@ -106,11 +106,11 @@ export default class Tree extends Component {
             }
         }
     
-        const newValue = valuesMap[nodeId].value
+        const newValue = +valuesMap[nodeId].value
         const children = getChildren(valuesMap)
         if(newValue === MIN || newValue === MAX) {
             children.forEach(id => {        
-                const childOldAnswer = valuesMap[id].value
+                const childOldAnswer = +valuesMap[id].value
                 valuesMap[id].value = newValue
     
                 this.refreshChildrenNodes(id, valuesMap, childOldAnswer)
@@ -138,18 +138,18 @@ export default class Tree extends Component {
             <Grid cols='12'>
                 <fieldset>
                 <legend>{this.props.legend}</legend>
-                {buildTree(this.state.tree, this.handleChange)}
+                {buildTree(this.state.tree, this.handleChange, this.props)}
                 </fieldset>
             </Grid>
         )
     }
 }
 
-const buildTree = (tree, onChange) => tree && tree.map(node => {
+const buildTree = (tree, onChange, props) => tree && tree.map(node => {
     const children = node.children
-    const childrenTree = children.length && buildTree(children, onChange)
+    const childrenTree = children.length && buildTree(children, onChange, props)
     return (
-        <TreeItem key={`node_${node.id}`} node={node} onChange={onChange} >
+        <TreeItem key={`node_${node.id}`} node={node} onChange={onChange} hideSlideBar={props.hideSlideBar} shrink={props.shrink}>
             {childrenTree}
         </TreeItem>          
     )

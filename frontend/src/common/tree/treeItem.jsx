@@ -10,7 +10,7 @@ export default class TreeItem extends Component {
     }
 
     componentWillMount() {
-        this.setState({...this.state, node: this.props.node})
+        this.setState({...this.state, node: this.props.node, hideChildren: this.props.shrink})
     }
 
     componentWillReceiveProps(nextProps) {
@@ -34,7 +34,7 @@ export default class TreeItem extends Component {
                             </a>
                         </If>
                         <div className="treeItemDescription">{this.state.node.description}</div> 
-                        <SlideBar node={this.state.node} onChange={this.props.onChange} />
+                        <SlideBar node={this.state.node} onChange={this.props.onChange} hideSlideBar={this.props.hideSlideBar}/>
                     </div>            
                 </div>
                 <If test={this.props.children && !this.state.hideChildren}>

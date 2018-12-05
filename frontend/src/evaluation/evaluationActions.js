@@ -67,7 +67,7 @@ export function showDelete(evaluation) {
 export function init() {
     return [
         showTabs('tabEvaluate', 'tabList'),
-        selectTab('tabEvaluate'),
+        selectTab('tabList'),
         getList(),
         initialize('evaluationForm', INITIAL_VALUES)
     ]
