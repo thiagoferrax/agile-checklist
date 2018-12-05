@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
         table.integer('projectId').references('id').inTable('projects').notNull()
         table.string('sprint').notNull()
         table.integer('checklistId').references('id').inTable('checklists').notNull()
+        table.float('score').notNull()
         table.integer('userId').references('id').inTable('users').notNull()
         table.date('date').notNull().defaultTo(new Date().toISOString())        
     })

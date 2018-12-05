@@ -81,22 +81,22 @@ export default class Tree extends Component {
             let overcome = 0
             const innerChildren = []
             children.forEach(id => {        
-                let oldValue = Number(valuesMap[id].value)
-                let newAnswer = oldValue + delta
+                let oldValue = valuesMap[id].value
+                let newValue = oldValue + delta
     
-                if(delta >= 0 && newAnswer > MAX) {
-                    overcome += newAnswer - MAX
-                    newAnswer = MAX                    
-                } else if(delta < 0 && newAnswer < MIN)  {
-                    overcome += newAnswer - MIN
-                    newAnswer = MIN                                    
+                if(delta >= 0 && newValue > MAX) {
+                    overcome += newValue - MAX
+                    newValue = MAX                    
+                } else if(delta < 0 && newValue < MIN)  {
+                    overcome += newValue - MIN
+                    newValue = MIN                                    
                 }
     
-                if(newAnswer > MIN && newAnswer < MAX) {
+                if(newValue > MIN && newValue < MAX) {
                     innerChildren.push(id)
                 }
     
-                valuesMap[id].value = newAnswer
+                valuesMap[id].value = newValue
                 this.refreshChildrenNodes(id, valuesMap, oldValue)
             })
     
@@ -106,17 +106,17 @@ export default class Tree extends Component {
             }
         }
     
-        const newAnswer = Number(valuesMap[nodeId].value)
+        const newValue = valuesMap[nodeId].value
         const children = getChildren(valuesMap)
-        if(newAnswer === MIN || newAnswer === MAX) {
+        if(newValue === MIN || newValue === MAX) {
             children.forEach(id => {        
-                const childOldAnswer = Number(valuesMap[id].value)
-                valuesMap[id].value = newAnswer
+                const childOldAnswer = valuesMap[id].value
+                valuesMap[id].value = newValue
     
                 this.refreshChildrenNodes(id, valuesMap, childOldAnswer)
             })
         } else {
-            const delta = newAnswer - oldValue    
+            const delta = newValue - oldValue    
             refreshChildren(delta, children)
         }
     }

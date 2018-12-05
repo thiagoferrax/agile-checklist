@@ -1,4 +1,4 @@
-const INITIAL_STATE = {list: [], checklist: [], tree: []}
+const INITIAL_STATE = {list: [], checklist: [], tree: [], checklistId: null}
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {

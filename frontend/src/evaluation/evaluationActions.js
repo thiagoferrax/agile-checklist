@@ -4,7 +4,7 @@ import { reset as resetForm, initialize } from 'redux-form'
 import { showTabs, selectTab } from '../common/tab/tabActions'
 import {BASE_URL} from '../../Global'
 
-const INITIAL_VALUES = {}
+const INITIAL_VALUES = {projectId: null, sprint: null, checklistId: null, userId: null, checklist: []}
 
 export function getList() {
     const request = axios.get(`${BASE_URL}/evaluations`)
@@ -66,8 +66,8 @@ export function showDelete(evaluation) {
 
 export function init() {
     return [
-        showTabs('tabList', 'tabCreate'),
-        selectTab('tabList'),
+        showTabs('tabEvaluate', 'tabList'),
+        selectTab('tabEvaluate'),
         getList(),
         initialize('evaluationForm', INITIAL_VALUES)
     ]
