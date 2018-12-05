@@ -39,7 +39,7 @@ module.exports = app => {
                 .insert(evaluation)
                 .returning('id')
                 .then(evaluationId => {
-                    const rows = getAnswers(evaluationId[0], checklist)
+                    const rows = getChecklistAnswers(evaluationId[0], checklist)
                     const chunkSize = rows.lenght
                     app.db.batchInsert('answers', rows, chunkSize)
                         .returning('id')
@@ -92,14 +92,21 @@ const getById = (req, res) => {
         .catch(err => res.status(500).json({ errors: [err] }))
 }
 
-const getAnswers = (evaluationId, checklist, initialAnswers = []) => {
+const getAnswers = (req, res) => {
+    app.db('answers')
+        .where({ evaluationId: req.params.id })
+        .then(answers => res.json(answers))
+        .catch(err => res.status(500).json({ errors: [err] }))
+}
+
+const getChecklistAnswers = (evaluationId, checklist, initialAnswers = []) => {
     return checklist.reduce((answers, item) => {
         answers.push({evaluationId, checklistId: item.id, value: +item.value})
-        return getAnswers(evaluationId, item.children, answers)
+        return getChecklistAnswers(evaluationId, item.children, answers)
     }, initialAnswers)
 }
 
 const getScore = (checklist) => checklist[0].value
 
-return { save, remove, get, getById }
+return { save, remove, get, getById, getAnswers }
 }

@@ -36,6 +36,9 @@ module.exports = app => {
     app.route('/evaluations/:id')
         .put(app.api.evaluation.save)
         .delete(app.api.evaluation.remove)
-        .get(app.api.evaluation.getById)        
+        .get(app.api.evaluation.getById)  
+        
+    app.route('/evaluations/:id/answers')
+        .get(app.api.evaluation.getAnswers)
 
 }   

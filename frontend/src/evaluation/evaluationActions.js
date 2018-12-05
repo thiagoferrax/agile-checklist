@@ -4,7 +4,7 @@ import { reset as resetForm, initialize } from 'redux-form'
 import { showTabs, selectTab } from '../common/tab/tabActions'
 import {BASE_URL} from '../../Global'
 
-const INITIAL_VALUES = {projectId: null, sprint: null, checklistId: null, userId: null, checklist: []}
+const INITIAL_VALUES = {checklist:[]}
 
 export function getList() {
     const request = axios.get(`${BASE_URL}/evaluations`)
@@ -14,10 +14,10 @@ export function getList() {
     }
 }
 
-export function selectChecklist(value) {
+export function selectChecklist(checklistId) {
     return {
         type: 'CHECKLIST_SELECTED',
-        payload: value
+        payload: checklistId
     }
 }
 
@@ -34,7 +34,6 @@ export function remove(values) {
 }
 
 function submit(values, method) {
-    console.log('submit', values)
     return dispatch => {
         const id = values.id ? values.id : ''
         axios[method](`${BASE_URL}/evaluations/${id}`, values)
@@ -48,10 +47,20 @@ function submit(values, method) {
     }
 }
 
+export function getAnswers(evaluation) {
+    const request = axios.get(`${BASE_URL}/evaluations/${evaluation.id}/answers`)
+    return {
+        type: 'ANSWERS_FETCHED',
+        payload: request
+    }
+}
+
 export function showUpdate(evaluation) {
     return [ 
         showTabs('tabUpdate'),
-        selectTab('tabUpdate'),
+        selectTab('tabUpdate'),        
+        getAnswers(evaluation),
+        selectChecklist(evaluation.checklistId),
         initialize('evaluationForm', evaluation)
     ]
 }

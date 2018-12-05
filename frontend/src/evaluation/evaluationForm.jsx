@@ -31,7 +31,7 @@ class EvaluationForm extends Component {
 
     render() {
 
-        const { handleSubmit, readOnly, projects, selectChecklist, checklists, users, checklist } = this.props    
+        const {users, projects, checklists, checklist, handleSubmit, readOnly, selectChecklist} = this.props    
 
         return (
             <form role='form' onSubmit={handleSubmit}>
@@ -67,7 +67,6 @@ const mapStateToProps = state => ({
     projects: state.project.list, 
     checklists: state.checklist.list,
     users: state.user.list, 
-    tree: state.checklist.tree,
     checklist: state.evaluation.checklist
 })
 const mapDispatchToProps = dispatch => bindActionCreators({init, getChecklists, selectChecklist, getTree, getProjects, getUsers}, dispatch)
