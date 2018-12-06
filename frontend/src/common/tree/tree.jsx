@@ -101,6 +101,8 @@ export default class Tree extends Component {
         const newValue = +valuesMap[nodeId].value
         const children = getChildren(valuesMap)
         if(newValue === MIN || newValue === MAX) {
+
+            console.log('in the slide bar limits', children)
             children.forEach(id => {        
                 const childOldAnswer = +valuesMap[id].value
                 valuesMap[id].value = newValue
@@ -128,7 +130,7 @@ export default class Tree extends Component {
 
         this.setState({tree:refreshedTree}, () => {
             if (this.props.input.onChange) {
-                this.props.input.onChange(tree)
+                this.props.input.onChange(refreshedTree)
             }  
         })
     }
@@ -149,7 +151,7 @@ const buildTree = (tree, onChange, props) => tree && tree.map(node => {
     const children = node.children
     const childrenTree = children.length && buildTree(children, onChange, props)
     return (
-        <TreeItem key={`node_${node.id}`} node={node} onChange={onChange} hideSlideBar={props.hideSlideBar} shrink={props.shrink}>
+        <TreeItem key={`node_${node.id}`} node={node} onChange={onChange} hideSlideBar={props.hideSlideBar} shrink={props.shrink && node.parentId === null}>
             {childrenTree}
         </TreeItem>          
     )

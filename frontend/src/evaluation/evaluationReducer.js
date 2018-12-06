@@ -31,6 +31,8 @@ export default (state = INITIAL_STATE, action) => {
             }
             
             return { ...state, checklist: checklistWithAnswers}
+        case 'CHECKLIST_INITIALIZED':
+            return { ...state, checklist: []}
         default:
             return state
     }

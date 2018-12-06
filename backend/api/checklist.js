@@ -94,7 +94,6 @@ module.exports = app => {
         tree = tree.map(parentNode => {
             const isChild = node => node.parentId == parentNode.id
             parentNode.children = toTree(checklists, checklists.filter(isChild))
-            parentNode.value = 0
             return parentNode
         })
         return tree

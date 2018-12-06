@@ -12,13 +12,15 @@ module.exports = app => {
             checklist: req.body.checklist
         }
 
+        evaluation.date = new Date()
+
         if (req.params.id) evaluation.id = req.params.id
 
         try {
             existsOrError(evaluation.projectId, 'Project was not informed!')
             existsOrError(evaluation.sprint, 'Sprint was not informed!')
             existsOrError(evaluation.checklistId, 'Checklist was not informed!')
-            existsOrError(evaluation.userId, 'Checklist was not informed!')
+            existsOrError(evaluation.userId, 'User was not informed!')
         } catch (msg) {
             return res.status(400).json({ errors: [msg] })
         }
@@ -26,23 +28,22 @@ module.exports = app => {
         const checklist = evaluation.checklist
         delete evaluation.checklist
 
-        if(checklist) {
+        if(checklist && checklist.length > 0) {
             evaluation.score = getScore(checklist)
         }   
 
-        if (evaluation.id) {
-
-            evaluation.date = new Date()
-
+        if (evaluation.id) {        
             app.db('evaluations')
                 .update(evaluation)
                 .where({ id: evaluation.id })
-                .then(_ => res.status(204).send())
+                .then(_ => {
+                    if(checklist && checklist.length > 0) {
+                        updateAnswers(evaluation.id, checklist, res)
+                    } 
+                })                                                                                                    
                 .catch(err => res.status(500).json({ errors: [err] }))
 
-            if(checklist) {
-                updateAnswers(evaluation.id, checklist, res)
-            }    
+              
         } else {
 
             try {
@@ -60,15 +61,17 @@ module.exports = app => {
     }
 
     const updateAnswers = (evaluationId, checklist, res) => {
-        const rowsDeleted = app.db('answers').where({ evaluationId: evaluationId }).del()           
-        
-        try {
-            existsOrError(rowsDeleted, "Answers were not found!")
-        } catch (msg) {
-            return res.status(400).json({ errors: [msg] })
-        }
-        
-        insertAnswers(evaluationId, checklist, res)
+        app.db('answers').where({ evaluationId: evaluationId }).del().then(
+            rowsDeleted => {
+                try {
+                    existsOrError(rowsDeleted, "Answers were not found!")
+                } catch (msg) {
+                    return res.status(400).json({ errors: [msg] })
+                }        
+                
+                insertAnswers(evaluationId, checklist, res)            
+            }    
+        )           
     }    
 
     const insertAnswers = (evaluationId, checklist, res) => {

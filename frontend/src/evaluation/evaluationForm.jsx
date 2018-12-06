@@ -8,6 +8,7 @@ import { getList as getChecklists, getTree} from '../checklist/checklistActions'
 import { getList as getProjects} from '../project/projectActions'
 import { getList as getUsers} from '../user/userActions'
 import Tree from '../common/tree/tree'
+import If from '../common/operator/if'
 
 import Select from '../common/form/select'
 
@@ -46,7 +47,9 @@ class EvaluationForm extends Component {
                         options={checklists.filter(u => u.parentId === null)} optionValue='id' optionLabel='description' />
                     <Field name='userId' label='User' cols='12 4' 
                         component={Select} readOnly={readOnly} options={users} optionValue='id' optionLabel='name' /> 
-                    <Field name='checklist' legend='My checklist' component={Tree} tree={checklist} />
+                    <If test={checklist.length>0}>
+                        <Field name='checklist' legend='My checklist' component={Tree} tree={checklist} />
+                    </If>
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>

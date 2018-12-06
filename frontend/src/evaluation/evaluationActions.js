@@ -34,6 +34,7 @@ export function remove(values) {
 }
 
 function submit(values, method) {
+    console.log('submit', values)
     return dispatch => {
         const id = values.id ? values.id : ''
         axios[method](`${BASE_URL}/evaluations/${id}`, values)
@@ -52,6 +53,12 @@ export function getAnswers(evaluation) {
     return {
         type: 'ANSWERS_FETCHED',
         payload: request
+    }
+}
+
+export function initializeChecklist() {
+    return {
+        type: 'CHECKLIST_INITIALIZED'
     }
 }
 
@@ -78,6 +85,7 @@ export function init() {
         showTabs('tabEvaluate', 'tabList'),
         selectTab('tabList'),
         getList(),
+        initializeChecklist(),
         initialize('evaluationForm', INITIAL_VALUES)
     ]
 }
