@@ -1,4 +1,4 @@
-const INITIAL_STATE = {list: [], checklist: [], tree: [], checklistId: null, answers: []}
+const INITIAL_STATE = {list: [], checklist: [], tree: [], checklistId: null}
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -7,23 +7,6 @@ export default (state = INITIAL_STATE, action) => {
         case 'CHECKLIST_SELECTED':               
             let tree = state.tree || []
             let checklist = tree.filter(checklist => checklist.id === action.payload)
-            
-            console.log(`state.answers`, state.answers)
-            if(state.answers.length) {
-                const refreshTree = (tree, valuesMap) => {        
-                    console.log(`refreshTree`, tree, valuesMap)
-                    return tree.map(
-                        node => {
-                            console.log('node', node, valuesMap.hasOwnProperty(node.id))
-                            const children = refreshTree(node.children, valuesMap)            
-                            return valuesMap.hasOwnProperty(node.id) ? {...node, value:valuesMap[node.id].value, children} : {...node, children}
-                        })
-                }
-
-                checklist = refreshTree(checklist, state.answers)
-                console.log('CHECKLIST_SELECTED', checklist)
-            }
-
             return { ...state, checklist }
         case 'TREE_FETCHED':
             return { ...state, tree: action.payload.data }
@@ -34,8 +17,20 @@ export default (state = INITIAL_STATE, action) => {
                 return map
             }, {})    
 
-            console.log(`ANSWERS_FETCHED`, answers)
-            return { ...state, answers}
+            let checklistWithAnswers = state.checklist
+            if(answers) {
+                const refreshTree = (tree, valuesMap) => {        
+                    return tree.map(
+                        node => {
+                            const children = refreshTree(node.children, valuesMap)            
+                            return valuesMap.hasOwnProperty(node.id) ? {...node, value:valuesMap[node.id].value, children} : {...node, children}
+                        })
+                }
+
+                checklistWithAnswers = refreshTree(state.checklist, answers)
+            }
+            
+            return { ...state, checklist: checklistWithAnswers}
         default:
             return state
     }
