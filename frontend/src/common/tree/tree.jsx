@@ -39,7 +39,7 @@ export default class Tree extends Component {
     refreshNodesValues(valuesMap, node, value) {    
         const nodeId = node.id
         const parentId = valuesMap[nodeId].parentId
-        const oldValue = valuesMap[nodeId].value
+        const oldValue = valuesMap[nodeId].value || 0
     
         valuesMap[nodeId] = {value, parentId}
        
@@ -53,7 +53,7 @@ export default class Tree extends Component {
         const parentId = valuesMap[nodeId].parentId
         if(parentId) {
             const brothers = Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId == valuesMap[nodeId].parentId)
-            const sum = brothers.reduce((accumulator, id) => accumulator + parseInt(valuesMap[id].value), 0)
+            const sum = brothers.reduce((accumulator, id) => accumulator + parseInt(valuesMap[id].value || 0), 0)
             const parentValue = sum/(brothers.length)
     
             valuesMap[parentId] = {...valuesMap[parentId], value: parentValue} 
@@ -73,7 +73,7 @@ export default class Tree extends Component {
             let overcome = 0
             const innerChildren = []
             children.forEach(id => {        
-                let oldValue = +valuesMap[id].value
+                let oldValue = parseInt(valuesMap[id].value || 0)
                 let newValue = oldValue + delta
     
                 if(delta >= 0 && newValue > MAX) {
@@ -98,13 +98,13 @@ export default class Tree extends Component {
             }
         }
     
-        const newValue = +valuesMap[nodeId].value
+        const newValue = +valuesMap[nodeId].value || 0
         const children = getChildren(valuesMap)
         if(newValue === MIN || newValue === MAX) {
 
             console.log('in the slide bar limits', children)
             children.forEach(id => {        
-                const childOldAnswer = +valuesMap[id].value
+                const childOldAnswer = parseInt(valuesMap[id].value || 0)
                 valuesMap[id].value = newValue
     
                 this.refreshChildrenNodes(id, valuesMap, childOldAnswer)
