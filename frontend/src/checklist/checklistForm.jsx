@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field, formValueSelector } from 'redux-form'
+import { reduxForm, Field } from 'redux-form'
 import Tree from '../common/tree/tree'
 import If from '../common/operator/if'
 
@@ -42,7 +42,6 @@ class ChecklistForm extends Component {
 }
 
 ChecklistForm = reduxForm({form: 'checklistForm', destroyOnUnmount: false})(ChecklistForm)
-const selector = formValueSelector('checklistForm')
 
 const mapStateToProps = state => ({
         description: state.checklist.description,

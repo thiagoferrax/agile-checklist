@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field, formValueSelector, initialize } from 'redux-form'
+import { reduxForm, Field } from 'redux-form'
 
 import { init, selectChecklist} from './evaluationActions'
 import { getList as getChecklists, getTree} from '../checklist/checklistActions'
@@ -14,7 +14,7 @@ import Select from '../common/form/select'
 
 class EvaluationForm extends Component {
 
-    componentWillMount() {
+    componentWillMount() { 
         this.props.getChecklists()
         this.props.getTree()
         this.props.getProjects()
@@ -64,7 +64,6 @@ class EvaluationForm extends Component {
 }
 
 EvaluationForm = reduxForm({form: 'evaluationForm', destroyOnUnmount: false})(EvaluationForm)
-const selector = formValueSelector('evaluationForm')
 
 const mapStateToProps = state => ({
     projects: state.project.list, 

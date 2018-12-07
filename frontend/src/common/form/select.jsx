@@ -32,7 +32,7 @@ export default class Select extends Component {
 
     getValue() {
         const {options, optionValue, input} = this.props
-        return options && options.filter(opt => opt[optionValue || 'value'] == input.value)
+        return options && options.filter(opt => opt[optionValue || 'value'] === input.value)
     }
 
     render() {
