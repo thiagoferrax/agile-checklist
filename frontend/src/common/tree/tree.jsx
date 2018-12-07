@@ -18,7 +18,7 @@ export default class Tree extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.tree != nextProps.tree) {
+        if (this.props.tree !== nextProps.tree) {
             this.setState({tree: nextProps.tree})
         }
     }    
@@ -52,7 +52,7 @@ export default class Tree extends Component {
     refreshParentNodes(nodeId, valuesMap) {
         const parentId = valuesMap[nodeId].parentId
         if(parentId) {
-            const brothers = Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId == valuesMap[nodeId].parentId)
+            const brothers = Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId === valuesMap[nodeId].parentId)
             const sum = brothers.reduce((accumulator, id) => accumulator + parseInt(valuesMap[id].value || 0), 0)
             const parentValue = sum/(brothers.length)
     
@@ -67,7 +67,7 @@ export default class Tree extends Component {
         const MIN = 0
     
         const getChildren = valuesMap => 
-            Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId == nodeId)
+            Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId === nodeId)
     
         const refreshChildren = (delta, children) => {
             let overcome = 0
