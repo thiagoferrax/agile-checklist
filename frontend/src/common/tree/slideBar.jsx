@@ -24,19 +24,19 @@ const handleChange = (event, props) => {
 
 const getColor = (value) => {
     let color = ''
-    if (value === 0) {
+    if (value == 0) {
         color = 'red'
     } else if (value < 3) {
         color = 'orange'
     } else if (value < 5) {
         color = 'light_orange'
-    } else if (value === 5) {
+    } else if (value == 5) {
         color = 'yellow'
     } else if (value < 8) {
         color = 'yellow_green'
     } else if (value < 10) {
         color = 'light_green'
-    } else if (value === 10) {
+    } else if (value == 10) {
         color = 'green'
     }
     return color

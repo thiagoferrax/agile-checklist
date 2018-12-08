@@ -18,7 +18,7 @@ export default class Tree extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.tree !== nextProps.tree) {
+        if (this.props.tree != nextProps.tree) {
             this.setState({tree: nextProps.tree})
         }
     }    
@@ -52,7 +52,7 @@ export default class Tree extends Component {
     refreshParentNodes(nodeId, valuesMap) {
         const parentId = valuesMap[nodeId].parentId
         if(parentId) {
-            const brothers = Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId === valuesMap[nodeId].parentId)
+            const brothers = Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId == valuesMap[nodeId].parentId)
             const sum = brothers.reduce((accumulator, id) => accumulator + parseInt(valuesMap[id].value || 0), 0)
             const parentValue = sum/(brothers.length)
     
@@ -67,7 +67,7 @@ export default class Tree extends Component {
         const MIN = 0
     
         const getChildren = valuesMap => 
-            Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId === nodeId)
+            Object.getOwnPropertyNames(valuesMap).filter(id => valuesMap[id].parentId == nodeId)
     
         const refreshChildren = (delta, children) => {
             let overcome = 0
@@ -100,7 +100,7 @@ export default class Tree extends Component {
     
         const newValue = +valuesMap[nodeId].value || 0
         const children = getChildren(valuesMap)
-        if(newValue === MIN || newValue === MAX) {
+        if(newValue == MIN || newValue == MAX) {
 
             console.log('in the slide bar limits', children)
             children.forEach(id => {        
@@ -151,7 +151,7 @@ const buildTree = (tree, onChange, props) => tree && tree.map(node => {
     const children = node.children
     const childrenTree = children.length && buildTree(children, onChange, props)
     return (
-        <TreeItem key={`node_${node.id}`} node={node} onChange={onChange} hideSlideBar={props.hideSlideBar} shrink={props.shrink && node.parentId === null}>
+        <TreeItem key={`node_${node.id}`} node={node} onChange={onChange} hideSlideBar={props.hideSlideBar} shrink={props.shrink && node.parentId == null}>
             {childrenTree}
         </TreeItem>          
     )
