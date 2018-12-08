@@ -14,7 +14,7 @@ export default class TreeItem extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.node !== nextProps.node) {
+        if (this.props.node != nextProps.node) {
             this.setState({...this.state, node: nextProps.node})
         }
     }

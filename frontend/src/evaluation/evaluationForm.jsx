@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field } from 'redux-form'
+import { reduxForm, Field, formValueSelector } from 'redux-form'
 
 import { init, selectChecklist} from './evaluationActions'
 import { getList as getChecklists, getTree} from '../checklist/checklistActions'
@@ -64,6 +64,7 @@ class EvaluationForm extends Component {
 }
 
 EvaluationForm = reduxForm({form: 'evaluationForm', destroyOnUnmount: false})(EvaluationForm)
+const selector = formValueSelector('evaluationForm')
 
 const mapStateToProps = state => ({
     projects: state.project.list, 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field } from 'redux-form'
+import { reduxForm, Field, formValueSelector } from 'redux-form'
 
 import { init } from './userActions'
 import LabelAndInput from '../common/form/labelAndInput'
@@ -38,6 +38,8 @@ class UserForm extends Component {
 }
 
 UserForm = reduxForm({form: 'userForm', destroyOnUnmount: false})(UserForm)
+const selector = formValueSelector('userForm')
+
 const mapStateToProps = state => ({})
 const mapDispatchToProps = dispatch => bindActionCreators({init}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(UserForm)
