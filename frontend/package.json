@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "admin-lte": "2.3.11",
+    "admin-lte": "2.4.8",
     "axios": "0.18.0",
     "font-awesome": "4.7.0",
     "ionicons": "4.4.3",
