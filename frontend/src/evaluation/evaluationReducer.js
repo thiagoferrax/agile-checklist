@@ -29,6 +29,7 @@ export default (state = INITIAL_STATE, action) => {
 
                 checklistWithAnswers = refreshTree(state.checklist, answers)
             }
+            console.log('checklistWithAnswers'. checklistWithAnswers)
             
             return { ...state, checklist: checklistWithAnswers}
         case 'CHECKLIST_INITIALIZED':

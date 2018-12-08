@@ -102,7 +102,6 @@ export default class Tree extends Component {
         const children = getChildren(valuesMap)
         if(newValue == MIN || newValue == MAX) {
 
-            console.log('in the slide bar limits', children)
             children.forEach(id => {        
                 const childOldAnswer = parseInt(valuesMap[id].value || 0)
                 valuesMap[id].value = newValue

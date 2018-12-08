@@ -39,7 +39,9 @@ module.exports = app => {
                 .then(_ => {
                     if(checklist && checklist.length > 0) {
                         updateAnswers(evaluation.id, checklist, res)
-                    } 
+                    } else {
+                        res.status(204).send()
+                    }
                 })                                                                                                    
                 .catch(err => res.status(500).json({ errors: [err] }))
 
@@ -75,7 +77,7 @@ module.exports = app => {
     }    
 
     const insertAnswers = (evaluationId, checklist, res) => {
-        const rows = getChecklistAnswers(evaluationId, checklist)
+        const rows = getChecklistAnswersToInsert(evaluationId, checklist)
         const chunkSize = rows.lenght
         app.db.batchInsert('answers', rows, chunkSize)
             .then(_ => res.status(204).send())
@@ -131,10 +133,10 @@ module.exports = app => {
             .catch(err => res.status(500).json({ errors: [err] }))
     }
 
-    const getChecklistAnswers = (evaluationId, checklist, initialAnswers = []) => {
+    const getChecklistAnswersToInsert = (evaluationId, checklist, initialAnswers = []) => {
         return checklist.reduce((answers, item) => {
             answers.push({evaluationId, checklistId: item.id, value: +item.value})
-            return getChecklistAnswers(evaluationId, item.children, answers)
+            return getChecklistAnswersToInsert(evaluationId, item.children, answers)
         }, initialAnswers)
     }
 
