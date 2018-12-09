@@ -41,4 +41,8 @@ module.exports = app => {
     app.route('/evaluations/:id/answers')
         .get(app.api.evaluation.getAnswers)
 
+    app.route('/dashboard/summary')
+        .get(app.api.dashboard.get)
+    
+
 }   

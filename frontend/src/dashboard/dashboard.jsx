@@ -17,10 +17,9 @@ class Dashboard extends Component {
         this.props.getSummary()
     }
 
-    render() {
-        const projects = 0
-        const evaluations = 0
-        const improvements = 0
+    render() {        
+        console.log(this.props.summary)
+        const {projects, evaluations, comments} = this.props.summary
         return (
             <div> 
                 <ContentHeader title='Dashboard' small='Versão 1.0' />
@@ -31,7 +30,7 @@ class Dashboard extends Component {
                         <InfoBox cols='12 4' color='green' icon='sliders'
                             value={evaluations} text='My Evaluations' />
                         <InfoBox cols='12 4' color='yellow' icon='comments-o'
-                            value={improvements} text='Comments' />
+                            value={comments} text='Comments' />
                     </Row> 
                     <Row>
                         <ProjectBox cols='12' color='primary' project='Project 1'>
