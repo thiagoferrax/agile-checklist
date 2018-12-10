@@ -17,6 +17,18 @@ class Dashboard extends Component {
         this.props.getSummary()
     }
 
+    renderProjects() {    
+        const {projects} = this.props.summary
+
+        return projects.map(
+            project => 
+            (<ProjectBox key={project.id} cols='12' color='primary' project={project.name}>
+                <Row>                                      
+                </Row>
+            </ProjectBox>)
+        )
+    }
+
     render() {        
         console.log(this.props.summary)
         const {projects, evaluations, comments} = this.props.summary
@@ -26,22 +38,15 @@ class Dashboard extends Component {
                 <Content>
                     <Row> 
                         <InfoBox cols='12 4' color='blue' icon='cubes'
-                            value={projects} text='My Projects' />
+                            value={projects.length} text='My Projects' />
                         <InfoBox cols='12 4' color='green' icon='sliders'
                             value={evaluations} text='My Evaluations' />
                         <InfoBox cols='12 4' color='yellow' icon='comments-o'
                             value={comments} text='Comments' />
                     </Row> 
                     <Row>
-                        <ProjectBox cols='12' color='primary' project='Project 1'>
-                            <Row>                                      
-                            </Row>
-                        </ProjectBox>    
-                        <ProjectBox cols='12' color='primary' project='Project 2'>
-                            <Row>                                 
-                            </Row>
-                        </ProjectBox>
-                    </Row>
+                    {this.renderProjects()}
+                    </Row> 
                 </Content> 
             </div>
         )
