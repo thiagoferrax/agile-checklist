@@ -8,6 +8,7 @@ import Content from '../common/template/content'
 import InfoBox from  '../common/widget/infoBox'
 import ProgressBox from  '../common/widget/progressBox'
 import ProjectBox from  '../common/widget/projectBox'
+import BarChart from  '../common/chart/barChart'
 
 import Row from  '../common/layout/row'
 
@@ -24,7 +25,7 @@ class Dashboard extends Component {
             project => 
             (<ProjectBox key={project.id} cols='12' color='default' project={project.name}>
                 <Row>       
-                                              
+                    <BarChart cols='12 3'/>                  
                 </Row>
             </ProjectBox>)
         )
