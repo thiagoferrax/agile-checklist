@@ -34,3 +34,11 @@
 .treeItem:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
+
+a {
+    color: #333;    
+}
+a:hover {
+    color: #333;
+    cursor:pointer;
+}
