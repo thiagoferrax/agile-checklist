@@ -4,12 +4,12 @@ import MenuTree from './menuTree'
 
 export default props => (
     <ul className='sidebar-menu' data-widget="tree">
-        <MenuItem path='/' label='Dashboard' icon='dashboard' />
-        <MenuTree label='Management' icon='gears'> 
-            <MenuItem path='users' label='Users' icon='users' />
-            <MenuItem path='projects' label='Projects' icon='cubes' />    
-            <MenuItem path='checklists' label='Checklists' icon='check-square-o' />     
+        <MenuItem path='/' label='Dashboard' icon='stats' />
+        <MenuTree label='Management' icon='construct'> 
+            <MenuItem path='users' label='Users' icon='people' />
+            <MenuItem path='projects' label='Projects' icon='cube' />    
+            <MenuItem path='checklists' label='Checklists' icon='checkbox-outline' />     
         </MenuTree>
-        <MenuItem path='evaluations' label='Evaluations' icon='sliders' />        
+        <MenuItem path='evaluations' label='Evaluations' icon='options' />        
     </ul>
 )

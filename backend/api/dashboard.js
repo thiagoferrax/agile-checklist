@@ -3,8 +3,7 @@ module.exports = app => {
     const get = (req, res) => {
 
         const summary = {projects: 0, evaluations: 0, comments: 0}
-        console.log('get');
-
+        
         app.db('users').first()
             .then(user => {                
                 app.db('projects').where({userId:user.id}).

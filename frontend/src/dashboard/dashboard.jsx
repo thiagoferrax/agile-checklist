@@ -22,8 +22,9 @@ class Dashboard extends Component {
 
         return projects.map(
             project => 
-            (<ProjectBox key={project.id} cols='12' color='primary' project={project.name}>
-                <Row>                                      
+            (<ProjectBox key={project.id} cols='12' color='default' project={project.name}>
+                <Row>       
+                                              
                 </Row>
             </ProjectBox>)
         )
@@ -37,11 +38,13 @@ class Dashboard extends Component {
                 <ContentHeader title='Dashboard' small='Versão 1.0' />
                 <Content>
                     <Row> 
-                        <InfoBox cols='12 4' color='blue' icon='cubes'
-                            value={projects.length} text='My Projects' />
-                        <InfoBox cols='12 4' color='green' icon='sliders'
-                            value={evaluations} text='My Evaluations' />
-                        <InfoBox cols='12 4' color='yellow' icon='comments-o'
+                        <InfoBox cols='12 3' color='aqua' icon='cube'
+                            value={projects.length} text='Projects' />
+                        <InfoBox cols='12 3' color='red' icon='options'
+                            value={evaluations} text='Evaluations' />
+                        <InfoBox cols='12 3' color='green' icon='people '
+                            value={comments} text='Members' />
+                        <InfoBox cols='12 3' color='yellow' icon='chatbubbles'
                             value={comments} text='Comments' />
                     </Row> 
                     <Row>

@@ -1,11 +1,12 @@
 import React from 'react'
+import './header.css'
 
 export default props => (
     <header className='main-header'>
         <a href='/#/' className='logo'>
             <span className='logo-mini'><b>My</b>C</span>
             <span className='logo-lg'>
-                <i className='fa fa-check'></i>
+                <i className='icon ion-md-checkbox-outline'></i>
                 <b> My</b> Checklist
             </span>        
         </a>
