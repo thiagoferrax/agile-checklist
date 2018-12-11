@@ -56,14 +56,16 @@ module.exports = app => {
 
         const checklistsWithPath = checklists.map(checklist => {
             let path = checklist.description
+            let parentPath = ''
             let parent = getParent(checklists, checklist.parentId)
 
             while(parent) {
                 path = `${parent.description} > ${path}`
+                parentPath = parentPath ? `${parent.description} > ${parentPath}` : parent.description
                 parent = getParent(checklists, parent.parentId)
             }
 
-            return { ...checklist, path }
+            return { ...checklist, path, parentPath }
         })
 
         checklistsWithPath.sort((a, b) => {

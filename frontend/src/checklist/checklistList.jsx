@@ -14,7 +14,7 @@ class ChecklistList extends Component {
         return list.map(checklist => (
             <tr key={checklist.id}>
                 <td>{checklist.description}</td>
-                <td>{checklist.path}</td>
+                <td>{checklist.parentPath}</td>
                 <td>
                     <button className='btn btn-warning' onClick={() => this.props.showUpdate(checklist)}>
                         <i className='fa fa-pencil'></i>
@@ -34,7 +34,7 @@ class ChecklistList extends Component {
                     <thead>
                         <tr>
                             <th>Description</th>
-                            <th>Path</th>
+                            <th>Parent path</th>
                             <th className='table-actions'>Actions</th>
                         </tr>
                     </thead>

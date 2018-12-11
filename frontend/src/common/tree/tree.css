@@ -11,12 +11,10 @@
 .children {
     display: flex;
     flex-direction: column;
-    margin-left: 10px;
-    padding-left: 10px;
+    margin-left: 20px;
     font-weight: normal;    
 }
 
 legend {
     margin-bottom: 10px;
-    font-size: 1.7rem;
 }

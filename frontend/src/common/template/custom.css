@@ -26,3 +26,8 @@ button {
 input[type=checkbox], input[type=radio] {
     margin: 0px;
 }
+
+.buttons_checklist_form {
+    padding-top: 25px;
+    background-color: #ffffff;
+}
