@@ -22,6 +22,20 @@ export function getTree() {
     }
 }
 
+export function clone(values) {  
+    return dispatch => {
+        const id = values.parentId ? values.parentId : ''
+        axios['post'](`${BASE_URL}/checklists/${id}/clone`, values)
+            .then(resp => {
+                toastr.success('Sucess', 'Successful operation.')
+                dispatch(init())
+            })
+            .catch(e => {
+                e.response.data.errors.forEach(error => toastr.error('Error', error))
+            })
+    }
+}
+
 export function create(values) {
     return submit(values, 'post')
 }

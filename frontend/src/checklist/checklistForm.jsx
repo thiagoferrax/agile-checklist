@@ -6,29 +6,19 @@ import Tree from '../common/tree/tree'
 import If from '../common/operator/if'
 
 
-import { init, getList, getTree, showDelete } from './checklistActions'
+import { init, getTree, showDelete, clone } from './checklistActions'
 import LabelAndInput from '../common/form/labelAndInput'
 import Select from '../common/form/select'
 import Grid from '../common/layout/grid'
 
 class ChecklistForm extends Component {
-    constructor(props) {
-        super(props)
-
-        this.cleanOrRemove = this.cleanOrRemove.bind(this)
-    }
 
     componentWillMount() {
-        this.props.getList()
         this.props.getTree()
     }
 
-    cleanOrRemove() {
-        this.props.init()
-    }
-
     render() {
-        const { handleSubmit, readOnly, list, description, parentId, tree } = this.props
+        const { handleSubmit, clone, readOnly, list, description, parentId, tree, init } = this.props
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
@@ -38,21 +28,34 @@ class ChecklistForm extends Component {
                     <Field name='parentId' value={parentId} component={Select} readOnly={readOnly}
                         label='Parent path' cols='12 6' options={list}
                         optionValue='id' optionLabel='path' />
-                                        
+
                     <Grid cols='12 2'>
-                        <div className='buttons_checklist_form'></div>
-                        <button type='submit' className='btn btn-success'>
-                            <i className="icon ion-md-add"></i>
-                        </button>
-                        <button type='button' className='btn btn-warning'
-                            onClick={() => { }}>
-                            <i className="icon ion-md-copy"></i>
-                        </button>
-                        <button type='button' className='btn btn-danger'
-                            onClick={this.cleanOrRemove}>
-                            <i className="icon ion-md-trash"></i>
-                        </button>
-                    </Grid>                   
+                        <If test={readOnly}>
+                            <div className='buttons_checklist_form'>
+                                <button type='submit' className='btn btn-danger'>
+                                    <i className="icon ion-md-trash"></i>
+                                </button>
+                                <button type='button' className='btn btn-default'
+                                    onClick={init}>
+                                    <i className="icon ion-md-close"></i>                                
+                                </button>
+                            </div>
+                        </If>
+                        <If test={!readOnly}>
+                            <div className='buttons_checklist_form'>
+                                <button type='submit' className='btn btn-success'>
+                                    <i className="icon ion-md-checkmark"></i>
+                                </button>
+                                <button type='button' className='btn btn-warning' onClick={clone}>
+                                    <i className="icon ion-md-copy"></i>
+                                </button>
+                                <button type='button' className='btn btn-default'
+                                    onClick={init}>
+                                    <i className="icon ion-md-close"></i>                                
+                                </button>
+                            </div>
+                        </If>
+                    </Grid>
                 </div>
                 <div className='box-footer'>
                     <If test={!readOnly}>
@@ -74,5 +77,5 @@ const mapStateToProps = state => ({
     tree: state.checklist.tree
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({ init, getList, getTree, showDelete }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ init, getTree, showDelete, clone }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ChecklistForm)

@@ -18,7 +18,7 @@ export default class BarChart extends Component {
                     {
                         label: 'Feedback 360',
                         data: [2, 3, 5],
-                        backgroundColor: ['#00a65a', '#00a65a', '#00a65a']
+                        backgroundColor: ['#b5bbc8', '#b5bbc8', '#b5bbc8']
                     }
                 ]
             }

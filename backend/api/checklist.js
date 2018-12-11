@@ -107,5 +107,13 @@ module.exports = app => {
             .catch(err => res.status(500).json({errors: [err]}))
     }
 
-    return {save, remove, get, getById, getTree}
+    const clone = (req, res) => {
+        app.db('checklists')
+        .where({ id: req.params.id })
+        .first()
+        .then(checklist => res.json(checklist))
+        .catch(err => res.status(500).json({errors: [err]}))
+    }
+
+    return {save, remove, get, getById, getTree, clone}    
 }

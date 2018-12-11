@@ -11,6 +11,9 @@ module.exports = app => {
         .delete(app.api.checklist.remove)
         .get(app.api.checklist.getById)    
 
+    app.route('/checklists/:id/clone')
+        .get(app.api.checklist.clone)        
+
     app.route('/users')
         .post(app.api.user.save)
         .get(app.api.user.get)
@@ -43,6 +46,4 @@ module.exports = app => {
 
     app.route('/dashboard/summary')
         .get(app.api.dashboard.get)
-    
-
 }   

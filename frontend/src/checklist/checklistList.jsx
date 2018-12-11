@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getList, showUpdate, showDelete } from './checklistActions'
+import If from '../common/operator/if'
 
 class ChecklistList extends Component {
 
@@ -17,11 +18,16 @@ class ChecklistList extends Component {
                 <td>{checklist.parentPath}</td>
                 <td>
                     <button className='btn btn-warning' onClick={() => this.props.showUpdate(checklist)}>
-                        <i className='fa fa-pencil'></i>
+                        <i className='icon ion-md-create'></i>
                     </button>
                     <button className='btn btn-danger' onClick={() => this.props.showDelete(checklist)}>
-                        <i className='fa fa-trash-o'></i>
+                        <i className='icon ion-md-trash'></i>
                     </button>
+                    <If test={!checklist.parentPath}>
+                        <button type='button' className='btn btn-info' onClick={() => { }}>
+                            <i className="icon ion-md-share"></i>
+                        </button>
+                    </If>
                 </td>
             </tr>
         ))
@@ -33,7 +39,7 @@ class ChecklistList extends Component {
                 <table className='table'>
                     <thead>
                         <tr>
-                            <th>Description</th>
+                            <th>Item description</th>
                             <th>Parent path</th>
                             <th className='table-actions'>Actions</th>
                         </tr>
@@ -48,7 +54,7 @@ class ChecklistList extends Component {
 }
 
 const mapStateToProps = state => ({
-        list: state.checklist.list
+    list: state.checklist.list
 })
-const mapDispatchToProps = dispatch => bindActionCreators({getList, showUpdate, showDelete}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ getList, showUpdate, showDelete }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ChecklistList)

@@ -25,10 +25,10 @@ class EvaluatonList extends Component {
                 <td>{this.getFormatedDate(evaluation.date)}</td>
                 <td>
                     <button className='btn btn-warning' onClick={() => this.props.showUpdate(evaluation)}>
-                        <i className='fa fa-pencil'></i>
+                        <i className='icon ion-md-create'></i>
                     </button>
                     <button className='btn btn-danger' onClick={() => this.props.showDelete(evaluation)}>
-                        <i className='fa fa-trash-o'></i>
+                        <i className='icon ion-md-trash'></i>
                     </button>
                 </td>
             </tr>
