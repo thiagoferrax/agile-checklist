@@ -4,15 +4,14 @@ import { bindActionCreators } from 'redux'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 import Tree from '../common/tree/tree'
 import If from '../common/operator/if'
-import { formValues } from 'redux-form'
 import PropTypes from 'prop-types'
 
 
-import { init, getTree, showDelete, clone } from './checklistActions'
+import { init, getTree, showDelete, clone, showUpdate } from './checklistActions'
 import LabelAndInput from '../common/form/labelAndInput'
 import Select from '../common/form/select'
 import Grid from '../common/layout/grid'
-import {getChecklistById} from '../common/tree/tree'
+import { getChecklistById } from '../common/tree/tree'
 
 class ChecklistForm extends Component {
     constructor(props) {
@@ -36,10 +35,10 @@ class ChecklistForm extends Component {
         const checklist = getChecklistById(this.props.tree || [], parentId)
 
         this.props.clone(checklist)
-    }
+    }    
 
     render() {
-        const { handleSubmit, clone, readOnly, list, description, parentId, tree, init } = this.props
+        const { handleSubmit, showDelete, showUpdate, readOnly, list, description, parentId, tree, init } = this.props
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
@@ -80,7 +79,7 @@ class ChecklistForm extends Component {
                 </div>
                 <div className='box-footer'>
                     <If test={!readOnly}>
-                        <Field name='checklist' legend='My checklists' component={Tree} tree={tree} hideSlideBar={true} shrink={true} />
+                        <Field name='checklist' legend='My checklists' component={Tree} tree={tree} hideSlideBar={true} shrink={true} controls={true} onEdit={showUpdate} onDelete={showDelete}/>                        
                     </If>
                 </div>
             </form>
@@ -98,5 +97,5 @@ const mapStateToProps = state => ({
     tree: state.checklist.tree
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({ init, getTree, showDelete, clone }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ init, getTree, showDelete, showUpdate, clone }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ChecklistForm)

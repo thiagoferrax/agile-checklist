@@ -136,7 +136,7 @@ export default class Tree extends Component {
 
     render() {
         return (
-            <Grid cols='12'>
+            <Grid cols={this.props.cols || '12'}>
                 <fieldset>
                 <legend>{this.props.legend}</legend>
                 {buildTree(this.state.tree, this.handleChange, this.props)}
@@ -150,7 +150,7 @@ const buildTree = (tree, onChange, props) => tree && tree.map(node => {
     const children = node.children
     const childrenTree = children.length && buildTree(children, onChange, props)
     return (
-        <TreeItem key={`node_${node.id}`} node={node} onChange={onChange} hideSlideBar={props.hideSlideBar} shrink={props.shrink && node.parentId == null}>
+        <TreeItem key={`node_${node.id}`} node={node} onChange={onChange} hideSlideBar={props.hideSlideBar} shrink={props.shrink && node.parentId == null} controls={props.controls} onEdit={props.onEdit} onDelete={props.onDelete}>
             {childrenTree}
         </TreeItem>          
     )

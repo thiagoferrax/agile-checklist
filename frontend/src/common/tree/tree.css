@@ -16,3 +16,9 @@
 legend {
     margin-bottom: 10px;
 }
+
+.controls {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+}

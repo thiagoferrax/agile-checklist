@@ -36,7 +36,7 @@ module.exports = app => {
 
             const subChecklists = await app.db('checklists').where({parentId: req.params.id})
 
-            notExistsOrError(subChecklists, "This checklist has subchecklists!")
+            notExistsOrError(subChecklists, "This checklist has items!")
 
             const rowsDeleted = await app.db('checklists').where({ id: req.params.id }).del()
 
