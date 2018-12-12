@@ -108,11 +108,44 @@ module.exports = app => {
     }
 
     const clone = (req, res) => {
-        app.db('checklists')
-        .where({ id: req.params.id })
-        .first()
-        .then(checklist => res.json(checklist))
-        .catch(err => res.status(500).json({errors: [err]}))
+        const checklist = req.body.checklist
+
+        try {
+            existsOrError(checklist, 'Parent path was not informed!')
+        } catch (msg) {
+            res.status(400).json({errors: [msg]})
+        }
+
+        checklist.description += ' (NEW)'
+        saveChecklist(checklist, checklist.parentId, res)   
+        
+        res.status(204).send()
+    }    
+    
+    const saveChecklist = (item, parentId, res) => {
+
+        item.parentId = parentId
+        
+        const children = item.children
+
+        delete item.id
+        delete item.children
+
+        app.db('checklists').insert(item, 'id').then(newId => {
+            if(children) {
+                children.forEach(child => {
+                    saveChecklist(child, newId[0], res)
+                })
+            }    
+        })
+        .catch(err => res.status(500).json({errors: [err]}))        
+    }
+
+    const getChecklistsToInsert = (checklist, initialChecklists = []) => {
+        return checklist.reduce((checklists, item) => {
+            checklists.push({description: item.description, parentId: item.parentId})
+            return getChecklistsToInsert(item.children, checklists)
+        }, initialChecklists)
     }
 
     return {save, remove, get, getById, getTree, clone}    

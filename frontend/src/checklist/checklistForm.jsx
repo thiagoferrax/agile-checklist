@@ -4,17 +4,38 @@ import { bindActionCreators } from 'redux'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 import Tree from '../common/tree/tree'
 import If from '../common/operator/if'
+import { formValues } from 'redux-form'
+import PropTypes from 'prop-types'
 
 
 import { init, getTree, showDelete, clone } from './checklistActions'
 import LabelAndInput from '../common/form/labelAndInput'
 import Select from '../common/form/select'
 import Grid from '../common/layout/grid'
+import {getChecklistById} from '../common/tree/tree'
 
 class ChecklistForm extends Component {
+    constructor(props) {
+        super(props)
+        this.cloneChecklist = this.cloneChecklist.bind(this)
+    }
+
+    static contextTypes = {
+        store: PropTypes.object
+    }
 
     componentWillMount() {
         this.props.getTree()
+    }
+
+    cloneChecklist() {
+        const state = this.context.store.getState()
+
+        const selector = formValueSelector('checklistForm')
+        const parentId = selector(state, 'parentId')
+        const checklist = getChecklistById(this.props.tree || [], parentId)
+
+        this.props.clone(checklist)
     }
 
     render() {
@@ -37,7 +58,7 @@ class ChecklistForm extends Component {
                                 </button>
                                 <button type='button' className='btn btn-default'
                                     onClick={init}>
-                                    <i className="icon ion-md-close"></i>                                
+                                    <i className="icon ion-md-close"></i>
                                 </button>
                             </div>
                         </If>
@@ -46,12 +67,12 @@ class ChecklistForm extends Component {
                                 <button type='submit' className='btn btn-success'>
                                     <i className="icon ion-md-checkmark"></i>
                                 </button>
-                                <button type='button' className='btn btn-warning' onClick={clone}>
+                                <button type='button' className='btn btn-warning' onClick={this.cloneChecklist}>
                                     <i className="icon ion-md-copy"></i>
                                 </button>
                                 <button type='button' className='btn btn-default'
                                     onClick={init}>
-                                    <i className="icon ion-md-close"></i>                                
+                                    <i className="icon ion-md-close"></i>
                                 </button>
                             </div>
                         </If>

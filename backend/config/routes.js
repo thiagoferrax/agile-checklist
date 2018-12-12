@@ -3,6 +3,9 @@ module.exports = app => {
         .post(app.api.checklist.save)
         .get(app.api.checklist.get)
 
+    app.route('/checklists/clone')
+        .post(app.api.checklist.clone)        
+
     app.route('/checklists/tree')
         .get(app.api.checklist.getTree)
 
@@ -10,9 +13,6 @@ module.exports = app => {
         .put(app.api.checklist.save)
         .delete(app.api.checklist.remove)
         .get(app.api.checklist.getById)    
-
-    app.route('/checklists/:id/clone')
-        .get(app.api.checklist.clone)        
 
     app.route('/users')
         .post(app.api.user.save)

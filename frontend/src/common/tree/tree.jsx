@@ -155,3 +155,17 @@ const buildTree = (tree, onChange, props) => tree && tree.map(node => {
         </TreeItem>          
     )
 })
+
+export function getChecklistById(tree, checklistId, found = null) {
+    return tree.reduce((found, checklist) => {
+        if (checklist.id === checklistId) {
+            found = checklist
+        } else if (checklist.children) {
+            const foundInChildren = getChecklistById(checklist.children, checklistId)
+            if (foundInChildren) {
+                found = foundInChildren
+            }
+        }
+        return found
+    }, found)
+}

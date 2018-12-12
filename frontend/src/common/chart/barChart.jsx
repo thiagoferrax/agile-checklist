@@ -13,7 +13,7 @@ export default class BarChart extends Component {
                     {
                         label: 'Scrum checklist',
                         data: [4, 6, 9, 7, 8],
-                        backgroundColor: ['#00c0ef', '#00c0ef', '#00c0ef', '#00c0ef', '#00c0ef']
+                        backgroundColor: ['#00a65a', '#00a65a', '#00a65a', '#00a65a', '#00a65a']
                     },
                     {
                         label: 'Feedback 360',
@@ -30,15 +30,6 @@ export default class BarChart extends Component {
         return (
             <Grid cols={this.props.cols}>
                 <div className="box box-default">
-                    <div className="box-header with-border">
-                        <h3 className="box-title">Bar Chart</h3>
-
-                        <div className="box-tools pull-right">
-                            <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
-                            </button>
-                            <button type="button" className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i></button>
-                        </div>
-                    </div>
                     <div className="box-body">
                         <div className="chart">
                             <Bar
