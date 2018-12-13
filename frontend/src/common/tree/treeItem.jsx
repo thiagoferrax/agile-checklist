@@ -30,7 +30,7 @@ export default class TreeItem extends Component {
                     <div className="treeItem">
                         <If test={this.props.children}>
                             <a onClick={() => this.toggleIcon(this.state.node)}>
-                                <i className={` icon ion-md-${this.state.hideChildren ? 'arrow-dropright' : 'arrow-dropdown'} ml-2`} />
+                                <i className={`icon ion-md-${this.state.hideChildren ? 'arrow-dropright' : 'arrow-dropdown'} ml-2`} />
                             </a>
                             <div className="treeItemDescription">
                                 <a onClick={() => this.toggleIcon(this.state.node)}>{this.state.node.description}</a>
