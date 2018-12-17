@@ -42,6 +42,11 @@ class Dashboard extends Component {
     getBarChartData(evaluations, projectId) {
         const projectEvaluations = evaluations.filter(evaluation => evaluation.projectId === projectId)
 
+        projectEvaluations.sort((e1, e2) => {
+            console.log('sort', e1.sprint - e2.sprint)
+            return e1.sprint - e2.sprint
+        })
+
         let color = 0
         const sprintChecklistMap = projectEvaluations.reduce((map, evaluation) => {
             const sprint = 'Sprint ' + evaluation.sprint
@@ -49,7 +54,7 @@ class Dashboard extends Component {
             const score = evaluation.score
             
             if(!map.labels.includes(sprint)) {
-                map.labels.push(sprint)                
+                map.labels.push(sprint)                             
             }             
                 
             const dataset = this.getDataSet(map.datasets, checklist)

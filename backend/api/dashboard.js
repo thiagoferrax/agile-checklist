@@ -19,7 +19,7 @@ module.exports = app => {
                             userId: 'evaluations.userId',
                             date: 'evaluations.date',
                             checklistDescription: 'checklists.description'
-                        }
+                        } 
                     ).from('evaluations')
                         .leftJoin('checklists', 'evaluations.checklistId', 'checklists.id').where({'evaluations.userId':user.id}).
                     then(evaluations => {
