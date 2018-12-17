@@ -9,9 +9,21 @@ module.exports = app => {
                 app.db('projects').where({userId:user.id}).
                 then(projects => {
                     summary.projects = projects
-                    app.db('evaluations').where({userId:user.id}).
+                    app.db.select(
+                        {
+                            id: 'evaluations.id',
+                            projectId: 'evaluations.projectId',
+                            sprint: 'evaluations.sprint',
+                            checklistId: 'evaluations.checklistId',
+                            score: 'evaluations.score',
+                            userId: 'evaluations.userId',
+                            date: 'evaluations.date',
+                            checklistDescription: 'checklists.description'
+                        }
+                    ).from('evaluations')
+                        .leftJoin('checklists', 'evaluations.checklistId', 'checklists.id').where({'evaluations.userId':user.id}).
                     then(evaluations => {
-                        summary.evaluations = evaluations.length
+                        summary.evaluations = evaluations
                         res.json(summary)
                     })
                 })
