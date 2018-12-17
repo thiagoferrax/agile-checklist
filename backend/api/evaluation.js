@@ -64,13 +64,7 @@ module.exports = app => {
 
     const updateAnswers = (evaluationId, checklist, res) => {
         app.db('answers').where({ evaluationId: evaluationId }).del().then(
-            rowsDeleted => {
-                try {
-                    existsOrError(rowsDeleted, "Answers were not found!")
-                } catch (msg) {
-                    return res.status(400).json({ errors: [msg] })
-                }        
-                
+            rowsDeleted => {               
                 insertAnswers(evaluationId, checklist, res)            
             }    
         )           
@@ -84,15 +78,21 @@ module.exports = app => {
             .catch(err => res.status(500).json({ errors: [err] }))
     }
 
-    const remove = async (req, res) => {
+    const remove = (req, res) => {
+        const evaluationId = req.params.id
         try {
-            existsOrError(req.params.id, "Evaluation id was not informed!")
+            existsOrError(evaluationId, "Evaluation id was not informed!")
 
-            const rowsDeleted = await app.db('evaluations').where({ id: req.params.id }).del()
-
-            existsOrError(rowsDeleted, "Evaluation was not found!")
-
-            res.status(204).send()
+            app.db('answers').where({ evaluationId }).del().then(
+                answersDeleted => {                                    
+                    app.db('evaluations').where({ id: evaluationId }).del().then(
+                        rowsDeleted => {
+                            existsOrError(rowsDeleted, "Evaluation was not found!")              
+                            res.status(204).send()                
+                        }
+                    ).catch(err => res.status(500).json({ errors: [err] }))                    
+                }    
+            )
         } catch (msg) {
             res.status(400).send(msg)
         }
