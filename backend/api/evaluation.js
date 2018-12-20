@@ -127,8 +127,18 @@ module.exports = app => {
     }
 
     const getAnswers = (req, res) => {
-        app.db('answers')
-            .where({ evaluationId: req.params.id })
+        app.db.select(
+            {
+                id: 'answers.id',
+                evaluationId: 'answers.evaluationId',
+                checklistId: 'answers.checklistId',
+                description: 'checklists.description',
+                parentId: 'checklists.parentId',
+                value: 'answers.value'       
+            }
+        ).from('answers')
+            .leftJoin('checklists', 'answers.checklistId', 'checklists.id')
+            .where({ 'answers.evaluationId': req.params.id })
             .then(answers => res.json(answers))
             .catch(err => res.status(500).json({ errors: [err] }))
     }

@@ -9,6 +9,7 @@ import InfoBox from '../common/widget/infoBox'
 import ProgressBox from '../common/widget/progressBox'
 import ProjectBox from '../common/widget/projectBox'
 import EvaluationBarChart from '../common/chart/evaluationBarChart'
+import SprintRadarChart from '../common/chart/sprintRadarChart'
 
 import Row from '../common/layout/row'
 
@@ -26,6 +27,7 @@ class Dashboard extends Component {
                 <ProjectBox key={project.id} cols='12' color='default' project={project.name}>
                     <Row>
                         <EvaluationBarChart cols='12 6' evaluations={evaluations} project={project} />
+                        <SprintRadarChart cols='12 6' evaluations={evaluations} project={project} />
                     </Row>
                 </ProjectBox>)
             )
