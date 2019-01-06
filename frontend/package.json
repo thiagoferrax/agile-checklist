@@ -22,7 +22,8 @@
     "redux-form": "7.4.2",
     "redux-multi": "0.1.12",
     "redux-promise": "0.6.0",
-    "redux-thunk": "2.3.0"
+    "redux-thunk": "2.3.0",
+    "tree-slide-bar": "1.0.24"
   },
   "scripts": {
     "start": "react-scripts start",

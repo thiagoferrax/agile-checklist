@@ -7,7 +7,7 @@ import { init, selectChecklist} from './evaluationActions'
 import { getList as getChecklists, getTree} from '../checklist/checklistActions'
 import { getList as getProjects} from '../project/projectActions'
 import { getList as getUsers} from '../user/userActions'
-import Tree from '../common/tree/tree'
+import Tree from 'tree-slide-bar'
 import If from '../common/operator/if'
 
 import Select from '../common/form/select'

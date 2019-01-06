@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
-import Tree from '../common/tree/tree'
+import Tree from 'tree-slide-bar'
 import If from '../common/operator/if'
 import PropTypes from 'prop-types'
 
@@ -11,7 +11,6 @@ import { init, getTree, showDelete, clone, showUpdate } from './checklistActions
 import LabelAndInput from '../common/form/labelAndInput'
 import Select from '../common/form/select'
 import Grid from '../common/layout/grid'
-import { getChecklistById } from '../common/tree/tree'
 
 class ChecklistForm extends Component {
     constructor(props) {
@@ -26,13 +25,27 @@ class ChecklistForm extends Component {
     componentWillMount() {
         this.props.getTree()
     }
+    
+    getChecklistById(tree, checklistId, found = null) {
+        return tree.reduce((found, checklist) => {
+            if (checklist.id === checklistId) {
+                found = checklist
+            } else if (checklist.children) {
+                const foundInChildren = this.getChecklistById(checklist.children, checklistId)
+                if (foundInChildren) {
+                    found = foundInChildren
+                }
+            }
+            return found
+        }, found)
+    }
 
     cloneChecklist() {
         const state = this.context.store.getState()
 
         const selector = formValueSelector('checklistForm')
         const parentId = selector(state, 'parentId')
-        const checklist = getChecklistById(this.props.tree || [], parentId)
+        const checklist = this.getChecklistById(this.props.tree || [], parentId)
 
         this.props.clone(checklist)
     }    
