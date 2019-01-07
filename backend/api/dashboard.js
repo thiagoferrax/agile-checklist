@@ -6,6 +6,8 @@ module.exports = app => {
         
         app.db('users').first()
             .then(user => {                
+                existsOrError(user, 'Nao ha usuarios no banco!')
+
                 app.db('projects').where({userId:user.id}).
                 then(projects => {
                     summary.projects = projects
@@ -70,7 +72,8 @@ module.exports = app => {
                 })
                 .catch(err => res.status(500).json({errors: [err]}))
             })
-            .catch(err => res.status(500).json({errors: [err]}))
+            .catch(err => {
+                return res.status(500).json({errors: [err]})})
     }
 
     return {get}

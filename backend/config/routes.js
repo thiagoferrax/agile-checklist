@@ -1,4 +1,7 @@
 module.exports = app => {
+    app.route('/signup').post(app.api.user.save)
+    app.route('/signin').post(app.api.auth.signin)
+
     app.route('/checklists')
         .post(app.api.checklist.save)
         .get(app.api.checklist.get)
@@ -12,16 +15,7 @@ module.exports = app => {
     app.route('/checklists/:id')
         .put(app.api.checklist.save)
         .delete(app.api.checklist.remove)
-        .get(app.api.checklist.getById)    
-
-    app.route('/users')
-        .post(app.api.user.save)
-        .get(app.api.user.get)
-
-    app.route('/users/:id')
-        .put(app.api.user.save)
-        .delete(app.api.user.remove)
-        .get(app.api.user.getById)        
+        .get(app.api.checklist.getById)      
 
     app.route('/projects')
         .post(app.api.project.save)
