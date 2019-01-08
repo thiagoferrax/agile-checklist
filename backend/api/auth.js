@@ -1,5 +1,6 @@
 const { authSecret } = require('../.env')
 const jwt = require('jwt-simple')
+const jsonwebtoken = require('jsonwebtoken')
 const bcrypt = require('bcrypt-nodejs')
 
 module.exports = app => {
@@ -30,5 +31,15 @@ module.exports = app => {
         }
     }
 
-    return { signin }
+
+
+    const validateToken = (req, res) => {
+        const token = req.body.token || ''
+    
+        jsonwebtoken.verify(token, authSecret, function (err, decoded) {
+            return res.status(200).send({ valid: !err })
+        })
+    }
+
+    return { signin, validateToken }
 }
