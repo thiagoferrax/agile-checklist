@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import BarChart from './barChart'
 
 export default props => {       
@@ -20,8 +20,7 @@ const getChartColor = (index) => {
 
 const getBarChartData = (evaluations, projectId) => {
     const projectEvaluations =
-        evaluations.filter(evaluation => evaluation.projectId === projectId).
-            sort((e1, e2) => e1.sprint - e2.sprint)
+        evaluations.filter(evaluation => evaluation.projectId === projectId).sort((e1, e2) => e1.sprint - e2.sprint)
 
     let color = 0
     const barChartData = projectEvaluations.reduce((map, evaluation) => {

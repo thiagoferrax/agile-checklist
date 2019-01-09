@@ -12,7 +12,7 @@ class UserForm extends Component {
     render() {
         const { handleSubmit, readOnly} = this.props        
         return (
-            <form role='form' onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className='box-body'>
                     <Field name='name' component={LabelAndInput} readOnly={readOnly}
                         label='Name' cols='12 4' placeholder='Enter the name' />
