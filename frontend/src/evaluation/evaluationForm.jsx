@@ -6,7 +6,6 @@ import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { init, selectChecklist} from './evaluationActions'
 import { getList as getChecklists, getTree} from '../checklist/checklistActions'
 import { getList as getProjects} from '../project/projectActions'
-import { getList as getUsers} from '../user/userActions'
 import Tree from 'tree-slide-bar'
 import If from '../common/operator/if'
 
@@ -18,7 +17,6 @@ class EvaluationForm extends Component {
         this.props.getChecklists()
         this.props.getTree()
         this.props.getProjects()
-        this.props.getUsers()
     }
 
     getSprintList() {
@@ -45,8 +43,6 @@ class EvaluationForm extends Component {
                     <Field name='checklistId' label='Checklist' cols='12 4' 
                         component={Select} readOnly={readOnly} inputOnChange={selectChecklist}
                         options={checklists.filter(u => u.parentId === null)} optionValue='id' optionLabel='description' />
-                    <Field name='userId' label='User' cols='12 4' 
-                        component={Select} readOnly={readOnly} options={users} optionValue='id' optionLabel='name' /> 
                     <If test={checklist.length>0}>
                         <Field name='checklist' legend='My checklist' component={Tree} tree={checklist} />
                     </If>
@@ -69,8 +65,7 @@ const selector = formValueSelector('evaluationForm')
 const mapStateToProps = state => ({
     projects: state.project.list, 
     checklists: state.checklist.list,
-    users: state.user.list, 
     checklist: state.evaluation.checklist
 })
-const mapDispatchToProps = dispatch => bindActionCreators({init, getChecklists, selectChecklist, getTree, getProjects, getUsers}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({init, getChecklists, selectChecklist, getTree, getProjects}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(EvaluationForm)

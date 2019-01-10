@@ -6,7 +6,6 @@ export default props => (
     <ul className='sidebar-menu' data-widget="tree">
         <MenuItem path='/' label='Dashboard' icon='stats' />
         <MenuTree label='Management' icon='rocket'> 
-            <MenuItem path='users' label='Users' icon='people' />
             <MenuItem path='projects' label='Projects' icon='cube' />    
             <MenuItem path='checklists' label='Checklists' icon='checkbox-outline' />     
         </MenuTree>

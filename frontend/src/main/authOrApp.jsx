@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux'
 import Auth from '../auth/auth'
 import { validateToken } from '../auth/authActions'
 import Dashboard from '../dashboard/dashboard'
-import User from '../user/user'
 import Project from '../project/project'
 import Checklist from '../checklist/checklist'
 import Evaluation from '../evaluation/evaluation'
@@ -26,7 +25,6 @@ class AuthOrApp extends Component {
         if (user && validToken) {
             axios.defaults.headers.common['authorization'] = user.token
             return [<Route exact path='/' component={Dashboard}/>,
-            <Route path='/users' component={User} />,
             <Route path='/projects' component={Project} />,
             <Route path='/checklists' component={Checklist} />,
             <Route path='/evaluations' component={Evaluation} />]
