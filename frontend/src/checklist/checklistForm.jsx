@@ -92,7 +92,7 @@ class ChecklistForm extends Component {
                 </div>
                 <div className='box-footer'>
                     <If test={!readOnly}>
-                        <Field name='checklist' legend='My checklists' component={Tree} tree={tree} hideSlideBar={true} shrink={true} controls={true} onEdit={showUpdate} onDelete={showDelete}/>                        
+                        <Field name='checklist' legend='My checklists' component={Tree} tree={tree} hideSlideBar={true} controls={true} onEdit={showUpdate} onDelete={showDelete}/>                        
                     </If>
                 </div>
             </form>
