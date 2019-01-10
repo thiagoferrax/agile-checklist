@@ -4,9 +4,15 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import App from './app'
 import Auth from '../auth/auth'
 import { validateToken } from '../auth/authActions'
+import Dashboard from '../dashboard/dashboard'
+import User from '../user/user'
+import Project from '../project/project'
+import Checklist from '../checklist/checklist'
+import Evaluation from '../evaluation/evaluation'
+
+import { Route } from 'react-router-dom'
 
 class AuthOrApp extends Component {
     componentWillMount() {
@@ -19,9 +25,15 @@ class AuthOrApp extends Component {
         const { user, validToken } = this.props.auth
         if (user && validToken) {
             axios.defaults.headers.common['authorization'] = user.token
-            return <App>{this.props.children}</App>
+            return [
+                <Route exact path='/' component={Dashboard} />,
+                <Route path='/users' component={User} />,
+                <Route path='/projects' component={Project} />,
+                <Route path='/checklists' component={Checklist} />,
+                <Route path='/evaluations' component={Evaluation} />
+            ]
         } else if (!user && !validToken) {
-            return <Auth />
+            return <Route path='/' component={Auth} />
         } else {
             return false
         }
