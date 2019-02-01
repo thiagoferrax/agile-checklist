@@ -1,5 +1,7 @@
 # agile-checklist
 
+![dashboard](https://user-images.githubusercontent.com/43149895/52146222-e3e9f080-2641-11e9-9b96-15bed13e6e75.png)
+
 > 
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
