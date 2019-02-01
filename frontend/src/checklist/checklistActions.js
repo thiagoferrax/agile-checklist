@@ -2,12 +2,12 @@ import axios from 'axios'
 import { toastr } from 'react-redux-toastr'
 import { initialize } from 'redux-form'
 import { showTabs, selectTab } from '../common/tab/tabActions'
-import {BASE_URL} from '../Global'
+import consts from '../consts'
 
 const INITIAL_VALUES = {description: '', parentId: null, list: [], tree:[]}
 
 export function getList() {
-    const request = axios.get(`${BASE_URL}/checklists`)
+    const request = axios.get(`${consts.API_URL}/checklists`)
     return {
         type: 'CHECKLISTS_FETCHED',
         payload: request
@@ -15,7 +15,7 @@ export function getList() {
 }
 
 export function getTree() {  
-    const request = axios.get(`${BASE_URL}/checklists/tree`)
+    const request = axios.get(`${consts.API_URL}/checklists/tree`)
     return {
         type: 'TREE_FETCHED',
         payload: request
@@ -24,7 +24,7 @@ export function getTree() {
 
 export function clone(checklist) {  
     return dispatch => {
-        axios['post'](`${BASE_URL}/checklists/clone`, {checklist})
+        axios['post'](`${consts.API_URL}/checklists/clone`, {checklist})
             .then(resp => {
                 toastr.success('Sucess', 'Successful operation.')
                 dispatch(init())
@@ -51,7 +51,7 @@ export function remove(values) {
 function submit(values, method) {
     return dispatch => {
         const id = values.id ? values.id : ''
-        axios[method](`${BASE_URL}/checklists/${id}`, values)
+        axios[method](`${consts.API_URL}/checklists/${id}`, values)
             .then(resp => {
                 toastr.success('Sucess', 'Successful operation.')
                 dispatch(init())

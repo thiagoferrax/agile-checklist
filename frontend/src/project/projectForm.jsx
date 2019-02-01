@@ -4,28 +4,23 @@ import { bindActionCreators } from 'redux'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 
 import { init } from './projectActions'
-import { getList as getUserList } from '../user/userActions'
 import LabelAndInput from '../common/form/labelAndInput'
 import Select from '../common/form/select'
 
 class ProjectForm extends Component {
-    componentWillMount() {
-        this.props.getUserList()
-    }
-
     render() {
         const types = [
-            {value: 'Research', label: 'Research'},
-            {value: 'Research and development', label: 'Research and development'},
-            {value: 'Development', label: 'Development'}]
+            { value: 'Research', label: 'Research' },
+            { value: 'Research and development', label: 'Research and development' },
+            { value: 'Development', label: 'Development' }]
 
         const complexities = [
-            {value: 'Low', label: 'Low'},
-            {value: 'Medium', label: 'Medium'},
-            {value: 'High', label: 'High'}]
-        
+            { value: 'Low', label: 'Low' },
+            { value: 'Medium', label: 'Medium' },
+            { value: 'High', label: 'High' }]
 
-        const { handleSubmit, readOnly} = this.props        
+
+        const { handleSubmit, readOnly } = this.props
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
@@ -33,14 +28,12 @@ class ProjectForm extends Component {
                         component={LabelAndInput} readOnly={readOnly} />
                     <Field name='description' label='Description' cols='12 4' placeholder='Enter the description'
                         component={LabelAndInput} readOnly={readOnly} />
-                    <Field name='type' label='Type' cols='12 4' 
-                        component={Select} readOnly={readOnly} options={types}/>
-                    <Field name='complexity' label='Complexity' cols='12 4' 
-                        component={Select} readOnly={readOnly} options={complexities} />                                                
+                    <Field name='type' label='Type' cols='12 4'
+                        component={Select} readOnly={readOnly} options={types} />
+                    <Field name='complexity' label='Complexity' cols='12 4'
+                        component={Select} readOnly={readOnly} options={complexities} />
                     <Field name='estimatedDuration' label='Estimated duration (months)' cols='12 4' placeholder='Enter the estimated duration'
                         component={LabelAndInput} readOnly={readOnly} />
-                    <Field name='userId' label='User' cols='12 4' 
-                        component={Select} readOnly={readOnly} options={this.props.userList} optionValue='id' optionLabel='name' />                            
                 </div>
                 <div className='box-footer'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>
@@ -54,9 +47,9 @@ class ProjectForm extends Component {
     }
 }
 
-ProjectForm = reduxForm({form: 'projectForm', destroyOnUnmount: false})(ProjectForm)
+ProjectForm = reduxForm({ form: 'projectForm', destroyOnUnmount: false })(ProjectForm)
 const selector = formValueSelector('projectForm')
 
-const mapStateToProps = state => ({userList: state.user.list})
-const mapDispatchToProps = dispatch => bindActionCreators({init, getUserList}, dispatch)
+const mapStateToProps = state => ({})
+const mapDispatchToProps = dispatch => bindActionCreators({ init }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectForm)

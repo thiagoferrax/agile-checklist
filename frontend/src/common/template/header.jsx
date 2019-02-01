@@ -1,5 +1,6 @@
 import React from 'react'
 import './header.css'
+import Navbar from './navbar'
 
 export default props => (
     <header className='main-header'>
@@ -11,7 +12,8 @@ export default props => (
             </span>        
         </a>
         <nav className='navbar navbar-static-top'>
-            <a href className='sidebar-toggle' data-toggle="push-menu"></a>
+            <a href="javascript:;" className='sidebar-toggle' data-toggle="push-menu"></a>
+            <Navbar /> 
         </nav>
     </header>
 )

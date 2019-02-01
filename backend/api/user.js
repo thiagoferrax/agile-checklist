@@ -1,74 +1,67 @@
+const bcrypt = require('bcrypt-nodejs')
+const jwt = require('jwt-simple')
+const { authSecret } = require('../.env')
+const jsonwebtoken = require('jsonwebtoken')
+
 module.exports = app => {
-    const {existsOrError, notExistsOrError, equalsOrError, isValidEmail} = app.api.validation
+    const signin = async (req, res) => {
+        if (!req.body.email || !req.body.password) {            
+            return res.status(400).json({errors: ['Incomplete data']})
+        }
+
+        const user = await app.db('users')
+            .whereRaw("LOWER(email) = LOWER(?)", req.body.email)
+            .first()
+
+        if (user) {
+            bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+                if (err || !isMatch) {
+                    return res.status(401).json({errors: ['Login and password not found!']})
+                }
+
+                const payload = { id: user.id }
+                res.json({
+                    name: user.name,
+                    email: user.email,
+                    token: jwt.encode(payload, authSecret),
+                })
+            })
+        } else {
+            res.status(400).json({errors: ['Unregistered user!']})
+        }
+    }
+
+    const validateToken = (req, res) => {
+        const token = req.body.token || ''
     
+        jsonwebtoken.verify(token, authSecret, function (err, decoded) {
+            return res.status(200).send({ valid: !err })
+        })
+    }
+    
+    const obterHash = (password, callback) => {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(password, salt, null, (err, hash) => callback(hash))
+        })
+    }
+
     const save = (req, res) => {
-        const user = {
-            id: req.body.id,
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            confirmPassword: req.body.confirmPassword,
-            admin: req.body.admin
-        }
-      
-        if(req.params.id) user.id = req.params.id
+        
+        obterHash(req.body.password, hash => {
+            const password = hash
 
-        try{
-            existsOrError(user.name, 'Name was not informed!')
-            existsOrError(user.email, 'Email was not informed!')
-            isValidEmail(user.email, 'Email is not valid!')
-            existsOrError(user.password, 'Password was not informed!')
-            equalsOrError(user.password, user.confirmPassword, 'Password was not confirmed!')
-        } catch (msg) {
-            return res.status(400).json({errors: [msg]})
-        }        
+            if (!bcrypt.compareSync(req.body.confirm_password, password)) {
+                return res.status(400).send({ errors: ['Passwords do not match.'] })
+            }
 
-        delete user.confirmPassword
-        if(user.id) {
             app.db('users')
-                .update(user)
-                .where({id: user.id})
-                .then(_ => res.status(204).send())
-                .catch(err => res.status(500).json({errors: [err]}))
-            } else {
-            app.db('users')
-                .insert(user)
-                .then(_ => res.status(204).send())
-                .catch(err => res.status(500).json({errors: [err]}))
-        }
+                .insert({ name: req.body.name, email: req.body.email, password })
+                .returning('id')
+                .then(userId => {
+                    signin(req, res)
+                }).catch(err => res.status(400).json({errors: [err]}))
+        })
     }
 
-    const remove = async (req, res) => {
-        try{
-            existsOrError(req.params.id, "User id was not informed!")
-
-            const subusers = await app.db('users').where({email: req.params.id})
-
-            notExistsOrError(subusers, "This user has subusers!")
-
-            const rowsDeleted = await app.db('users').where({ id: req.params.id }).del()
-
-            existsOrError(rowsDeleted, "user was not found!")
-
-            res.status(204).send()
-        } catch (msg) {
-            res.status(400).send(msg)
-        }
-    }
-
-    const get = (req, res) => {
-        app.db('users')
-            .then(users => res.json(users))
-            .catch(err => res.status(500).json({errors: [err]}))
-    }
-
-    const getById = (req, res) => {
-        app.db('users')
-        .where({ id: req.params.id })
-        .first()
-        .then(user => res.json(user))
-        .catch(err => res.status(500).json({errors: [err]}))
-    }
-
-    return {save, remove, get, getById}
+    return {  signin, validateToken, save }
 }

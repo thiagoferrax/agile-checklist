@@ -2,12 +2,13 @@ import axios from 'axios'
 import { toastr } from 'react-redux-toastr'
 import { initialize } from 'redux-form'
 import { showTabs, selectTab } from '../common/tab/tabActions'
-import {BASE_URL} from '../Global'
+import consts from '../consts'
+import {getSummary} from '../dashboard/dashboardActions'
 
 const INITIAL_VALUES = {checklist:[]}
 
 export function getList() {
-    const request = axios.get(`${BASE_URL}/evaluations`)
+    const request = axios.get(`${consts.API_URL}/evaluations`)
     return {
         type: 'EVALUATIONS_FETCHED',
         payload: request
@@ -37,7 +38,7 @@ function submit(values, method) {
     console.log('submit', values)
     return dispatch => {
         const id = values.id ? values.id : ''
-        axios[method](`${BASE_URL}/evaluations/${id}`, values)
+        axios[method](`${consts.API_URL}/evaluations/${id}`, values)
             .then(resp => {
                 toastr.success('Sucess', 'Successful operation.')
                 dispatch(init())
@@ -49,7 +50,7 @@ function submit(values, method) {
 }
 
 export function getAnswers(evaluation) {
-    const request = axios.get(`${BASE_URL}/evaluations/${evaluation.id}/answers`)
+    const request = axios.get(`${consts.API_URL}/evaluations/${evaluation.id}/answers`)
     return {
         type: 'ANSWERS_FETCHED',
         payload: request
@@ -86,6 +87,7 @@ export function init() {
         selectTab('tabList'),
         getList(),
         initializeChecklist(),
-        initialize('evaluationForm', INITIAL_VALUES)
+        initialize('evaluationForm', INITIAL_VALUES),
+        getSummary()
     ]
 }

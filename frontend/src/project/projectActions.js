@@ -2,12 +2,12 @@ import axios from 'axios'
 import { toastr } from 'react-redux-toastr'
 import { initialize } from 'redux-form'
 import { showTabs, selectTab } from '../common/tab/tabActions'
-import {BASE_URL} from '../Global'
+import consts from '../consts'
 
 const INITIAL_VALUES = {}
 
 export function getList() {
-    const request = axios.get(`${BASE_URL}/projects`)
+    const request = axios.get(`${consts.API_URL}/projects`)
     return {
         type: 'PROJECTS_FETCHED',
         payload: request
@@ -29,7 +29,7 @@ export function remove(values) {
 function submit(values, method) {
     return dispatch => {
         const id = values.id ? values.id : ''
-        axios[method](`${BASE_URL}/projects/${id}`, values)
+        axios[method](`${consts.API_URL}/projects/${id}`, values)
             .then(resp => {
                 toastr.success('Sucess', 'Successful operation.')
                 dispatch(init())
