@@ -60,6 +60,7 @@ module.exports = app => {
 
     const get = (req, res) => {
         app.db('projects')
+            .where({ userId: req.decoded.id })
             .then(projects => res.json(projects))
             .catch(err => res.status(500).json({errors: [err]}))
     }

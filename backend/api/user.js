@@ -5,8 +5,8 @@ const jsonwebtoken = require('jsonwebtoken')
 
 module.exports = app => {
     const signin = async (req, res) => {
-        if (!req.body.email || !req.body.password) {
-            return res.status(400).send('Dados incompletos')
+        if (!req.body.email || !req.body.password) {            
+            return res.status(400).json({errors: ['Incomplete data']})
         }
 
         const user = await app.db('users')
@@ -16,7 +16,7 @@ module.exports = app => {
         if (user) {
             bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
                 if (err || !isMatch) {
-                    return res.status(401).send()
+                    return res.status(401).json({errors: ['Login and password not found!']})
                 }
 
                 const payload = { id: user.id }
@@ -27,7 +27,7 @@ module.exports = app => {
                 })
             })
         } else {
-            res.status(400).send('Usuário não cadastrado!')
+            res.status(400).json({errors: ['Unregistered user!']})
         }
     }
 
@@ -46,20 +46,20 @@ module.exports = app => {
     }
 
     const save = (req, res) => {
+        
         obterHash(req.body.password, hash => {
             const password = hash
+
+            if (!bcrypt.compareSync(req.body.confirm_password, password)) {
+                return res.status(400).send({ errors: ['Passwords do not match.'] })
+            }
 
             app.db('users')
                 .insert({ name: req.body.name, email: req.body.email, password })
                 .returning('id')
                 .then(userId => {
-                    const payload = { id: userId[0] }
-                    res.json({
-                        name: req.body.name,
-                        email: req.body.email,
-                        token: jwt.encode(payload, authSecret),
-                    })
-                }).catch(err => res.status(400).json(err))
+                    signin(req, res)
+                }).catch(err => res.status(400).json({errors: [err]}))
         })
     }
 

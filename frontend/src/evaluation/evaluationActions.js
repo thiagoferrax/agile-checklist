@@ -3,6 +3,7 @@ import { toastr } from 'react-redux-toastr'
 import { initialize } from 'redux-form'
 import { showTabs, selectTab } from '../common/tab/tabActions'
 import consts from '../consts'
+import {getSummary} from '../dashboard/dashboardActions'
 
 const INITIAL_VALUES = {checklist:[]}
 
@@ -86,6 +87,7 @@ export function init() {
         selectTab('tabList'),
         getList(),
         initializeChecklist(),
-        initialize('evaluationForm', INITIAL_VALUES)
+        initialize('evaluationForm', INITIAL_VALUES),
+        getSummary()
     ]
 }
