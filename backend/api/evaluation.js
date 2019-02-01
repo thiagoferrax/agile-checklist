@@ -7,7 +7,7 @@ module.exports = app => {
             projectId: req.body.projectId,
             sprint: req.body.sprint,
             checklistId: req.body.checklistId,
-            userId: req.body.userId,
+            userId: req.decoded.id,
             date: req.body.date,
             checklist: req.body.checklist
         }

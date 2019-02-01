@@ -30,7 +30,7 @@ class EvaluationForm extends Component {
 
     render() {
 
-        const {users, projects, checklists, checklist, handleSubmit, readOnly, selectChecklist} = this.props    
+        const {projects, checklists, checklist, handleSubmit, readOnly, selectChecklist} = this.props    
 
         return (
             <form role='form' onSubmit={handleSubmit}>

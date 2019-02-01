@@ -1,44 +1,45 @@
+const express = require('express')
+const auth = require('./auth')
+const user = require('../api/user')
+
 module.exports = app => {
-    app.route('/signup').post(app.api.user.save)
-    app.route('/signin').post(app.api.auth.signin)
-    app.route('/validateToken').post(app.api.auth.validateToken)
+    /*
+     * Rotas protegidas por Token JWT
+     */
+    const protectedApi = express.Router()
+    app.use('/api', protectedApi)
 
-    app.route('/checklists')
-        .post(app.api.checklist.save)
-        .get(app.api.checklist.get)
+    protectedApi.use(auth)
 
-    app.route('/checklists/clone')
-        .post(app.api.checklist.clone)        
+    protectedApi.post('/checklists', app.api.checklist.save)
+    protectedApi.get('/checklists', app.api.checklist.get)
+    protectedApi.post('/checklists/clone', app.api.checklist.clone)       
+    protectedApi.get('/checklists/tree', app.api.checklist.getTree)
+    protectedApi.put('/checklists/:id', app.api.checklist.save)
+    protectedApi.delete('/checklists/:id', app.api.checklist.remove)
+    protectedApi.get('/checklists/:id', app.api.checklist.getById)
 
-    app.route('/checklists/tree')
-        .get(app.api.checklist.getTree)
+    protectedApi.post('/projects', app.api.project.save)
+    protectedApi.get('/projects', app.api.project.get)
+    protectedApi.put('/projects/:id', app.api.project.save)
+    protectedApi.delete('/projects/:id', app.api.project.remove)
+    protectedApi.get('/projects/:id', app.api.project.getById)
 
-    app.route('/checklists/:id')
-        .put(app.api.checklist.save)
-        .delete(app.api.checklist.remove)
-        .get(app.api.checklist.getById)      
+    protectedApi.post('/evaluations', app.api.evaluation.save)
+    protectedApi.get('/evaluations', app.api.evaluation.get)
+    protectedApi.put('/evaluations/:id', app.api.evaluation.save)
+    protectedApi.delete('/evaluations/:id', app.api.evaluation.remove)
+    protectedApi.get('/evaluations/:id', app.api.evaluation.getById)
+    protectedApi.get('/evaluations/:id/answers', app.api.evaluation.getAnswers)
 
-    app.route('/projects')
-        .post(app.api.project.save)
-        .get(app.api.project.get)
+    protectedApi.get('/dashboard/summary', app.api.dashboard.get)
 
-    app.route('/projects/:id')
-        .put(app.api.project.save)
-        .delete(app.api.project.remove)
-        .get(app.api.project.getById)  
-
-    app.route('/evaluations')
-        .post(app.api.evaluation.save)
-        .get(app.api.evaluation.get)
-
-    app.route('/evaluations/:id')
-        .put(app.api.evaluation.save)
-        .delete(app.api.evaluation.remove)
-        .get(app.api.evaluation.getById)  
-        
-    app.route('/evaluations/:id/answers')
-        .get(app.api.evaluation.getAnswers)
-
-    app.route('/dashboard/summary')
-        .get(app.api.dashboard.get)
+    /*
+     * Rotas abertas
+     */
+    const openApi = express.Router()
+    app.use('/oapi', openApi)
+    openApi.post('/signup', app.api.user.save)
+    openApi.post('/signin', app.api.user.signin)
+    openApi.post('/validateToken', app.api.user.validateToken)
 }   

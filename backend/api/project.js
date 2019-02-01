@@ -9,7 +9,7 @@ module.exports = app => {
             type: req.body.type,
             complexity: req.body.complexity,
             estimatedDuration: req.body.estimatedDuration,            
-            userId: req.body.userId
+            userId: req.decoded.id
         }
       
         if(req.params.id) project.id = req.params.id
@@ -22,6 +22,7 @@ module.exports = app => {
             existsOrError(project.estimatedDuration, 'Estimated Duration was not informed!')
             existsOrError(project.userId, 'User was not informed!')
         } catch (msg) {
+            console.log(msg)
             return res.status(400).json({errors: [msg]})
         }        
 

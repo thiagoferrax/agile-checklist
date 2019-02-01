@@ -1,8 +1,8 @@
 import axios from 'axios'
-import {BASE_URL} from '../Global'
+import consts from '../consts'
 
 export function getSummary() {
-    const request = axios.get(`${BASE_URL}/dashboard/summary`)
+    const request = axios.get(`${consts.API_URL}/dashboard/summary`)
     return {
         type: 'DASHBOARD_SUMMARY_FETCHED',
         payload: request
