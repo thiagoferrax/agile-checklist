@@ -5,13 +5,16 @@ module.exports = app => {
         const checklist = {
             id: req.body.id,
             description: req.body.description,
-            parentId: req.body.parentId
+            parentId: req.body.parentId,
+            userId: req.decoded.id
         }  
         
         if(req.params.id) checklist.id = req.params.id
 
         try{
             existsOrError(checklist.description, 'Description was not informed!')
+            existsOrError(checklist.userId, 'User was not informed!')
+
         } catch (msg) {
             return res.status(400).json({errors: [msg]})
         }        

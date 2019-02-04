@@ -7,7 +7,6 @@
         const userId = req.decoded.id
 
         app.db('projects')
-            .where({ userId })
             .then(projects => {
                 summary.projects = projects
                 
@@ -22,10 +21,8 @@
                         checklistDescription: 'checklists.description'
                 }).from('evaluations')
                     .leftJoin('checklists', 'evaluations.checklistId', 'checklists.id')
-                    .where({ 'evaluations.userId': userId })
                     .then(evaluations => {
                         summary.evaluations = evaluations
-
                         res.json(summary)
                     })
             })

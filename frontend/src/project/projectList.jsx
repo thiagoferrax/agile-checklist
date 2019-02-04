@@ -14,7 +14,6 @@ class ProjectList extends Component {
         return list.map(project => (
             <tr key={project.id}>
                 <td>{project.name}</td>
-                <td>{project.description}</td>
                 <td>
                     <button className='btn btn-warning' onClick={() => this.props.showUpdate(project)}>
                         <i className='icon ion-md-create'></i>
@@ -34,7 +33,6 @@ class ProjectList extends Component {
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Description</th>
                             <th className='table-actions'>Actions</th>
                         </tr>
                     </thead>

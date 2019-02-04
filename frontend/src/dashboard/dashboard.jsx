@@ -24,7 +24,7 @@ class Dashboard extends Component {
             project => (
                 <ProjectBox key={project.id} cols='12' color='default' project={project.name}>
                     <Row>
-                        <EvaluationBarChart cols='12 6' evaluations={evaluations} project={project} />
+                        <EvaluationBarChart cols='12' evaluations={evaluations} project={project} />
                     </Row>
                 </ProjectBox>)
             )

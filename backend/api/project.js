@@ -5,10 +5,6 @@ module.exports = app => {
         const project = {
             id: req.body.id,
             name: req.body.name,
-            description: req.body.description,
-            type: req.body.type,
-            complexity: req.body.complexity,
-            estimatedDuration: req.body.estimatedDuration,            
             userId: req.decoded.id
         }
       
@@ -16,10 +12,6 @@ module.exports = app => {
 
         try{
             existsOrError(project.name, 'Name was not informed!')
-            existsOrError(project.description, 'Description was not informed!')
-            existsOrError(project.type, 'Type was not informed!')
-            existsOrError(project.complexity, 'Complexity was not informed!')
-            existsOrError(project.estimatedDuration, 'Estimated Duration was not informed!')
             existsOrError(project.userId, 'User was not informed!')
         } catch (msg) {
             console.log(msg)
@@ -43,13 +35,7 @@ module.exports = app => {
     const remove = async (req, res) => {
         try{
             existsOrError(req.params.id, "Project id was not informed!")
-
-            const subprojects = await app.db('projects').where({description: req.params.id})
-
-            notExistsOrError(subprojects, "This project has subprojects!")
-
             const rowsDeleted = await app.db('projects').where({ id: req.params.id }).del()
-
             existsOrError(rowsDeleted, "Project was not found!")
 
             res.status(204).send()
@@ -60,7 +46,6 @@ module.exports = app => {
 
     const get = (req, res) => {
         app.db('projects')
-            .where({ userId: req.decoded.id })
             .then(projects => res.json(projects))
             .catch(err => res.status(500).json({errors: [err]}))
     }

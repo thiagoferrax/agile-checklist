@@ -8,6 +8,7 @@ import ProjectReducer from '../project/projectReducer'
 import ChecklistReducer from '../checklist/checklistReducer'
 import EvaluationReducer from '../evaluation/evaluationReducer'
 import AuthReducer from '../auth/authReducer'
+import UserReducer from '../user/userReducer'
 
 const rootReducer = combineReducers({
     dashboard: DashboardReducer,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     evaluation: EvaluationReducer,
     form: formReducer,    
     toastr: toastrReducer,
-    auth: AuthReducer
+    auth: AuthReducer,
+    user: UserReducer
 })
 
 export default rootReducer
