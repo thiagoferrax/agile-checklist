@@ -13,24 +13,30 @@
 ## Install
 
 ```
-01. sudo apt-get update && sudo apt-get upgrade
-02. Browser https://code.visualstudio.com/download Download .deb and install (dpkg -i <your>.deb)
-03. In a console (ctrl + alt + t): mkdir Projects && cd Projects
-04. git clone https://github.com/thiagoferrax/agile-checklist.git
-05. git config --global user.name "thiagoferrax"
-06. sudo apt-get install nodejs npm
-07. sudo apt-get install postgresql postgresql-contrib
-08. sudo -u postgres psql
-09. \password 123456
-10. create database agile_checklist;
-11. Open a new console (ctrl + alt + t): cd ~/Projects && code .
-12. sudo npm i npm@latest -g
-13. sudo npm install knex -g
-14. cd ~/Projects/agile-checklist/backend && npm i
-15. cd ~/Projects/agile-checklist/backend && npm start
-16. Open a new console (ctrl + alt + t): cd ~/Projects/agile-checklist/frontend && npm i
-17 ~/Projects/agile-checklist/frontend && npm start
-18. Open a browser and http://localhost:3000
+# Download the repository
+01. git clone https://github.com/thiagoferrax/agile-checklist.git
+
+# Installing node, npm and knex
+02. sudo apt-get install nodejs npm
+03. sudo npm i npm@latest -g
+04. sudo npm install knex -g
+
+# Installing and configuring postgres
+05. sudo apt-get install postgresql postgresql-contrib
+06. sudo -u postgres psql
+07. \password 123456
+08. create database agile_checklist;
+
+# Backend configuration
+09. cd agile-checklist/backend && npm i
+10. cp env_file .env && nano .env
+11. Add a authSecret in the .env file
+12. npm start
+
+# Frontend configuration
+13. In a new console: cd agile-checklist/frontend && npm i
+14 npm start
+15. Use a browser to open http://localhost:3000
 ```
 ## License
 
