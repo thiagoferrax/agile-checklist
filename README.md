@@ -1,5 +1,4 @@
 # agile-checklist
-A full application to follow the project team on development processes (e.g. code review and scrum) through customized checklists.
 > 
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
