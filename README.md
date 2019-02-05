@@ -1,5 +1,5 @@
 # agile-checklist
-
+A full application to follow the development team on processes such as code review, scrum through customized checklists.
 > 
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
@@ -35,7 +35,7 @@
 
 # Frontend configuration
 13. In a new console: cd agile-checklist/frontend && npm i
-14 npm start
+14. npm start
 15. Use a browser to open http://localhost:3000
 ```
 ## License
