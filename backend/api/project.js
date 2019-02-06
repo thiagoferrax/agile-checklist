@@ -35,7 +35,6 @@ module.exports = app => {
                 })
                 .catch(err => res.status(500).json({errors: [err]}))     
         } else {
-            console.log('New project')
             app.db('projects')
                 .insert(project)
                 .returning('id')
@@ -53,10 +52,8 @@ module.exports = app => {
     }    
 
     const insertTeam = (projectId, team, res) => {
-        console.log('insertTeam', projectId, team)
         const rows = getTeamToInsert(projectId, team)
 
-        console.log('rows', rows)
         const chunkSize = rows.lenght
         app.db.batchInsert('teams', rows, chunkSize)
             .then(_ => res.status(204).send())
@@ -89,11 +86,33 @@ module.exports = app => {
     }
 
     const getById = (req, res) => {
-        app.db('projects')
-        .where({ id: req.params.id })
-        .first()
-        .then(project => res.json(project))
-        .catch(err => res.status(500).json({errors: [err]}))
+        app.db.select(
+            {
+                id: 'projects.id',
+                name: 'projects.name',
+                userId: 'projects.userId',
+                memberId: 'users.id'
+            }
+        ).from('projects')
+            .leftJoin('teams', 'teams.projectId', 'projects.id')
+            .leftJoin('users', 'teams.userId', 'users.id')
+            .where({ 'projects.id': req.params.id })
+            .then(projectTeam => {
+                    let project = {
+                            id: projectTeam[0].id,
+                            name: projectTeam[0].name,
+                            userId: projectTeam[0].userId,
+                            team: []
+                        }
+
+                    project.team = projectTeam.reduce((team, member) => {
+                        team.push(member.memberId)     
+                        return team
+                    }, [])
+
+                    res.json(project)
+                })
+            .catch(err => res.status(500).json({ errors: [err] }))
     }
 
     return {save, remove, get, getById}
