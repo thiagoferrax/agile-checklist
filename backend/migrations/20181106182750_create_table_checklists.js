@@ -4,6 +4,7 @@ exports.up = function(knex, Promise) {
         table.increments('id').primary()
         table.string('description').notNull()
         table.integer('parentId').references('id').inTable('checklists')
+        table.integer('userId').references('id').inTable('users').notNull()        
     })
 };
 

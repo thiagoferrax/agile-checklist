@@ -40,6 +40,18 @@ function submit(values, method) {
     }
 }
 
+export function prepareShowUpdate(projectId) {
+    return dispatch => {
+        axios['get'](`${consts.API_URL}/projects/${projectId}`)
+            .then(project => {
+                dispatch(showUpdate(project.data))
+            })
+            .catch(e => {
+                e.response.data.errors.forEach(error => toastr.error('Error', error))
+            })
+    }
+}
+
 export function showUpdate(project) {
     return [ 
         showTabs('tabUpdate'),

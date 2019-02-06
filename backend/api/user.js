@@ -63,5 +63,11 @@ module.exports = app => {
         })
     }
 
-    return {  signin, validateToken, save }
+    const get = (req, res) => {
+        app.db('users')
+            .then(users => res.json(users))
+            .catch(err => res.status(500).json({errors: [err]}))
+    }
+
+    return {  signin, validateToken, save, get }
 }

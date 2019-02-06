@@ -34,6 +34,8 @@ module.exports = app => {
 
     protectedApi.get('/dashboard/summary', app.api.dashboard.get)
 
+    protectedApi.get('/users', app.api.user.get)
+
     /*
      * Rotas abertas
      */

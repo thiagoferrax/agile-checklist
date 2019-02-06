@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getList, showUpdate, showDelete } from './projectActions'
+import { getList, prepareShowUpdate, showDelete } from './projectActions'
 
 class ProjectList extends Component {
 
@@ -14,9 +14,8 @@ class ProjectList extends Component {
         return list.map(project => (
             <tr key={project.id}>
                 <td>{project.name}</td>
-                <td>{project.description}</td>
                 <td>
-                    <button className='btn btn-warning' onClick={() => this.props.showUpdate(project)}>
+                    <button className='btn btn-warning' onClick={() => this.props.prepareShowUpdate(project.id)}>
                         <i className='icon ion-md-create'></i>
                     </button>
                     <button className='btn btn-danger' onClick={() => this.props.showDelete(project)}>
@@ -34,7 +33,6 @@ class ProjectList extends Component {
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Description</th>
                             <th className='table-actions'>Actions</th>
                         </tr>
                     </thead>
@@ -48,5 +46,5 @@ class ProjectList extends Component {
 }
 
 const mapStateToProps = state => ({list: state.project.list})
-const mapDispatchToProps = dispatch => bindActionCreators({getList, showUpdate, showDelete}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({getList, prepareShowUpdate, showDelete}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectList)
