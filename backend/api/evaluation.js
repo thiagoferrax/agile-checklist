@@ -112,9 +112,9 @@ module.exports = app => {
                 checklistDescription: 'checklists.description'
             }
         ).from('evaluations')
-            .where({ 'evaluations.userId': req.decoded.id })
             .leftJoin('projects', 'evaluations.projectId', 'projects.id')
             .leftJoin('checklists', 'evaluations.checklistId', 'checklists.id')
+            .where({'evaluations.userId': req.decoded.id})
             .then(evaluations => res.json(evaluations))
             .catch(err => res.status(500).json({ errors: [err] }))
     }

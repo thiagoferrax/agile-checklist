@@ -80,9 +80,28 @@ module.exports = app => {
     }
 
     const get = (req, res) => {        
-        app.db('projects')
-            .then(projects => res.json(projects))
-            .catch(err => res.status(500).json({errors: [err]}))
+        const userId = req.decoded.id
+
+        app.db.select(
+            {
+                id: 'projects.id',
+                name: 'projects.name',
+                userId: 'projects.userId',
+            }
+        ).from('projects')
+            .leftJoin('teams', 'teams.projectId', 'projects.id')
+            .leftJoin('users', 'teams.userId', 'users.id')
+            .where({ 'projects.userId': userId }).orWhere({ 'users.id': userId })
+            .then(projects => {
+
+                const projectsMap = projects.reduce((map, project) => {
+                    map[project.id] = project
+                    return map
+                }, {})
+
+                res.json(Object.values(projectsMap))          
+            })
+            .catch(err => res.status(500).json({ errors: [err] }))       
     }
 
     const getById = (req, res) => {

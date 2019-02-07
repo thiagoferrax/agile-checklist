@@ -31,7 +31,7 @@ class Dashboard extends Component {
     }
 
     render() {
-        const { projects, evaluations, comments } = this.props.summary
+        const { projects, evaluations, number_evaluations, members, comments } = this.props.summary
         return (
             <div>
                 <ContentHeader title='Dashboard' small='Versão 1.0' />
@@ -40,9 +40,9 @@ class Dashboard extends Component {
                         <InfoBox cols='12 3' color='aqua' icon='cube'
                             value={projects.length} text='Projects' />
                         <InfoBox cols='12 3' color='red' icon='options'
-                            value={evaluations.length} text='Evaluations' />
+                            value={number_evaluations} text='Evaluations' />
                         <InfoBox cols='12 3' color='green' icon='people '
-                            value={comments} text='Members' />
+                            value={members} text='Members' />
                         <InfoBox cols='12 3' color='yellow' icon='chatbubbles'
                             value={comments} text='Comments' />
                     </Row>
