@@ -39,7 +39,7 @@ module.exports = app => {
 
     const mergeEvaluations = (evaluations) => {
         const evaluationsMap = evaluations.reduce((map, evaluation) => {
-            const key = `${evaluation.projectId}_${evaluation.sprint}`
+            const key = `${evaluation.projectId}_${evaluation.sprint}_${evaluation.checklistId}`
             if (map[key]) {
                 map[key].score = map[key].score + evaluation.score
                 map[key].qtd = map[key].qtd + 1
