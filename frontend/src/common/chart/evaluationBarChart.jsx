@@ -10,7 +10,7 @@ const getDataSet = (datasets, checklistId) => {
 }
 
 const getChartColor = (index) => {
-    const colors = ['#33c9dd', '#c9dd33', '#dd33c9', '#dd4733', '#33dd9c', '#3374dd', '#dd9c33', '#113166']
+    const colors = ['#33c9dd', '#c9dd33', '#33dd9c', '#3374dd', '#dd9c33', '#113166', '#dd4733', '#dd33c9']
 
     if (index > colors.length) {
         index -= colors.length

@@ -1,6 +1,5 @@
 const express = require('express')
 const auth = require('./auth')
-const user = require('../api/user')
 
 module.exports = app => {
     /*
@@ -44,4 +43,4 @@ module.exports = app => {
     openApi.post('/signup', app.api.user.save)
     openApi.post('/signin', app.api.user.signin)
     openApi.post('/validateToken', app.api.user.validateToken)
-}   
+}
