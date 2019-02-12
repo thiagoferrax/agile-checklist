@@ -9,7 +9,6 @@ export default class RadarChart extends Component {
     }
 
     render() {
-
         let options = {
             legend: {
                 position: 'right',

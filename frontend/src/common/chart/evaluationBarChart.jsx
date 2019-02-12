@@ -3,6 +3,9 @@ import BarChart from './barChart'
 
 export default props => {
     const data = getBarChartData(props.evaluations, props.project.id)
+    if(!data) {
+        return <React.Fragment/>
+    }
     return (<BarChart cols={props.cols} data={data} />)
 }
 
