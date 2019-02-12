@@ -16,7 +16,33 @@ const getDataSet = (datasets, checklistId) => {
 }
 
 const getChartColor = (index) => {
-    const colors = ['#33c9dd', '#c9dd33', '#dd33c9', '#dd4733', '#33dd9c', '#3374dd', '#dd9c33', '#113166']
+
+    const colors = [
+        'rgb(0, 192, 239, .4)',
+        'rgb(221, 75, 57, .4)',
+        'rgb(0, 166, 90, .4)',
+        'rgb(243, 156, 18, .4)',
+        'rgb(202, 25, 90, .4)',
+        'rgb(85, 82, 153, .4)',
+        'rgb(255, 119, 1, .4)'
+    ]
+
+    if (index > colors.length) {
+        index -= colors.length
+    }
+    return colors[index]
+}
+
+const getChartBorderColor = (index) => {
+    const colors = [
+        'rgb(0, 192, 239)',
+        'rgb(221, 75, 57)',
+        'rgb(0, 166, 90)',
+        'rgb(243, 156, 18)',
+        'rgb(202, 25, 90)',
+        'rgb(85, 82, 153)',
+        'rgb(255, 119, 1)'
+    ]
 
     if (index > colors.length) {
         index -= colors.length
@@ -44,8 +70,10 @@ const getRadarChartData = (evaluations) => {
             map.datasets.push({
                 label: sprint,
                 data,
-                backgroundColor: getChartColor(color++)
+                backgroundColor: getChartColor(color),
+                borderColor: getChartBorderColor(color)
             })
+            color++
         }
 
         return map

@@ -97,6 +97,7 @@ module.exports = app => {
             .leftJoin('checklists', 'answers.checklistId', 'checklists.id')
             .whereIn('evaluations.projectId', summary.projectsIds)
             .orderBy('evaluations.sprint', 'desc')
+            .orderBy('answers.checklistId', 'asc')
             .then(evaluations => {    
                
                 
