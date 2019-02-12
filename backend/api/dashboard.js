@@ -83,6 +83,10 @@ module.exports = app => {
             }).catch(err => reject(err))
     })
 
+    const hasChild = (evaluation, evaluations) => {
+        return evaluations.filter(e => e.parentId == evaluation.checklistId).length > 0
+    }
+
     const getLastSprintEvaluations = (summary) => new Promise((resolve, reject) => {
 
         app.db.select({
@@ -105,10 +109,14 @@ module.exports = app => {
                     const key = `${evaluation.projectId}`
                     if(lastSprintEvaluations[key]) {
                         if(parseInt(evaluation.sprint) >= parseInt(lastSprintEvaluations[key][0].sprint)) {
-                            lastSprintEvaluations[key].push(evaluation)
+                            if(hasChild(evaluation, evaluations)) {
+                                lastSprintEvaluations[key].push(evaluation)
+                            }
                         }                        
                     } else {
-                        lastSprintEvaluations[key] = [evaluation]
+                        if(hasChild(evaluation, evaluations)) {
+                            lastSprintEvaluations[key] = [evaluation]
+                        }                        
                     }
                     return lastSprintEvaluations
                 }, {})

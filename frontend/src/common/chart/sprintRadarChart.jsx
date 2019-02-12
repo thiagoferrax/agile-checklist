@@ -5,9 +5,16 @@ export default props => {
     let options = {
         legend: {
             position: 'right',
+        },
+        scale: {
+            ticks: {
+                beginAtZero: true,
+                max: 10,
+                stepWidth: 2
+            }
         }
     }
-    
+
     return (<RadarChart cols={props.cols} data={getRadarChartData(props.evaluations)} options={options}/>)
 }
 
