@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 import RadarChart from './radarChart'
 
-export default props => {       
-    return (<RadarChart cols={props.cols} data={getRadarChartData(props.evaluations, props.project.id)} />)
+export default props => {     
+    let options = {
+        legend: {
+            position: 'right',
+        }
+    }
+    
+    return (<RadarChart cols={props.cols} data={getRadarChartData(props.evaluations)} options={options}/>)
 }
 
 const getDataSet = (datasets, checklistId) => {
@@ -18,29 +24,25 @@ const getChartColor = (index) => {
     return colors[index]
 }
 
-const getRadarChartData = (evaluations, projectId) => {
-    const projectEvaluations =
-        evaluations.filter(evaluation => evaluation.projectId === projectId).
-            sort((e1, e2) => e1.sprint - e2.sprint)
-
+const getRadarChartData = (evaluations) => {
     let color = 0
-    const RadarChartData = projectEvaluations.reduce((map, evaluation) => {
+    const RadarChartData = evaluations && evaluations.reduce((map, evaluation) => {
         const sprint = 'Sprint ' + evaluation.sprint
         const checklist = evaluation.checklistDescription
 
-        if (!map.labels.includes(sprint)) {
-            map.labels.push(sprint)
+        if (!map.labels.includes(checklist)) {
+            map.labels.push(checklist)
         }
 
-        const dataset = getDataSet(map.datasets, checklist)
-        const index = map.labels.indexOf(sprint)
+        const dataset = getDataSet(map.datasets, sprint)
+        const index = map.labels.indexOf(checklist)
         if (dataset && dataset.length) {
             dataset[0].data[index] = evaluation.score
         } else {
             let data = []
             data[index] = evaluation.score
             map.datasets.push({
-                label: checklist,
+                label: sprint,
                 data,
                 backgroundColor: getChartColor(color++)
             })

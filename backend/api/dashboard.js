@@ -74,10 +74,43 @@ module.exports = app => {
             .leftJoin('checklists', 'evaluations.checklistId', 'checklists.id')
             .whereIn('evaluations.projectId', summary.projectsIds)
             .then(evaluations => {
-                
+
 
                 summary.number_evaluations = evaluations.length
                 summary.evaluations = mergeEvaluations(evaluations)
+
+                resolve(summary)
+            }).catch(err => reject(err))
+    })
+
+    const getLastSprintEvaluations = (summary) => new Promise((resolve, reject) => {
+
+        app.db.select({
+            projectId: 'evaluations.projectId',
+            sprint: 'evaluations.sprint',
+            checklistDescription: 'checklists.description',
+            checklistId: 'answers.checklistId',
+            parentId: 'checklists.parentId',
+            score: 'answers.value'
+        }).from('evaluations')
+            .leftJoin('answers', 'answers.evaluationId', 'evaluations.id')
+            .leftJoin('checklists', 'answers.checklistId', 'checklists.id')
+            .whereIn('evaluations.projectId', summary.projectsIds)
+            .orderBy('evaluations.sprint', 'desc')
+            .then(evaluations => {    
+               
+                
+                summary.lastSprintEvaluations = mergeEvaluations(evaluations).reduce((lastSprintEvaluations, evaluation) => {
+                    const key = `${evaluation.projectId}`
+                    if(lastSprintEvaluations[key]) {
+                        if(parseInt(evaluation.sprint) >= parseInt(lastSprintEvaluations[key][0].sprint)) {
+                            lastSprintEvaluations[key].push(evaluation)
+                        }                        
+                    } else {
+                        lastSprintEvaluations[key] = [evaluation]
+                    }
+                    return lastSprintEvaluations
+                }, {})
 
                 resolve(summary)
             }).catch(err => reject(err))
@@ -89,6 +122,7 @@ module.exports = app => {
         getProjects(userId)
             .then(getTeam)
             .then(getEvaluations)
+            .then(getLastSprintEvaluations)
             .then(summary => res.json(summary))
             .catch(err => res.status(500).json({ errors: [err] }))
     }

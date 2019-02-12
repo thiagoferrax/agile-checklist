@@ -1,8 +1,9 @@
 import React from 'react'
 import BarChart from './barChart'
 
-export default props => {       
-    return (<BarChart cols={props.cols} data={getBarChartData(props.evaluations, props.project.id)} />)
+export default props => {
+    const data = getBarChartData(props.evaluations, props.project.id)
+    return (<BarChart cols={props.cols} data={data} />)
 }
 
 const getDataSet = (datasets, checklistId) => {
@@ -21,6 +22,13 @@ const getChartColor = (index) => {
 const getBarChartData = (evaluations, projectId) => {
     const projectEvaluations =
         evaluations.filter(evaluation => evaluation.projectId === projectId).sort((e1, e2) => e1.sprint - e2.sprint)
+
+    console.log('projectEvaluations', projectEvaluations.length)
+
+
+    if (!projectEvaluations.length) {
+        return 
+    }
 
     let color = 0
     const barChartData = projectEvaluations.reduce((map, evaluation) => {
