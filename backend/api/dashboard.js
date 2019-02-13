@@ -102,23 +102,21 @@ module.exports = app => {
             .whereIn('evaluations.projectId', summary.projectsIds)
             .orderBy('evaluations.sprint', 'desc')
             .orderBy('answers.checklistId', 'asc')
-            .then(evaluations => {    
-               
-                
-                summary.lastSprintEvaluations = mergeEvaluations(evaluations).reduce((lastSprintEvaluations, evaluation) => {
+            .then(evaluations => {
+
+
+                summary.sprintEvaluations = mergeEvaluations(evaluations).reduce((sprintEvaluations, evaluation) => {
                     const key = `${evaluation.projectId}`
-                    if(lastSprintEvaluations[key]) {
-                        if(parseInt(evaluation.sprint) >= parseInt(lastSprintEvaluations[key][0].sprint)) {
-                            if(hasChild(evaluation, evaluations)) {
-                                lastSprintEvaluations[key].push(evaluation)
-                            }
-                        }                        
+                    if (sprintEvaluations[key]) {
+                        if (hasChild(evaluation, evaluations)) {
+                            sprintEvaluations[key].push(evaluation)
+                        }
                     } else {
-                        if(hasChild(evaluation, evaluations)) {
-                            lastSprintEvaluations[key] = [evaluation]
-                        }                        
+                        if (hasChild(evaluation, evaluations)) {
+                            sprintEvaluations[key] = [evaluation]
+                        }
                     }
-                    return lastSprintEvaluations
+                    return sprintEvaluations
                 }, {})
 
                 resolve(summary)

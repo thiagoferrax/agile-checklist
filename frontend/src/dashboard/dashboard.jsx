@@ -20,14 +20,14 @@ class Dashboard extends Component {
     }
 
     renderProjects() {
-        const { projects, evaluations, lastSprintEvaluations} = this.props.summary
+        const { projects, evaluations, sprintEvaluations} = this.props.summary
 
         return projects.map(
             project => (
                 <ProjectBox key={project.id} cols='12' color='default' project={project.name}>
                     <Row>
                         <EvaluationBarChart cols='12' evaluations={evaluations} project={project} />
-                        <SprintRadarChart cols='12 6' evaluations={lastSprintEvaluations[project.id]} />
+                        <SprintRadarChart cols='12 4' evaluations={sprintEvaluations[project.id]} />
                     </Row>
                 </ProjectBox>)
             )

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import RadarChart from './radarChart'
 
+const MAX_DATASETS = 2
+
 export default props => {     
     let options = {
         legend: {
@@ -10,7 +12,7 @@ export default props => {
             ticks: {
                 beginAtZero: true,
                 max: 10,
-                stepWidth: 2
+                stepSize: 2
             }
         }
     }
@@ -59,6 +61,7 @@ const getChartBorderColor = (index) => {
 
 const getRadarChartData = (evaluations) => {
     let color = 0
+    let datasets = 0
     const RadarChartData = evaluations && evaluations.reduce((map, evaluation) => {
         const sprint = 'Sprint ' + evaluation.sprint
         const checklist = evaluation.checklistDescription
@@ -74,13 +77,17 @@ const getRadarChartData = (evaluations) => {
         } else {
             let data = []
             data[index] = evaluation.score
+            let hidden = datasets >= MAX_DATASETS ? hidden = true : false
             map.datasets.push({
                 label: sprint,
                 data,
+                hidden,
+                borderWidth: 2,
                 backgroundColor: getChartColor(color),
                 borderColor: getChartBorderColor(color)
             })
             color++
+            datasets++
         }
 
         return map
