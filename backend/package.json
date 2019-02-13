@@ -24,23 +24,23 @@
   "homepage": "https://github.com/thiagoferrax/agile-checklist#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "bcrypt": "3.0.0",
+    "bcrypt": "3.0.4",
     "body-parser": "1.18.3",
     "consign": "0.1.6",
-    "cors": "2.8.4",
-    "express": "4.16.3",
+    "cors": "2.8.5",
+    "express": "4.16.4",
     "express-query-int": "3.0.0",
-    "jsonwebtoken": "8.3.0",
-    "knex": "0.15.2",
-    "lodash": "4.17.10",
-    "pg": "7.7.1",
-    "pm2": "3.0.4",
-    "jwt-simple": "0.5.1",
-    "moment": "2.22.2",
+    "jsonwebtoken": "8.4.0",
+    "knex": "0.16.3",
+    "lodash": "4.17.11",
+    "pg": "7.8.0",
+    "pm2": "3.2.9",
+    "jwt-simple": "0.5.5",
+    "moment": "2.24.0",
     "passport": "0.4.0",
     "passport-jwt": "4.0.0"
   },
   "devDependencies": {
-    "nodemon": "1.18.4"
+    "nodemon": "1.18.10"
   }
 }
