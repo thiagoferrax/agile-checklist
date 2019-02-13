@@ -16,7 +16,7 @@ export default class BarChart extends Component {
                             <Bar
                                 data={this.state.chartData}
                                 width={100}
-                                height={20}
+                                height={15}
                                 options={{
                                     legend: {
                                         position: 'right',
