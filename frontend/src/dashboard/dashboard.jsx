@@ -9,6 +9,7 @@ import InfoBox from '../common/widget/infoBox'
 import ProjectBox from '../common/widget/projectBox'
 import EvaluationBarChart from '../common/chart/evaluationBarChart'
 import SprintRadarChart from '../common/chart/sprintRadarChart'
+import FishboneChart from '../common/chart/fishboneChart'
 
 
 import Row from '../common/layout/row'
@@ -20,17 +21,18 @@ class Dashboard extends Component {
     }
 
     renderProjects() {
-        const { projects, evaluations, sprintEvaluations} = this.props.summary
+        const { projects, evaluations, sprintEvaluations, fishboneData } = this.props.summary
 
         return projects.map(
             project => (
                 <ProjectBox key={project.id} cols='12' color='default' project={project.name}>
                     <Row>
                         <EvaluationBarChart cols='12' evaluations={evaluations} project={project} />
-                        <SprintRadarChart cols='12 4' evaluations={sprintEvaluations[project.id]} />
+                        <SprintRadarChart cols='12 4' evaluations={sprintEvaluations[project.id]} />                        
+                        <FishboneChart cols='12 8' data={fishboneData[project.id]} />
                     </Row>
                 </ProjectBox>)
-            )
+        )
     }
 
     render() {

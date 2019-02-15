@@ -87,7 +87,7 @@ module.exports = app => {
         return evaluations.filter(e => e.parentId == evaluation.checklistId).length > 0
     }
 
-    const getLastSprintEvaluations = (summary) => new Promise((resolve, reject) => {
+    const getSprintEvaluations = (summary) => new Promise((resolve, reject) => {
 
         app.db.select({
             projectId: 'evaluations.projectId',
@@ -103,8 +103,6 @@ module.exports = app => {
             .orderBy('evaluations.sprint', 'desc')
             .orderBy('answers.checklistId', 'asc')
             .then(evaluations => {
-
-
                 summary.sprintEvaluations = mergeEvaluations(evaluations).reduce((sprintEvaluations, evaluation) => {
                     const key = `${evaluation.projectId}`
                     if (sprintEvaluations[key]) {
@@ -123,13 +121,42 @@ module.exports = app => {
             }).catch(err => reject(err))
     })
 
+    const getFishboneData = (summary) => new Promise((resolve, reject) => {
+        if (summary.sprintEvaluations) {
+            const projects = Object.keys(summary.sprintEvaluations)
+
+            summary.fishboneData = projects.reduce((fishboneData, projectId) => {
+
+                fishboneData[projectId] = summary.sprintEvaluations[projectId].reduce((causeAndEffect, evaluation) => {
+                    const sprint = `Sprint ${evaluation.sprint}`
+
+                    if (causeAndEffect[sprint]) {
+                        causeAndEffect[sprint][evaluation.checklistDescription] = []
+                    } else {
+                        causeAndEffect[sprint] = {}
+                        causeAndEffect[sprint][evaluation.checklistDescription] = []
+                    }
+
+                    return causeAndEffect
+                }, {})
+
+                return fishboneData
+            }, {})
+
+            resolve(summary)
+        } else {
+            reject('No evaluations found')
+        }
+    })
+
     const get = (req, res) => {
         const userId = req.decoded.id
 
         getProjects(userId)
             .then(getTeam)
             .then(getEvaluations)
-            .then(getLastSprintEvaluations)
+            .then(getSprintEvaluations)
+            .then(getFishboneData)
             .then(summary => res.json(summary))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
