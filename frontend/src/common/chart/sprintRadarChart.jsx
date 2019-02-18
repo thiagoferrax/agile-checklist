@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import RadarChart from './radarChart'
 
-const MAX_DATASETS = 2
+const MAX_DATASETS = 1
 
 export default props => {     
     let options = {

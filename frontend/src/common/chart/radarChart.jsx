@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Radar } from 'react-chartjs-2';
 import Grid from '../layout/grid'
 import If from '../operator/if'
+import './chart.css'
 
 export default class RadarChart extends Component {
     componentWillMount() {
@@ -18,8 +19,7 @@ export default class RadarChart extends Component {
                     ticks: {
                         max: 10,
                         min: 0,
-                        stepSize: 2
-                    }
+                        stepSize: 2                   }
                 }]
             }
         }
@@ -31,17 +31,13 @@ export default class RadarChart extends Component {
         return (
             <If test={this.state.chartData}>
                 <Grid cols={this.props.cols}>
-                    <div className="box box-default">
-                        <div className="box-body">
-                            <div className="chart">
-                                <Radar
-                                    data={this.state.chartData}
-                                    width={100}
-                                    height={50}
-                                    options={options}
-                                />
-                            </div>
-                        </div>
+                    <div className="chart_border">
+                        <Radar
+                            data={this.state.chartData}
+                            width={100}
+                            height={50}
+                            options={options}
+                        />
                     </div>
                 </Grid>
             </If>

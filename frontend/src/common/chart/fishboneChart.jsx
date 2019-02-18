@@ -1,6 +1,7 @@
 import React from 'react'
 import FishboneChart from 'fishbone-chart'
 import Grid from '../layout/grid'
+import './fishbone.css'
 
 export default props => {
     console.log('fishboneChart', props.data)
@@ -10,12 +11,8 @@ export default props => {
 
     return (
         <Grid cols={props.cols}>
-            <div className="box box-default">
-                <div className="box-body">
-                    <div className="chart">
-                        <FishboneChart data={props.data}/>
-                    </div>
-                </div>
+            <div className="fishbone_chart">
+                <FishboneChart data={props.data} />
             </div>
         </Grid >
     )

@@ -74,8 +74,6 @@ module.exports = app => {
             .leftJoin('checklists', 'evaluations.checklistId', 'checklists.id')
             .whereIn('evaluations.projectId', summary.projectsIds)
             .then(evaluations => {
-
-
                 summary.number_evaluations = evaluations.length
                 summary.evaluations = mergeEvaluations(evaluations)
 
@@ -130,12 +128,10 @@ module.exports = app => {
                 fishboneData[projectId] = summary.sprintEvaluations[projectId].reduce((causeAndEffect, evaluation) => {
                     const sprint = `Sprint ${evaluation.sprint}`
 
-                    if (causeAndEffect[sprint]) {
-                        causeAndEffect[sprint][evaluation.checklistDescription] = []
-                    } else {
-                        causeAndEffect[sprint] = {}
-                        causeAndEffect[sprint][evaluation.checklistDescription] = []
-                    }
+                    if (!causeAndEffect[sprint]) {
+                        causeAndEffect[sprint] = {}                        
+                    } 
+                    causeAndEffect[sprint][evaluation.checklistDescription] = []
 
                     return causeAndEffect
                 }, {})
