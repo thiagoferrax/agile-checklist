@@ -85,7 +85,7 @@ module.exports = app => {
         return evaluations.filter(e => e.parentId == evaluation.checklistId).length > 0
     }
 
-    const getSprintEvaluations = (summary) => new Promise((resolve, reject) => {
+    const getProjectEvaluations = (summary) => new Promise((resolve, reject) => {
 
         app.db.select({
             projectId: 'evaluations.projectId',
@@ -101,23 +101,43 @@ module.exports = app => {
             .orderBy('evaluations.sprint', 'desc')
             .orderBy('answers.checklistId', 'asc')
             .then(evaluations => {
-                summary.sprintEvaluations = mergeEvaluations(evaluations).reduce((sprintEvaluations, evaluation) => {
+                summary.projectEvaluations = mergeEvaluations(evaluations).reduce((projectEvaluations, evaluation) => {
                     const key = `${evaluation.projectId}`
-                    if (sprintEvaluations[key]) {
-                        if (hasChild(evaluation, evaluations)) {
-                            sprintEvaluations[key].push(evaluation)
-                        }
+                    if (projectEvaluations[key]) {
+                        projectEvaluations[key].push(evaluation)
                     } else {
-                        if (hasChild(evaluation, evaluations)) {
-                            sprintEvaluations[key] = [evaluation]
-                        }
+                        projectEvaluations[key] = [evaluation]
                     }
-                    return sprintEvaluations
+                    return projectEvaluations
                 }, {})
 
                 resolve(summary)
             }).catch(err => reject(err))
     })
+
+    const getSprintEvaluations = (summary) => new Promise((resolve, reject) => {
+        if(summary.projectEvaluations) {
+
+            const projects = Object.keys(summary.projectEvaluations)
+
+            summary.sprintEvaluations = projects.reduce((sprintEvaluations, project) => {
+                const evaluations  = summary.projectEvaluations[project]                
+                sprintEvaluations[project] = evaluations.filter(evaluation => hasChild(evaluation, evaluations))
+                return sprintEvaluations
+            }, {})
+
+            resolve(summary)
+        }            
+    })
+
+    const getRootCauses = (evaluation, evaluations) => {
+        return evaluations && evaluations.reduce((causes, e) => {
+            if(e.parentId === evaluation.checklistId && e.sprint === evaluation.sprint && e.score < 7) {
+                causes.push(`${e.checklistDescription} | ${parseFloat(e.score).toFixed(1)}`)
+            }
+            return causes
+        }, [])
+    }
 
     const getFishboneData = (summary) => new Promise((resolve, reject) => {
         if (summary.sprintEvaluations) {
@@ -129,9 +149,16 @@ module.exports = app => {
                     const sprint = `Sprint ${evaluation.sprint}`
 
                     if (!causeAndEffect[sprint]) {
-                        causeAndEffect[sprint] = {}                        
-                    } 
-                    causeAndEffect[sprint][evaluation.checklistDescription] = []
+                        causeAndEffect[sprint] = {}
+                    }
+
+                    const rootCauses = getRootCauses(evaluation, summary.projectEvaluations[projectId])
+                    if(rootCauses.length > 0) {
+                        causeAndEffect[sprint][evaluation.checklistDescription] = getRootCauses(evaluation, summary.projectEvaluations[projectId])
+                    } else {
+                        delete causeAndEffect[sprint][evaluation.checklistDescription]
+                    }
+                    
 
                     return causeAndEffect
                 }, {})
@@ -151,6 +178,7 @@ module.exports = app => {
         getProjects(userId)
             .then(getTeam)
             .then(getEvaluations)
+            .then(getProjectEvaluations)
             .then(getSprintEvaluations)
             .then(getFishboneData)
             .then(summary => res.json(summary))

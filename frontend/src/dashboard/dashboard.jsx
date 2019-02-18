@@ -42,14 +42,13 @@ class Dashboard extends Component {
                 <ContentHeader title='Dashboard' small='Versão 1.0' />
                 <Content>
                     <Row>
-                        <InfoBox cols='12 3' color='aqua' icon='cube'
+                        <InfoBox cols='12 4' color='aqua' icon='cube'
                             value={projects.length} text='Projects' />
-                        <InfoBox cols='12 3' color='red' icon='options'
+                        <InfoBox cols='12 4' color='red' icon='options'
                             value={number_evaluations} text='Evaluations' />
-                        <InfoBox cols='12 3' color='green' icon='people '
+                        <InfoBox cols='12 4' color='green' icon='people '
                             value={members} text='Members' />
-                        <InfoBox cols='12 3' color='yellow' icon='chatbubbles'
-                            value={comments} text='Comments' />
+                        {/*<InfoBox cols='12 3' color='yellow' icon='chatbubbles' value={comments} text='Comments' />*/}
                     </Row>
                     <Row>
                         {this.renderProjects()}
