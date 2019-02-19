@@ -5,7 +5,7 @@
 
 >
 
-![mychecklist](https://user-images.githubusercontent.com/43149895/52707866-74d89a00-2f67-11e9-97ec-cc5daf6b5cc2.gif)
+![mychecklist](https://user-images.githubusercontent.com/43149895/53027288-6bf23780-3443-11e9-9666-c910b32b4f51.gif)
 
 >
 
