@@ -72,8 +72,9 @@ function submit(values, method) {
 export function showUpdate(checklist) {
     return [ 
         showTabs('tabUpdate'),
-        selectTab('tabUpdate'),
-        initialize('checklistForm', checklist)
+        selectTab('tabUpdate'),        
+        initialize('checklistForm', checklist),
+        selectParent(checklist.parentId)
     ]
 }
 
