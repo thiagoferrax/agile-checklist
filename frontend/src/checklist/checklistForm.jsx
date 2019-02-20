@@ -6,8 +6,7 @@ import Tree from 'tree-slide-bar'
 import If from '../common/operator/if'
 import PropTypes from 'prop-types'
 
-
-import { init, getTree, showDelete, clone, showUpdate } from './checklistActions'
+import { init, getTree, showDelete, clone, showUpdate, selectParent } from './checklistActions'
 import LabelAndInput from '../common/form/labelAndInput'
 import Select from '../common/form/select'
 import Grid from '../common/layout/grid'
@@ -41,14 +40,10 @@ class ChecklistForm extends Component {
     }
 
     cloneChecklist() {
-        const state = this.context.store.getState()
-
-        const selector = formValueSelector('checklistForm')
-        const parentId = selector(state, 'parentId')
-        const checklist = this.getChecklistById(this.props.tree || [], parentId)
-
+        const { tree, parentId } = this.props
+        const checklist = this.getChecklistById(tree || [], parentId)
         this.props.clone(checklist)
-    }    
+    }
 
     render() {
         const { handleSubmit, showDelete, showUpdate, readOnly, list, description, parentId, tree, init } = this.props
@@ -60,7 +55,7 @@ class ChecklistForm extends Component {
 
                     <Field name='parentId' value={parentId} component={Select} readOnly={readOnly}
                         label='Parent path' cols='12 6' options={list}
-                        optionValue='id' optionLabel='path' />
+                        optionValue='id' optionLabel='path' inputOnChange={this.props.selectParent}/>
 
                     <Grid cols='12 2'>
                         <If test={readOnly}>
@@ -110,5 +105,5 @@ const mapStateToProps = state => ({
     tree: state.checklist.tree
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({ init, getTree, showDelete, showUpdate, clone }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ init, getTree, showDelete, showUpdate, clone, selectParent }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ChecklistForm)

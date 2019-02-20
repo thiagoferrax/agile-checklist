@@ -36,6 +36,13 @@ export function clone(checklist) {
     }
 }
 
+export function selectParent(parentId) {  
+    return {
+        type: 'PARENT_SELECTED',
+        payload: parentId
+    }
+}
+
 export function create(values) {
     return submit(values, 'post')
 }

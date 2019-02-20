@@ -5,6 +5,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, list: action.payload.data }
         case 'TREE_FETCHED':
             return { ...state, tree: action.payload.data }
+        case 'PARENT_SELECTED':
+            return { ...state, parentId: action.payload }
         default:
             return state
     }

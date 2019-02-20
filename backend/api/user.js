@@ -64,7 +64,13 @@ module.exports = app => {
     }
 
     const get = (req, res) => {
-        app.db('users')
+        app.db.select(
+            {
+                id: 'users.id',
+                name: 'users.name',
+                email: 'users.email'
+            }
+        ).from('users')
             .then(users => res.json(users))
             .catch(err => res.status(500).json({errors: [err]}))
     }
