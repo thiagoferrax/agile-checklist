@@ -28,8 +28,8 @@ class Dashboard extends Component {
                 <ProjectBox key={project.id} cols='12' color='default' project={project.name}>
                     <Row>
                         <EvaluationBarChart cols='12' evaluations={evaluations} project={project} />
-                        <SprintRadarChart cols='12 4' evaluations={sprintEvaluations[project.id]} />                        
-                        <FishboneChart cols='12 8' data={fishboneData[project.id]} />
+                        <SprintRadarChart cols='12 6' evaluations={sprintEvaluations[project.id]} />                        
+                        <FishboneChart cols='12' data={fishboneData[project.id]} />
                     </Row>
                 </ProjectBox>)
         )

@@ -31,7 +31,7 @@ export default class RadarChart extends Component {
         return (
             <If test={this.state.chartData}>
                 <Grid cols={this.props.cols}>
-                    <div className="chart_border">
+                    <div className="radar_chart">
                         <Radar
                             data={this.state.chartData}
                             width={100}

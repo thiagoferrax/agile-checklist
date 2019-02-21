@@ -15,7 +15,7 @@ export default class BarChart extends Component {
                     <Bar
                         data={this.state.chartData}
                         width={100}
-                        height={15}
+                        height={25}
                         options={{
                             legend: {
                                 position: 'right',
@@ -25,7 +25,7 @@ export default class BarChart extends Component {
                                     ticks: {
                                         max: 10,
                                         min: 0,
-                                        stepSize: 10
+                                        stepSize: 2
                                     }
                                 }]
                             }
