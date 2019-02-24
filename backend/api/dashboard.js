@@ -122,7 +122,7 @@ module.exports = app => {
 
             summary.sprintEvaluations = projects.reduce((sprintEvaluations, project) => {
                 const evaluations  = summary.projectEvaluations[project]                
-                sprintEvaluations[project] = evaluations.filter(evaluation => hasChild(evaluation, evaluations))
+                sprintEvaluations[project] = evaluations.filter(evaluation => (!evaluation.parentId || hasChild(evaluation, evaluations)))
                 return sprintEvaluations
             }, {})
 
@@ -133,7 +133,9 @@ module.exports = app => {
     const getRootCauses = (evaluation, evaluations) => {
         return evaluations && evaluations.reduce((causes, e) => {
             if(e.parentId === evaluation.checklistId && e.sprint === evaluation.sprint && e.score < 7) {
-                causes.push(`${e.checklistDescription} | ${parseFloat(e.score).toFixed(1)}`)
+                if(!hasChild(e, evaluations)) {
+                    causes.push(`${e.checklistDescription} | ${parseFloat(e.score).toFixed(1)}`)
+                }
             }
             return causes
         }, [])
