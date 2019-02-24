@@ -1,29 +1,33 @@
 .chart_border{
-    border: 1px solid #f4f4f4;
+    border-top: 1px solid #f4f4f4;
+    border-bottom: 1px solid #f4f4f4;    
     padding: 20px 0px 20px 0px;
     margin: 0px 0px 0px 0px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
     
 .radar_chart{
-    border: 1px solid #f4f4f4;
+    border-top: 1px solid #f4f4f4;
+    border-bottom: 1px solid #f4f4f4;    
     padding: 20px 0px 20px 0px;
     margin: 10px 0px 10px 0px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .line_chart{
-    border: 1px solid #f4f4f4;
+    border-top: 1px solid #f4f4f4;
+    border-bottom: 1px solid #f4f4f4;    
     padding: 20px 0px 20px 0px;
     margin: 10px 0px 10px 0px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .fishbone_chart{
     display: flex;
     flex: 1;
-    border: 1px solid #f4f4f4;
+    border-top: 1px solid #f4f4f4;
+    border-bottom: 1px solid #f4f4f4;    
     padding: 20px 10px 20px 10px;
     margin: 0px 0px 10px 0px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
