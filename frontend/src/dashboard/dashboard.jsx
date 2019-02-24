@@ -26,15 +26,11 @@ class Dashboard extends Component {
 
         return projects.map(
             project => (
-                <ProjectBox key={project.id} cols='12' color='default' project={project.name}>
+                <ProjectBox key={`projects_${project.id}`} cols='12' color='default' project={project.name}>
                     <Row>
                         <EvaluationBarChart cols='12' evaluations={evaluations} project={project} />
-                    </Row> 
-                    <Row>   
-                        <SprintRadarChart cols='12 6' evaluations={sprintEvaluations[project.id]} />                        
+                        <SprintRadarChart cols='12 6' evaluations={sprintEvaluations[project.id]} />
                         <ComparativeLineChart cols='12 6' evaluations={sprintEvaluations[project.id]} />
-                    </Row>
-                    <Row>    
                         <FishboneChart cols='12' data={fishboneData[project.id]} />
                     </Row>
                 </ProjectBox>)
@@ -42,19 +38,20 @@ class Dashboard extends Component {
     }
 
     render() {
-        const { projects, number_evaluations, members, comments } = this.props.summary
+        const { projects, number_checklists, number_evaluations, members, comments } = this.props.summary
         return (
             <div>
                 <ContentHeader title='Dashboard' small='Versão 1.0' />
                 <Content>
                     <Row>
-                        <InfoBox cols='12 4' color='aqua' icon='cube'
+                        <InfoBox cols='12 3' color='aqua' icon='cube'
                             value={projects.length} text='Projects' />
-                        <InfoBox cols='12 4' color='red' icon='options'
+                        <InfoBox cols='12 3' color='red' icon='checkbox-outline' 
+                            value={number_checklists} text='Checklists' />
+                        <InfoBox cols='12 3' color='green' icon='options'
                             value={number_evaluations} text='Evaluations' />
-                        <InfoBox cols='12 4' color='green' icon='people '
-                            value={members} text='Members' />
-                        {/*<InfoBox cols='12 3' color='yellow' icon='chatbubbles' value={comments} text='Comments' />*/}
+                        <InfoBox cols='12 3' color='yellow' icon='people '
+                            value={members.length} text='Members' />
                     </Row>
                     <Row>
                         {this.renderProjects()}

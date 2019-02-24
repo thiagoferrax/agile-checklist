@@ -27,14 +27,24 @@ module.exports = app => {
     })
 
     const getTeam = (summary) => new Promise((resolve, reject) => {
-        app.db('teams').countDistinct('userId')
+        app.db('teams').distinct('userId')
             .whereIn('projectId', summary.projectsIds)
             .then(members => {
-                summary.members = members[0].count
+                summary.members = members.map(member => member.userId)
 
                 resolve(summary)
             })
             .catch(err => reject(err))
+    })
+
+    const getNumberChecklists = (summary) => new Promise((resolve, reject) => {
+        app.db('checklists').countDistinct('id')
+            .whereIn('userId', summary.members)
+            .where('parentId', null)
+            .then(number_checklists => {
+                summary.number_checklists = number_checklists[0].count
+                resolve(summary)
+            }).catch(err => reject(err))
     })
 
     const mergeEvaluations = (evaluations) => {
@@ -116,24 +126,24 @@ module.exports = app => {
     })
 
     const getSprintEvaluations = (summary) => new Promise((resolve, reject) => {
-        if(summary.projectEvaluations) {
+        if (summary.projectEvaluations) {
 
             const projects = Object.keys(summary.projectEvaluations)
 
             summary.sprintEvaluations = projects.reduce((sprintEvaluations, project) => {
-                const evaluations  = summary.projectEvaluations[project]                
+                const evaluations = summary.projectEvaluations[project]
                 sprintEvaluations[project] = evaluations.filter(evaluation => (!evaluation.parentId || hasChild(evaluation, evaluations)))
                 return sprintEvaluations
             }, {})
 
             resolve(summary)
-        }            
+        }
     })
 
     const getRootCauses = (evaluation, evaluations) => {
         return evaluations && evaluations.reduce((causes, e) => {
-            if(e.parentId === evaluation.checklistId && e.sprint === evaluation.sprint && e.score < 7) {
-                if(!hasChild(e, evaluations)) {
+            if (e.parentId === evaluation.checklistId && e.sprint === evaluation.sprint && e.score < 7) {
+                if (!hasChild(e, evaluations)) {
                     causes.push(`${e.checklistDescription} | ${parseFloat(e.score).toFixed(1)}`)
                 }
             }
@@ -155,12 +165,12 @@ module.exports = app => {
                     }
 
                     const rootCauses = getRootCauses(evaluation, summary.projectEvaluations[projectId])
-                    if(rootCauses.length > 0) {
+                    if (rootCauses.length > 0) {
                         causeAndEffect[sprint][evaluation.checklistDescription] = getRootCauses(evaluation, summary.projectEvaluations[projectId])
                     } else {
                         delete causeAndEffect[sprint][evaluation.checklistDescription]
                     }
-                    
+
 
                     return causeAndEffect
                 }, {})
@@ -179,6 +189,7 @@ module.exports = app => {
 
         getProjects(userId)
             .then(getTeam)
+            .then(getNumberChecklists)
             .then(getEvaluations)
             .then(getProjectEvaluations)
             .then(getSprintEvaluations)

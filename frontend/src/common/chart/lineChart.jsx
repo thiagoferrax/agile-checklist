@@ -19,13 +19,19 @@ export default class LineChart extends Component {
                     ticks: {
                         max: 10,
                         min: 0,
-                        stepSize: 2                   }
+                        stepSize: 2                   
+                    }
                 }]
             }
         }
 
         if (this.props.options) {
             options = this.props.options
+        }
+
+        let height = 50
+        if (this.props.height) {
+            height = this.props.height
         }
 
         return (
@@ -35,7 +41,7 @@ export default class LineChart extends Component {
                         <Line
                             data={this.state.chartData}
                             width={100}
-                            height={50}
+                            height={height}
                             options={options}
                         />
                     </div>

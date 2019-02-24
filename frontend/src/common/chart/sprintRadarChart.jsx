@@ -17,7 +17,13 @@ export default props => {
         }
     }
 
-    return (<RadarChart cols={props.cols} data={getRadarChartData(props.evaluations)} options={options}/>)
+    const chartData = getRadarChartData(props.evaluations)
+
+    if(chartData && chartData.categories > 2) {
+        return (<RadarChart cols={props.cols} data={chartData} options={options}/>)
+    } else {
+        return (<React.Fragment/>)
+    }
 }
 
 const getDataSet = (datasets, checklistId) => {
@@ -71,6 +77,7 @@ const getRadarChartData = (evaluations) => {
 
         if (!map.labels.includes(checklist)) {
             map.labels.push(checklist)
+            map.categories++
         }
 
         const dataset = getDataSet(map.datasets, sprint)
@@ -94,7 +101,7 @@ const getRadarChartData = (evaluations) => {
         }
 
         return map
-    }, { labels: [], datasets: [] })
+    }, { labels: [], datasets: [],  categories: 0})
 
     return RadarChartData
 }

@@ -4,13 +4,16 @@ import LineChart from './lineChart'
 const MAX_DATASETS = 1
 
 export default props => {     
-    let options = {
-        legend: {
-            position: 'right',
-        }
-    }
 
-    return (<LineChart cols={props.cols} data={getLineChartData(props.evaluations)} options={options}/>)
+    const chartData = getLineChartData(props.evaluations)
+
+    if(chartData && chartData.categories > 1) {
+        const cols = chartData.categories > 2 ? props.cols : '12'
+        const height = chartData.categories > 2 ? 50 : 25
+        return (<LineChart cols={cols} data={chartData} height={height}/>)
+    } else {
+        return (<React.Fragment/>)
+    }
 }
 
 const getDataSet = (datasets, checklistId) => {
@@ -64,6 +67,7 @@ const getLineChartData = (evaluations) => {
 
         if (!map.labels.includes(checklist)) {
             map.labels.push(checklist)
+            map.categories++
         }
 
         const dataset = getDataSet(map.datasets, sprint)
@@ -87,7 +91,7 @@ const getLineChartData = (evaluations) => {
         }
 
         return map
-    }, { labels: [], datasets: [] })
+    }, { labels: [], datasets: [], categories:0 })
 
     return LineChartData
 }

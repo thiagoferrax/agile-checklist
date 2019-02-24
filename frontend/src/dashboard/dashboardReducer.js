@@ -1,4 +1,4 @@
-const INITIAL_STATE = {summary: {projects: [], evaluations: [], comments: 0}}
+const INITIAL_STATE = {summary: {projects: [], evaluations: [], number_checklists: 0, number_evaluations: 0, members: []}}
 
 export default function(state = INITIAL_STATE, action) {
     switch (action.type) {

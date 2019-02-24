@@ -146,12 +146,12 @@ module.exports = app => {
 
     const getChecklistAnswersToInsert = (evaluationId, checklist, initialAnswers = []) => {
         return checklist.reduce((answers, item) => {
-            answers.push({evaluationId, checklistId: item.id, value: +item.value})
+            answers.push({evaluationId, checklistId: item.id, value: parseInt(item.value)})
             return getChecklistAnswersToInsert(evaluationId, item.children, answers)
         }, initialAnswers)
     }
 
-    const getScore = (checklist) => checklist[0].value
+    const getScore = (checklist) => parseInt(checklist[0].value)
 
     return { save, remove, get, getById, getAnswers }
 }
