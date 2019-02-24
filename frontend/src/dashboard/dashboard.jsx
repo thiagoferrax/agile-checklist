@@ -9,6 +9,7 @@ import InfoBox from '../common/widget/infoBox'
 import ProjectBox from '../common/widget/projectBox'
 import EvaluationBarChart from '../common/chart/evaluationBarChart'
 import SprintRadarChart from '../common/chart/sprintRadarChart'
+import ComparativeLineChart from '../common/chart/comparativeLineChart'
 import FishboneChart from '../common/chart/fishboneChart'
 
 
@@ -28,7 +29,12 @@ class Dashboard extends Component {
                 <ProjectBox key={project.id} cols='12' color='default' project={project.name}>
                     <Row>
                         <EvaluationBarChart cols='12' evaluations={evaluations} project={project} />
+                    </Row> 
+                    <Row>   
                         <SprintRadarChart cols='12 6' evaluations={sprintEvaluations[project.id]} />                        
+                        <ComparativeLineChart cols='12 6' evaluations={sprintEvaluations[project.id]} />
+                    </Row>
+                    <Row>    
                         <FishboneChart cols='12' data={fishboneData[project.id]} />
                     </Row>
                 </ProjectBox>)
