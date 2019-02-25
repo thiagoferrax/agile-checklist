@@ -10,7 +10,7 @@ export default props => {
 }
 
 const getDataSet = (datasets, checklistId) => {
-    return datasets.filter(dataset => dataset.label == checklistId)
+    return datasets.filter(dataset => dataset.label === checklistId)
 }
 
 const getChartColor = (index) => {
@@ -54,9 +54,6 @@ const getChartBorderColor = (index) => {
 const getBarChartData = (evaluations, projectId) => {
     const projectEvaluations =
         evaluations.filter(evaluation => evaluation.projectId === projectId).sort((e1, e2) => e1.sprint - e2.sprint)
-
-    console.log('projectEvaluations', projectEvaluations.length)
-
 
     if (!projectEvaluations.length) {
         return

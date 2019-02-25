@@ -11,7 +11,7 @@ import Project from '../project/project'
 import Checklist from '../checklist/checklist'
 import Evaluation from '../evaluation/evaluation'
 
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 class AuthOrApp extends Component {
     componentWillMount() {
@@ -24,12 +24,12 @@ class AuthOrApp extends Component {
         const { user, validToken } = this.props.auth
         if (user && validToken) {
             axios.defaults.headers.common['authorization'] = user.token
-            return [<Route exact path='/' component={Dashboard}/>,
-            <Route path='/projects' component={Project} />,
-            <Route path='/checklists' component={Checklist} />,
-            <Route path='/evaluations' component={Evaluation} />]
+            return [<Route exact key='route_dashboard' path='/' component={Dashboard}/>,
+            <Route key='route_projects' path='/projects' component={Project} />,
+            <Route key='route_checklists' path='/checklists' component={Checklist} />,
+            <Route key='route_evaluations' path='/evaluations' component={Evaluation} />]
         } else if (!user && !validToken) {
-            return <Route path='/' component={Auth}/>
+            return <Route key='route_auth' path='/' component={Auth}/>
         } else {
             return false
         }

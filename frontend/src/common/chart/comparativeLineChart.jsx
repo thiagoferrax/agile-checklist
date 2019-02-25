@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import LineChart from './lineChart'
 
 const MAX_DATASETS = 2
@@ -17,7 +17,7 @@ export default props => {
 }
 
 const getDataSet = (datasets, checklistId) => {
-    return datasets.filter(dataset => dataset.label == checklistId)
+    return datasets.filter(dataset => dataset.label === checklistId)
 }
 
 const getChartColor = (index) => {

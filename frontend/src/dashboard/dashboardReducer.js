@@ -6,6 +6,7 @@ export default function(state = INITIAL_STATE, action) {
             if(!action.payload.data) {
                 return { ...state, summary: INITIAL_STATE.summary }    
             }
+            
             return { ...state, summary: action.payload.data }
         default:
             return state

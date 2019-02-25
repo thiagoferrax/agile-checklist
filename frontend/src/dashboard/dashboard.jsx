@@ -16,9 +16,16 @@ import FishboneChart from '../common/chart/fishboneChart'
 import Row from '../common/layout/row'
 
 class Dashboard extends Component {
-
     componentWillMount() {
         this.props.getSummary()
+    }
+
+    componentDidMount() {
+        this.interval = setInterval(() => this.props.getSummary(), 5000)
+    }    
+
+    componentWillUnmount() {
+        clearInterval(this.interval)
     }
 
     renderProjects() {
@@ -38,7 +45,7 @@ class Dashboard extends Component {
     }
 
     render() {
-        const { projects, number_checklists, number_evaluations, members, comments } = this.props.summary
+        const { projects, number_checklists, number_evaluations, members } = this.props.summary
         return (
             <div>
                 <ContentHeader title='Dashboard' small='Version 1.0' />
@@ -46,7 +53,7 @@ class Dashboard extends Component {
                     <Row>
                         <InfoBox cols='12 3' color='aqua' icon='cube'
                             value={projects.length} text='Projects' />
-                        <InfoBox cols='12 3' color='red' icon='checkbox-outline' 
+                        <InfoBox cols='12 3' color='red' icon='checkbox-outline'
                             value={number_checklists} text='Checklists' />
                         <InfoBox cols='12 3' color='green' icon='options'
                             value={number_evaluations} text='Evaluations' />

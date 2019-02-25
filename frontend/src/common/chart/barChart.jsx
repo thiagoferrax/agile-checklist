@@ -1,38 +1,36 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Bar } from 'react-chartjs-2';
 import Grid from '../layout/grid'
 import './chart.css'
 
-export default class BarChart extends Component {
-    componentWillMount() {
-        this.setState({ chartData: this.props.data })
+export default props => {
+    if (!props.data) {
+        return <React.Fragment></React.Fragment>
     }
 
-    render() {
-        return (
-            <Grid cols={this.props.cols}>
-                <div className="chart_border">
-                    <Bar
-                        data={this.state.chartData}
-                        width={100}
-                        height={20}
-                        options={{
-                            legend: {
-                                position: 'right',
-                            },
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        max: 10,
-                                        min: 0,
-                                        stepSize: 2
-                                    }
-                                }]
-                            }
-                        }}
-                    />
-                </div>
-            </Grid>
-        )
-    }
+    return (
+        <Grid cols={props.cols}>
+            <div className="chart_border">
+                <Bar
+                    data={props.data}
+                    width={100}
+                    height={20}
+                    options={{
+                        legend: {
+                            position: 'right',
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    max: 10,
+                                    min: 0,
+                                    stepSize: 2
+                                }
+                            }]
+                        }
+                    }}
+                />
+            </div>
+        </Grid >
+    )
 }

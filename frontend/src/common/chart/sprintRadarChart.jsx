@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import RadarChart from './radarChart'
 
 const MAX_DATASETS = 1
@@ -27,7 +27,7 @@ export default props => {
 }
 
 const getDataSet = (datasets, checklistId) => {
-    return datasets.filter(dataset => dataset.label == checklistId)
+    return datasets.filter(dataset => dataset.label === checklistId)
 }
 
 const getChartColor = (index) => {

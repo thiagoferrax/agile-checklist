@@ -30,7 +30,6 @@ export function clone(checklist) {
                 dispatch(init())
             })
             .catch(e => {
-                console.log('exception', e)
                 e.response.data.errors.forEach(error => toastr.error('Error', error))
             })
     }

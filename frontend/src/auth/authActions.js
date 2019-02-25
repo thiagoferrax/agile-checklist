@@ -12,7 +12,6 @@ export function signup(values) {
 
 function submit(values, url) {
     return dispatch => {
-        console.log('submit', values, url)
         axios.post(url, values)
             .then(resp => {
                 dispatch([

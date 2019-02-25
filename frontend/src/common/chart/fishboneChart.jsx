@@ -4,7 +4,6 @@ import Grid from '../layout/grid'
 import './chart.css'
 
 export default props => {
-    console.log('fishboneChart', props.data)
     if (!props.data) {
         return <React.Fragment></React.Fragment>
     }
