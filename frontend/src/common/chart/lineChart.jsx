@@ -29,7 +29,7 @@ export default class LineChart extends Component {
             options = this.props.options
         }
 
-        let height = 50
+        let height = 40
         if (this.props.height) {
             height = this.props.height
         }

@@ -35,7 +35,7 @@ export default class RadarChart extends Component {
                         <Radar
                             data={this.state.chartData}
                             width={100}
-                            height={50}
+                            height={40}
                             options={options}
                         />
                     </div>
