@@ -38,7 +38,7 @@ module.exports = app => {
             app.db('projects')
                 .insert(project)
                 .returning('id')
-                .then(projectId => insertTeam(projectId[0], team, res))
+            .then(projectId => insertTeam(projectId[0], team, res))
                 .catch(err => res.status(500).json({errors: [err]}))
         }
     }
@@ -67,13 +67,21 @@ module.exports = app => {
         }, initialTeam)
     }
 
-    const remove = async (req, res) => {
-        try{
-            existsOrError(req.params.id, "Project id was not informed!")
-            const rowsDeleted = await app.db('projects').where({ id: req.params.id }).del()
-            existsOrError(rowsDeleted, "Project was not found!")
+    const remove = (req, res) => {
+        const projectId = req.params.id
 
-            res.status(204).send()
+        try{
+            existsOrError(projectId, "Project id was not informed!")
+
+            app.db('teams').where({ projectId }).del().then(
+                teamDeleted => {   
+                    
+                    const rowsDeleted = app.db('projects').where({ id: projectId }).del()
+                    
+                    existsOrError(rowsDeleted, "Project was not found!")
+                    res.status(204).send()
+                }    
+            )
         } catch (msg) {
             res.status(400).json({errors: [msg]})
         }
