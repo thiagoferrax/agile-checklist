@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import LineChart from './lineChart'
 
-const MAX_DATASETS = 1
+const MAX_DATASETS = 2
 
 export default props => {     
 
@@ -23,14 +23,14 @@ const getDataSet = (datasets, checklistId) => {
 const getChartColor = (index) => {
 
     const colors = [
-        'rgb(0, 192, 239, .4)',
-        'rgb(216, 27, 96, .4)',
-        'rgb(104,115,140, .4)',
-        'rgb(48, 187, 187, .4)',
-        'rgb(11, 120, 206, .4)',
-        'rgb(255, 119, 1, .4)',
-        'rgb(17, 17, 17, .4)',
-        'rgb(96, 92, 168, .4)'
+        'rgb(0, 192, 239, .3)',
+        'rgb(216, 27, 96, .3)',
+        'rgb(104,115,140, .3)',
+        'rgb(48, 187, 187, .3)',
+        'rgb(11, 120, 206, .3)',
+        'rgb(255, 119, 1, .3)',
+        'rgb(17, 17, 17, .3)',
+        'rgb(96, 92, 168, .3)'
         
     ]
 
