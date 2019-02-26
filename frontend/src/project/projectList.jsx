@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getList, prepareShowUpdate, showDelete } from './projectActions'
+import { getList, prepareToShow, showUpdate, showDelete } from './projectActions'
 
 class ProjectList extends Component {
 
@@ -15,10 +15,10 @@ class ProjectList extends Component {
             <tr key={project.id}>
                 <td>{project.name}</td>
                 <td>
-                    <button className='btn btn-warning' onClick={() => this.props.prepareShowUpdate(project.id)}>
+                    <button className='btn btn-warning' onClick={() => this.props.prepareToShow(project.id, showUpdate)}>
                         <i className='icon ion-md-create'></i>
                     </button>
-                    <button className='btn btn-danger' onClick={() => this.props.showDelete(project)}>
+                    <button className='btn btn-danger' onClick={() => this.props.prepareToShow(project.id, showDelete)}>
                         <i className='icon ion-md-trash'></i>
                     </button>
                 </td>
@@ -46,5 +46,5 @@ class ProjectList extends Component {
 }
 
 const mapStateToProps = state => ({list: state.project.list})
-const mapDispatchToProps = dispatch => bindActionCreators({getList, prepareShowUpdate, showDelete}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({getList, prepareToShow, showUpdate, showDelete}, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectList)

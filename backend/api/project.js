@@ -67,11 +67,15 @@ module.exports = app => {
         }, initialTeam)
     }
 
-    const remove = (req, res) => {
-        const projectId = req.params.id
-
+    const remove = async (req, res) => {
         try {
+            const projectId = req.params.id
+
             existsOrError(projectId, "Project id was not informed!")
+
+            const evaluations = await app.db('evaluations').where({ projectId })
+
+            notExistsOrError(evaluations, "The project has evaluations!")
 
             app.db('teams').where({ projectId }).del().then(
                 teamDeleted => {

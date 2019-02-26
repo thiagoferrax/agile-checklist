@@ -40,12 +40,10 @@ function submit(values, method) {
     }
 }
 
-export function prepareShowUpdate(projectId) {
+export function prepareToShow(projectId, callback) {
     return dispatch => {
         axios['get'](`${consts.API_URL}/projects/${projectId}`)
-            .then(project => {
-                dispatch(showUpdate(project.data))
-            })
+            .then(project => { dispatch(callback(project.data)) })
             .catch(e => {
                 e.response.data.errors.forEach(error => toastr.error('Error', error))
             })
@@ -53,7 +51,7 @@ export function prepareShowUpdate(projectId) {
 }
 
 export function showUpdate(project) {
-    return [ 
+    return [
         showTabs('tabUpdate'),
         selectTab('tabUpdate'),
         initialize('projectForm', project)
@@ -61,7 +59,7 @@ export function showUpdate(project) {
 }
 
 export function showDelete(project) {
-    return [ 
+    return [
         showTabs('tabDelete'),
         selectTab('tabDelete'),
         initialize('projectForm', project)

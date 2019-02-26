@@ -12,7 +12,7 @@ module.exports = app => {
         if(req.params.id) checklist.id = req.params.id
 
         try{
-            existsOrError(checklist.description, 'Description was not informed!')
+            existsOrError(checklist.description, 'Item description was not informed!')
             existsOrError(checklist.userId, 'User was not informed!')
 
         } catch (msg) {

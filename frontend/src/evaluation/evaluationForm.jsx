@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field, formValueSelector } from 'redux-form'
+import { reduxForm, Field } from 'redux-form'
 
-import { init, selectChecklist} from './evaluationActions'
-import { getList as getChecklists, getTree} from '../checklist/checklistActions'
-import { getList as getProjects} from '../project/projectActions'
+import { init, selectChecklist } from './evaluationActions'
+import { getList as getChecklists, getTree } from '../checklist/checklistActions'
+import { getList as getProjects } from '../project/projectActions'
 import Tree from 'tree-slide-bar'
 import If from '../common/operator/if'
 
@@ -13,7 +13,7 @@ import Select from '../common/form/select'
 
 class EvaluationForm extends Component {
 
-    componentWillMount() { 
+    componentWillMount() {
         this.props.getChecklists()
         this.props.getTree()
         this.props.getProjects()
@@ -21,8 +21,8 @@ class EvaluationForm extends Component {
 
     getSprintList() {
         const sprints = []
-        for(let i = 0; i < 20; i++) {
-            sprints.push({id:i+1, name:`Sprint ${i+1}`})
+        for (let i = 0; i < 20; i++) {
+            sprints.push({ id: i + 1, name: `Sprint ${i + 1}` })
         }
         return sprints
     }
@@ -30,20 +30,20 @@ class EvaluationForm extends Component {
 
     render() {
 
-        const {projects, checklists, checklist, handleSubmit, readOnly, selectChecklist} = this.props    
+        const { projects, checklists, checklist, handleSubmit, readOnly, selectChecklist } = this.props
 
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
-                    <Field name='projectId' label='Project' cols='12 4' 
+                    <Field name='projectId' label='Project' cols='12 4'
                         component={Select} readOnly={readOnly} options={projects} optionValue='id' optionLabel='name' />
-                    <Field name='sprint' label='Sprint' cols='12 4' 
+                    <Field name='sprint' label='Sprint' cols='12 4'
                         component={Select} readOnly={readOnly}
-                        options={this.getSprintList()} optionValue='id' optionLabel='name' />    
-                    <Field name='checklistId' label='Checklist' cols='12 4' 
+                        options={this.getSprintList()} optionValue='id' optionLabel='name' />
+                    <Field name='checklistId' label='Checklist' cols='12 4'
                         component={Select} readOnly={readOnly} inputOnChange={selectChecklist}
                         options={checklists.filter(u => u.parentId === null)} optionValue='id' optionLabel='description' />
-                    <If test={checklist.length>0}>
+                    <If test={checklist.length > 0}>
                         <Field name='checklist' legend='My checklist' component={Tree} tree={checklist} />
                     </If>
                 </div>
@@ -59,13 +59,12 @@ class EvaluationForm extends Component {
     }
 }
 
-EvaluationForm = reduxForm({form: 'evaluationForm', destroyOnUnmount: false})(EvaluationForm)
-const selector = formValueSelector('evaluationForm')
+EvaluationForm = reduxForm({ form: 'evaluationForm', destroyOnUnmount: false })(EvaluationForm)
 
 const mapStateToProps = state => ({
-    projects: state.project.list, 
+    projects: state.project.list,
     checklists: state.checklist.list,
     checklist: state.evaluation.checklist
 })
-const mapDispatchToProps = dispatch => bindActionCreators({init, getChecklists, selectChecklist, getTree, getProjects}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ init, getChecklists, selectChecklist, getTree, getProjects }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(EvaluationForm)

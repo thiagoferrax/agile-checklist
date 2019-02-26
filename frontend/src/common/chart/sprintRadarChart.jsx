@@ -87,7 +87,7 @@ const getRadarChartData = (evaluations) => {
         } else {
             let data = []
             data[index] = evaluation.score
-            let hidden = datasets >= MAX_DATASETS ? hidden = true : false
+            let hidden = datasets >= MAX_DATASETS
             map.datasets.push({
                 label: sprint,
                 data,

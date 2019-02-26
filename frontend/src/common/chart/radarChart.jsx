@@ -1,7 +1,6 @@
 import React from 'react'
 import { Radar } from 'react-chartjs-2';
 import Grid from '../layout/grid'
-import If from '../operator/if'
 import './chart.css'
 
 export default props => {

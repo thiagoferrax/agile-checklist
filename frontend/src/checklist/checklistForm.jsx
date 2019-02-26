@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field, formValueSelector } from 'redux-form'
+import { reduxForm, Field } from 'redux-form'
 import Tree from 'tree-slide-bar'
 import If from '../common/operator/if'
 import PropTypes from 'prop-types'
@@ -24,7 +24,7 @@ class ChecklistForm extends Component {
     componentWillMount() {
         this.props.getTree()
     }
-    
+
     getChecklistById(tree, checklistId, found = null) {
         return tree.reduce((found, checklist) => {
             if (checklist.id === checklistId) {
@@ -55,7 +55,7 @@ class ChecklistForm extends Component {
 
                     <Field name='parentId' value={parentId} component={Select} readOnly={readOnly}
                         label='Parent path' cols='12 6' options={list}
-                        optionValue='id' optionLabel='path' inputOnChange={this.props.selectParent}/>
+                        optionValue='id' optionLabel='path' inputOnChange={this.props.selectParent} />
 
                     <Grid cols='12 2'>
                         <If test={readOnly}>
@@ -87,7 +87,7 @@ class ChecklistForm extends Component {
                 </div>
                 <div className='box-footer'>
                     <If test={!readOnly}>
-                        <Field name='checklist' legend='My checklists' component={Tree} tree={tree} hideSlideBar={true} onEdit={showUpdate} onDelete={showDelete}/>                        
+                        <Field name='checklist' legend='My checklists' component={Tree} tree={tree} hideSlideBar={true} onEdit={showUpdate} onDelete={showDelete} />
                     </If>
                 </div>
             </form>
@@ -96,7 +96,6 @@ class ChecklistForm extends Component {
 }
 
 ChecklistForm = reduxForm({ form: 'checklistForm', destroyOnUnmount: false })(ChecklistForm)
-const selector = formValueSelector('checklistForm')
 
 const mapStateToProps = state => ({
     description: state.checklist.description,
