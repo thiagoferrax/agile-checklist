@@ -4,7 +4,7 @@ module.exports = app => {
     const { existsOrError } = app.api.validation
 
     const getProjects = (userId) => new Promise((resolve, reject) => {
-        const summary = { projects: 0, evaluations: 0, number_evaluations: 0, members: 0, comments: 0 }
+        const summary = { projects: 0, evaluations: 0, number_evaluations: 0, members: 0, comments: 0, userId }
 
         app.db.select({
             id: 'projects.id',
@@ -38,8 +38,13 @@ module.exports = app => {
     })
 
     const getNumberChecklists = (summary) => new Promise((resolve, reject) => {
+        let members = summary.members 
+        if(!members.length) {
+            members = [summary.userId]
+        }
+        
         app.db('checklists').countDistinct('id')
-            .whereIn('userId', summary.members)
+            .whereIn('userId', members)
             .where('parentId', null)
             .then(number_checklists => {
                 summary.number_checklists = number_checklists[0].count
