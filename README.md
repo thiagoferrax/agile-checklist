@@ -16,6 +16,8 @@ Some ideas that helped me design My Checklist:
   <li>The team can create some simple checklists for the main development processes and track some information to better understand how to focus its actions to improve in the next iterations. Some examples about what the team can track are: client satisfaction, code review, how the team is using agile methods, feedbacks, and other information that could help understand the project results during its execution</li>
 </ul>
 
+## My Checklist in Action!
+
 ![mychecklist](https://user-images.githubusercontent.com/43149895/53651330-30b2ee00-3c25-11e9-8155-d419fb1d3a29.gif)
 
 >
