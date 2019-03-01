@@ -11,7 +11,7 @@ My Checklist can be used to track different information from the team and other 
 Some ideas that helped me design My Checklist:
 <ul>
   <li>One of the most important practices in agile methods is the retrospective, when the team can discuss the best and worst practices, actions and results about each iteration and figure out what it can do to overcame the problems and keep increasing its productivity and the releases quality</li>
-  <li>The team can identify the majority of the iterations problems and part of them are related to the managemet (agile) and development processes, and with the team itself</li>
+  <li>The team can identify the majority of the iterations problems and part of them are related to the management (agile) and development processes, and with the team itself</li>
   <li>It is important to continuosly track the team perception, plan and control the actions to keep going better, and the team itself can do that</li>
   <li>The team can create some simple checklists for the main development processes and track some information to better understand how to focus its actions to improve in the next iterations. Some examples about what the team can track are: client satisfaction, code review, how the team is using agile methods, feedbacks, and other information that could help understand the project results during its execution</li>
 </ul>
