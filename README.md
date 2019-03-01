@@ -4,9 +4,9 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 
-## About My Checklist
+## About
 
-It can be used to track different information from the team and other stakeholders about software development processes, customer satisfaction and whatever you decide is important.
+My Checklist can be used to track different information from the team and other stakeholders about software development processes, customer satisfaction and whatever you decide is important.
 
 Some ideas that helped me design My Checklist:
 <ul>
@@ -16,7 +16,7 @@ Some ideas that helped me design My Checklist:
   <li>The team can create some simple checklists for the main development processes and track some information to better understand how to focus its actions to improve in the next iterations. Some examples about what the team can track are: client satisfaction, code review, how the team is using agile methods, feedbacks, and other information that could help understand the project results during its execution</li>
 </ul>
 
-## My Checklist in Action!
+## In Action!
 
 ![mychecklist](https://user-images.githubusercontent.com/43149895/53651330-30b2ee00-3c25-11e9-8155-d419fb1d3a29.gif)
 
