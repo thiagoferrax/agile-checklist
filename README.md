@@ -3,7 +3,17 @@
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
->
+## About My Checklist
+
+It can be used to track different information from the team and other stakeholders about software development processes, customer satisfaction and whatever you decide is important.
+
+Some ideas that helped me design My Checklist:
+<ul>
+  <li>One of the most important practices in agile methods is the retrospective, when the team can discuss the best and worst practices, actions and results about each iteration and figure out what it can do to overcame the problems and keep increasing its productivity and the releases quality</li>
+  <li>The team can identify the majority of the iterations problems and part of them are related to the managemet (agile) and development processes, and with the team itself</li>
+  <li>It is important to continuosly track the team perception, plan and control the actions to keep going better, and the team itself can do that</li>
+  <li>The team can create some simple checklists for the main development processes and track some information to better understand how to focus its actions to improve in the next iterations. Some examples about what the team can track are: client satisfaction, code review, how the team is using agile methods, feedbacks, and other information that could help understand the project results during its execution</li>
+</ul>
 
 ![mychecklist](https://user-images.githubusercontent.com/43149895/53651330-30b2ee00-3c25-11e9-8155-d419fb1d3a29.gif)
 
