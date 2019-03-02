@@ -20,26 +20,41 @@ module.exports = app => {
         }
 
         if (checklist.id) {
-            app.db('checklists').then(checklists => withPath(checklists)).then(tree => {
-                const parentChecklist = tree.filter(c => c.id === checklist.parentId)[0]
-                
-                const parentIds = parentChecklist.parentPathIds
-                if (parentIds && parentIds.includes(parseInt(checklist.id))) {
-                    res.status(400).json({ errors: ['Circular reference is not permitted'] })
-                } else {
-                    app.db('checklists')
-                    .update(checklist)
-                    .where({ id: checklist.id })
-                    .then(id => res.json({ ...checklist, id: Number(checklist.id) }))
-                    .catch(err => res.status(500).json({ errors: [err] }))
-                }
-            })
+            if (checklist.parentId) {
+                app.db('checklists').then(checklists => withPath(checklists)).then(tree => {
+                    const parentIds = tree.filter(c => c.id === checklist.parentId)[0].parentPathIds
+                    if (parentIds.includes(+checklist.id)) {
+                        res.status(400).json({ errors: ['Circular reference is not permitted!'] })
+                    } else {
+                        update(req, res)
+                    }
+                })
+            } else {
+                update(req, res)
+            }
         } else {
             app.db('checklists')
                 .insert(checklist, 'id')
                 .then(id => res.json({ ...checklist, id: Number(id[0]) }))
                 .catch(err => res.status(500).json({ errors: [err] }))
         }
+    }
+
+    const update = (req, res) => {
+        const checklist = {
+            id: req.body.id,
+            description: req.body.description,
+            parentId: req.body.parentId,
+            userId: req.decoded.id
+        }
+
+        if (req.params.id) checklist.id = req.params.id
+
+        app.db('checklists')
+            .update(checklist)
+            .where({ id: checklist.id })
+            .then(id => res.json({ ...checklist, id: Number(checklist.id) }))
+            .catch(err => res.status(500).json({ errors: [err] }))
     }
 
     const remove = async (req, res) => {
