@@ -20,7 +20,7 @@ export default props => {
     const chartData = getRadarChartData(props.evaluations)
 
     if(chartData && chartData.categories > 2) {
-        return (<RadarChart cols={props.cols} data={chartData} options={options}/>)
+        return (<RadarChart cols={props.cols} data={chartData} options={options} project={props.project}/>)
     } else {
         return (<React.Fragment/>)
     }

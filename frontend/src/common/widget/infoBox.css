@@ -1,11 +1,6 @@
 .info-box-content {
     padding: 5px 10px;
-    margin-left: 60px;
-}
-
-.box-header.with-border {
-    border-bottom: 1px solid #f4f4f4;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    margin-left: 75px;
 }
 
 .info-box-icon {
@@ -15,17 +10,17 @@
     border-bottom-left-radius: 2px;
     display: block;
     float: left;
-    height: 60px;
-    width: 60px;
+    height: 75px;
+    width: 75px;
     text-align: center;
     font-size: 35px;
-    line-height: 60px;
+    line-height: 75px;
     background: rgba(0, 0, 0, 0.2);
 }
 
 .info-box {
     display: block;
-    min-height: 60px;
+    min-height: 75px;
     background: #fff;
     width: 100%;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -35,10 +30,26 @@
 
 .box {
     position: relative;
-    border-radius: 3px;
+    border-radius: 2px;
     background: #fff;
-    border-top: 1px solid #dcdcdc !important;
-    margin-bottom: 20px;
+    border-top: 3px solid #dcdcdc !important;
+    margin-bottom: 15px;
     width: 100%;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+
+.box-header > .fa, .box-header > .glyphicon, .box-header > .ion, .box-header .box-title {
+    display: inline-block;
+    font-size: 16px;
+    margin: 0;
+    line-height: 1;
+}
+
+.box-body {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 20px;
 }

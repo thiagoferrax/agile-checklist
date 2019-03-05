@@ -6,7 +6,7 @@ export default props => {
     if(!data) {
         return <React.Fragment/>
     }
-    return (<BarChart cols={props.cols} data={data} />)
+    return (<BarChart cols={props.cols} data={data} project={props.project.name}/>)
 }
 
 const getDataSet = (datasets, checklistId) => {

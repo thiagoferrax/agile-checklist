@@ -1,7 +1,6 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2';
 import Grid from '../layout/grid'
-import './chart.css'
 
 export default props => {
     if (!props.data) {
@@ -10,26 +9,48 @@ export default props => {
 
     return (
         <Grid cols={props.cols}>
-            <div className="chart_border">
-                <Bar
-                    data={props.data}
-                    width={100}
-                    height={20}
-                    options={{
-                        legend: {
-                            position: 'right',
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    max: 10,
-                                    min: 0,
-                                    stepSize: 2
+            <div className="box box-primary">
+                <div className="box-header with-border">
+                    <h3 className="box-title">Progress - {props.project}</h3>
+
+                    <div className="box-tools pull-right">
+                        <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
+                        </button>
+                        <button type="button" className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div className="box-body">
+                    <div className="chart">
+                        <Bar
+                            data={props.data}
+                            width={100}
+                            height={20}
+                            options={{
+                                legend: {
+                                    position: 'right',
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        gridLines: {
+                                            display:false
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        ticks: {
+                                            max: 10,
+                                            min: 0,
+                                            stepSize: 2
+                                        },
+                                        gridLines: {
+                                            display:false
+                                        }
+                                    }]
                                 }
-                            }]
-                        }
-                    }}
-                />
+                               
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
         </Grid >
     )

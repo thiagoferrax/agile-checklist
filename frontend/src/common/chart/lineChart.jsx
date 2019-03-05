@@ -1,7 +1,6 @@
 import React from 'react'
 import { Line } from 'react-chartjs-2';
 import Grid from '../layout/grid'
-import './chart.css'
 
 export default props => {
     if (!props.data) {
@@ -13,7 +12,16 @@ export default props => {
             position: 'right',
         },
         scales: {
+            pointRadius: 1,
+            xAxes: [{
+                gridLines: {
+                    display:false
+                }
+            }],
             yAxes: [{
+                gridLines: {
+                    display:false
+                },
                 ticks: {
                     max: 10,
                     min: 0,
@@ -34,13 +42,26 @@ export default props => {
 
     return (
         <Grid cols={props.cols}>
-            <div className="line_chart">
-                <Line
-                    data={props.data}
-                    width={100}
-                    height={height}
-                    options={options}
-                />
+            <div className="box box-primary">
+                <div className="box-header with-border">
+                    <h3 className="box-title">Sprints Comparison - {props.project}</h3>
+
+                    <div className="box-tools pull-right">
+                        <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
+                        </button>
+                        <button type="button" className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div className="box-body">
+                    <div className="chart">
+                        <Line
+                            data={props.data}
+                            width={100}
+                            height={height}
+                            options={options}
+                        />
+                    </div>
+                </div>
             </div>
         </Grid >
     )
