@@ -33,8 +33,8 @@ class Dashboard extends Component {
         return projects.map(
             project => ([
                         <EvaluationBarChart cols='12' evaluations={evaluations} project={project}/>,
-                        <SprintRadarChart cols='12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
-                        <ComparativeLineChart cols='12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
+                        <SprintRadarChart cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
+                        <ComparativeLineChart cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
                         <FishboneChart cols='12' data={fishboneData[project.id]} project={project.name}/>
                     ])
         )
@@ -47,13 +47,13 @@ class Dashboard extends Component {
                 <ContentHeader title='Dashboard' small='Version 1.0' />
                 <Content>
                     <Row>
-                        <InfoBox cols='12 3' color='aqua' icon='cube'
+                        <InfoBox cols='12 6 3' color='aqua' icon='cube'
                             value={projects.length} text='Projects' />
-                        <InfoBox cols='12 3' color='red' icon='checkbox-outline'
+                        <InfoBox cols='12 6 3' color='red' icon='checkbox-outline'
                             value={number_checklists} text='Checklists' />
-                        <InfoBox cols='12 3' color='green' icon='options'
+                        <InfoBox cols='12 6 3' color='green' icon='options'
                             value={number_evaluations} text='Evaluations' />
-                        <InfoBox cols='12 3' color='yellow' icon='people '
+                        <InfoBox cols='12 6 3' color='yellow' icon='people '
                             value={members.length} text='Members' />
                     </Row>
                     <Row>

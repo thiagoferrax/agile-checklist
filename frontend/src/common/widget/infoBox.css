@@ -25,15 +25,15 @@
     width: 100%;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     border-radius: 2px;
-    margin-bottom: 16px;
+    margin-bottom: 15px;
 }
 
 .box {
     position: relative;
     border-radius: 2px;
     background: #fff;
-    border-top: 1px solid gray !important;
-    margin-bottom: 16px;
+    border-top: 1px solid transparent !important;
+    margin-bottom: 15px;
     width: 100%;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
@@ -51,5 +51,5 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
-    padding: 20px;
+    padding: 15px 15px 20px 15px;
 }

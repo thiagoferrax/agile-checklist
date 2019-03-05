@@ -8,7 +8,7 @@ export default props => (
             <span className='logo-mini'><b>My</b>C</span>
             <span className='logo-lg'>
                 <i className='icon ion-md-checkbox-outline'></i>
-                <b> My</b> Checklist
+                &nbsp;&nbsp;<b>My</b> Checklist
             </span>        
         </a>
         <nav className='navbar navbar-static-top'>
