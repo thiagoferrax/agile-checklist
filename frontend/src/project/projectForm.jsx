@@ -37,7 +37,6 @@ class ProjectForm extends Component {
 }
 
 ProjectForm = reduxForm({ form: 'projectForm', destroyOnUnmount: false })(ProjectForm)
-const selector = formValueSelector('projectForm')
 
 const mapStateToProps = state => ({userList: state.user.list})
 const mapDispatchToProps = dispatch => bindActionCreators({ init, getUserList }, dispatch)

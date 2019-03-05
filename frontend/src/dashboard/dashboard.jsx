@@ -32,10 +32,10 @@ class Dashboard extends Component {
 
         return projects.map(
             project => ([
-                        <EvaluationBarChart cols='12' evaluations={evaluations} project={project}/>,
-                        <SprintRadarChart cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
-                        <ComparativeLineChart cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
-                        <FishboneChart cols='12' data={fishboneData[project.id]} project={project.name}/>
+                        <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluations} project={project}/>,
+                        <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
+                        <ComparativeLineChart key={`lineChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
+                        <FishboneChart key={`fishboneChart_${project.id}`} cols='12' data={fishboneData[project.id]} project={project.name}/>
                     ])
         )
     }
