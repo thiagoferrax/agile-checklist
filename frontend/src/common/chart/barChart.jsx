@@ -11,12 +11,12 @@ export default props => {
         <Grid cols={props.cols}>
             <div className="box box-primary">
                 <div className="box-header with-border">
-                    <h3 className="box-title">Progress - {props.project}</h3>
+                    <i className="fa fa-bar-chart"></i>
+                    <h3 className="box-title">&nbsp;PROGRESS - {props.project}</h3>
 
                     <div className="box-tools pull-right">
                         <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
                         </button>
-                        <button type="button" className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i></button>
                     </div>
                 </div>
                 <div className="box-body">
