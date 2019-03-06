@@ -24,7 +24,7 @@ export default props => {
                         <Bar
                             data={props.data}
                             width={100}
-                            height={20}
+                            height={25}
                             options={{
                                 legend: {
                                     position: 'right',

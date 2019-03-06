@@ -9,7 +9,7 @@ export default props => {
 
     if(chartData && chartData.categories > 1) {
         const cols = chartData.categories > 2 ? props.cols : '12'
-        const height = chartData.categories > 2 ? 40 : 20
+        const height = chartData.categories > 2 ? 50 : 25
         return (<LineChart cols={cols} data={chartData} height={height} project={props.project}/>)
     } else {
         return (<React.Fragment/>)
