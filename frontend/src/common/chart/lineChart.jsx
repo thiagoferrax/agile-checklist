@@ -45,7 +45,7 @@ export default props => {
             <div className="box box-primary">
                 <div className="box-header with-border">
                 <i className="fa fa-area-chart"></i>
-                    <h3 className="box-title">&nbsp;COMPARISON - {props.project}</h3>
+                    <h3 className="box-title">&nbsp;&nbsp;COMPARISON - {props.project}</h3>
 
                     <div className="box-tools pull-right">
                         <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
