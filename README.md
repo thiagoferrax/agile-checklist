@@ -18,7 +18,7 @@ Some ideas that helped me design My Checklist:
 
 ## In Action!
 
-![mychecklist](https://user-images.githubusercontent.com/43149895/53651330-30b2ee00-3c25-11e9-8155-d419fb1d3a29.gif)
+![mychecklist](https://user-images.githubusercontent.com/43149895/53899265-98e44400-4018-11e9-95d8-2b2446eda7a6.gif)
 
 >
 
