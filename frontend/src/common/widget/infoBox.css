@@ -1,6 +1,6 @@
 .info-box-content {
     padding: 5px 10px;
-    margin-left: 80px;
+    margin-left: 90px;
 }
 
 .info-box-icon {
@@ -10,17 +10,17 @@
     border-bottom-left-radius: 2px;
     display: block;
     float: left;
-    height: 80px;
-    width: 80px;
+    height: 90px;
+    width: 90px;
     text-align: center;
     font-size: 35px;
-    line-height: 80px;
+    line-height: 90px;
     background: rgba(0, 0, 0, 0.2);
 }
 
 .info-box {
     display: block;
-    min-height: 80px;
+    min-height: 90px;
     background: #fff;
     width: 100%;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);

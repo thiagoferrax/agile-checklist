@@ -62,6 +62,8 @@ class Dashboard extends Component {
                         {this.renderProjects()}
                     </Row>
                 </Content>
+                <br/>
+                <br/>
             </div>
         )
     }
