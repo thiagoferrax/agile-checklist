@@ -10,6 +10,7 @@ import EvaluationBarChart from '../common/chart/evaluationBarChart'
 import SprintRadarChart from '../common/chart/sprintRadarChart'
 import ComparativeLineChart from '../common/chart/comparativeLineChart'
 import FishboneChart from '../common/chart/fishboneChart'
+import ParetoChart from '../common/chart/paretoChart'
 
 
 import Row from '../common/layout/row'
@@ -28,13 +29,14 @@ class Dashboard extends Component {
     }
 
     renderProjects() {
-        const { projects, evaluations, sprintEvaluations, fishboneData } = this.props.summary
+        const { projects, evaluations, sprintEvaluations, fishboneData, paretoData } = this.props.summary
 
         return projects.map(
             project => ([
                         <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluations} project={project}/>,
-                        <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
                         <ComparativeLineChart key={`lineChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
+                        <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
+                        <ParetoChart key={`paretoChart_${project.id}`} cols='12' data={paretoData[project.id]} project={project.name}/>,
                         <FishboneChart key={`fishboneChart_${project.id}`} cols='12' data={fishboneData[project.id]} project={project.name}/>
                     ])
         )

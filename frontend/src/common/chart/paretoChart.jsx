@@ -1,37 +1,27 @@
 import React from 'react'
-import { Radar } from 'react-chartjs-2';
+import ParetoChart from 'pareto-chart';
 import Grid from '../layout/grid'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChartLine } from '@fortawesome/free-solid-svg-icons'
 
 export default props => {
     if (!props.data) {
         return <React.Fragment></React.Fragment>
     }
 
-    let options = {
-        legend: {
-            position: 'right',
-        },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    max: 10,
-                    min: 0,
-                    stepSize: 2
-                }
-            }]
-        }
-    }
+    const sprints = Object.values(props.data)
+    const paretoData = Object.values(sprints)
 
-    if (props.options) {
-        options = props.options
+    if(sprints.length === 1 && Object.keys(paretoData[0]).length === 0) {
+        return <React.Fragment></React.Fragment>
     }
-
+    
     return (
         <Grid cols={props.cols}>
             <div className="box box-primary">
                 <div className="box-header with-border">
-                <i className="icon ion-md-pulse"></i>                
-                    <h3 className="box-title">&nbsp;&nbsp;&nbsp;RADAR - {props.project}</h3>
+                    <FontAwesomeIcon icon={faChartLine} />
+                    <h3 className="box-title">&nbsp;&nbsp;PARETO - {props.project}</h3>
 
                     <div className="box-tools pull-right">
                         <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
@@ -40,12 +30,10 @@ export default props => {
                 </div>
                 <div className="box-body">
                     <div className="chart">
-                        <Radar
-                            data={props.data}
+                        <ParetoChart
                             width={100}
-                            height={40}
-                            options={options}
-                        />
+                            height={20}
+                            data={props.data} />
                     </div>
                 </div>
             </div>

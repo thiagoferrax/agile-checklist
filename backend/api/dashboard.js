@@ -189,6 +189,39 @@ module.exports = app => {
         }
     })
 
+
+    const getParetoData = (summary) => new Promise((resolve, reject) => {
+        if (summary.sprintEvaluations) {
+            const projects = Object.keys(summary.sprintEvaluations)
+
+            summary.paretoData = projects.reduce((paretoData, projectId) => {
+
+                paretoData[projectId] = summary.sprintEvaluations[projectId].reduce((data, evaluation) => {
+                    const sprint = `Sprint ${evaluation.sprint}`
+
+                    if (!data[sprint]) {
+                        data[sprint] = {}
+                    }
+
+                    const rootCauses = getRootCauses(evaluation, summary.projectEvaluations[projectId])
+                    if (rootCauses.length > 0) {
+                        data[sprint][evaluation.checklistDescription] = rootCauses.length
+                    } else {
+                        delete data[sprint][evaluation.checklistDescription]
+                    }
+                        
+                    return data
+                }, {})
+
+                return paretoData
+            }, {})
+
+            resolve(summary)
+        } else {
+            reject('No evaluations found')
+        }
+    })
+
     const get = (req, res) => {
         const userId = req.decoded.id
 
@@ -199,6 +232,7 @@ module.exports = app => {
             .then(getProjectEvaluations)
             .then(getSprintEvaluations)
             .then(getFishboneData)
+            .then(getParetoData)
             .then(summary => res.json(summary))
             .catch(err => res.status(500).json({ errors: [err] }))
     }

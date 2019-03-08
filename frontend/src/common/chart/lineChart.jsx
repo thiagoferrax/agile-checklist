@@ -35,7 +35,7 @@ export default props => {
         options = props.options
     }
 
-    let height = 50
+    let height = 40
     if (props.height) {
         height = props.height
     }
