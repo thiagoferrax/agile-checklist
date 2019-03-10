@@ -33,6 +33,8 @@ module.exports = app => {
 
     protectedApi.get('/dashboard/summary', app.api.dashboard.get)
 
+    protectedApi.get('/timelines', app.api.timeline.get)
+
     protectedApi.get('/users', app.api.user.get)
 
     /*

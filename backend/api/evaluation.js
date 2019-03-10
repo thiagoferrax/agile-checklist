@@ -8,11 +8,8 @@ module.exports = app => {
             sprint: req.body.sprint,
             checklistId: req.body.checklistId,
             userId: req.decoded.id,
-            date: req.body.date,
             checklist: req.body.checklist
         }
-
-        evaluation.date = new Date()
 
         if (req.params.id) evaluation.id = req.params.id
 
@@ -32,7 +29,9 @@ module.exports = app => {
             evaluation.score = getScore(checklist)
         }   
 
-        if (evaluation.id) {        
+        if (evaluation.id) {  
+            evaluation.updated_at = new Date()
+
             app.db('evaluations')
                 .update(evaluation)
                 .where({ id: evaluation.id })
@@ -53,6 +52,8 @@ module.exports = app => {
             } catch (msg) {
                 return res.status(400).json({ errors: [msg] })
             }
+            evaluation.created_at = new Date()
+            evaluation.updated_at = null
 
             const evaluationId = app.db('evaluations')
                 .insert(evaluation)
@@ -107,7 +108,7 @@ module.exports = app => {
                 checklistId: 'evaluations.checklistId',
                 score: 'evaluations.score',
                 userId: 'evaluations.userId',
-                date: 'evaluations.date',
+                date: 'evaluations.created_at',
                 projectName: 'projects.name',
                 checklistDescription: 'checklists.description'
             }

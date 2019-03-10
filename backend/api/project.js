@@ -6,7 +6,7 @@ module.exports = app => {
             id: req.body.id,
             name: req.body.name,
             team: req.body.team,
-            userId: req.decoded.id
+            userId: req.decoded.id,
         }
 
         if (req.params.id) project.id = req.params.id
@@ -23,6 +23,8 @@ module.exports = app => {
         delete project.team
 
         if (project.id) {
+            project.updated_at = new Date()
+
             app.db('projects')
                 .update(project)
                 .where({ id: project.id })
@@ -35,6 +37,9 @@ module.exports = app => {
                 })
                 .catch(err => res.status(500).json({ errors: [err] }))
         } else {
+            project.created_at = new Date()
+            project.updated_at = null
+            
             app.db('projects')
                 .insert(project)
                 .returning('id')

@@ -5,8 +5,8 @@ const jsonwebtoken = require('jsonwebtoken')
 
 module.exports = app => {
     const signin = async (req, res) => {
-        if (!req.body.email || !req.body.password) {            
-            return res.status(400).json({errors: ['Incomplete data']})
+        if (!req.body.email || !req.body.password) {
+            return res.status(400).json({ errors: ['Incomplete data'] })
         }
 
         const user = await app.db('users')
@@ -16,7 +16,7 @@ module.exports = app => {
         if (user) {
             bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
                 if (err || !isMatch) {
-                    return res.status(401).json({errors: ['Login and password not found!']})
+                    return res.status(401).json({ errors: ['Login and password not found!'] })
                 }
 
                 const payload = { id: user.id }
@@ -27,18 +27,18 @@ module.exports = app => {
                 })
             })
         } else {
-            res.status(400).json({errors: ['Unregistered user!']})
+            res.status(400).json({ errors: ['Unregistered user!'] })
         }
     }
 
     const validateToken = (req, res) => {
         const token = req.body.token || ''
-    
+
         jsonwebtoken.verify(token, authSecret, function (err, decoded) {
             return res.status(200).send({ valid: !err })
         })
     }
-    
+
     const obterHash = (password, callback) => {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, null, (err, hash) => callback(hash))
@@ -46,7 +46,7 @@ module.exports = app => {
     }
 
     const save = (req, res) => {
-        
+
         obterHash(req.body.password, hash => {
             const password = hash
 
@@ -55,11 +55,17 @@ module.exports = app => {
             }
 
             app.db('users')
-                .insert({ name: req.body.name, email: req.body.email, password })
+                .insert({
+                    name: req.body.name,
+                    email: req.body.email,
+                    password,
+                    created_at: new Date(),
+                    updated_at: null
+                })
                 .returning('id')
                 .then(userId => {
                     signin(req, res)
-                }).catch(err => res.status(400).json({errors: [err]}))
+                }).catch(err => res.status(400).json({ errors: [err] }))
         })
     }
 
@@ -72,8 +78,8 @@ module.exports = app => {
             }
         ).from('users')
             .then(users => res.json(users))
-            .catch(err => res.status(500).json({errors: [err]}))
+            .catch(err => res.status(500).json({ errors: [err] }))
     }
 
-    return {  signin, validateToken, save, get }
+    return { signin, validateToken, save, get }
 }

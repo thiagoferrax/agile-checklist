@@ -33,6 +33,9 @@ module.exports = app => {
                 update(req, res)
             }
         } else {
+            checklist.created_at = new Date()
+            checklist.updated_at = null
+
             app.db('checklists')
                 .insert(checklist, 'id')
                 .then(id => res.json({ ...checklist, id: Number(id[0]) }))
@@ -49,6 +52,8 @@ module.exports = app => {
         }
 
         if (req.params.id) checklist.id = req.params.id
+
+        checklist.updated_at = new Date()
 
         app.db('checklists')
             .update(checklist)
