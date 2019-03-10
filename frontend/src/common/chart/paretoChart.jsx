@@ -10,9 +10,15 @@ export default props => {
     }
 
     const sprints = Object.values(props.data)
-    const paretoData = Object.values(sprints)
+    const checklists = Object.values(sprints)
+    let hasData = false
+    checklists.forEach(data => {
+        if(Object.values(data).length > 0) {
+            hasData = true
+        }
+    })
 
-    if(sprints.length === 1 && Object.keys(paretoData[0]).length === 0) {
+    if(!hasData) {
         return <React.Fragment></React.Fragment>
     }
     

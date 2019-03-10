@@ -10,9 +10,15 @@ export default props => {
     }
 
     const sprints = Object.values(props.data)
-    const fishboneData = Object.values(sprints)
-    
-    if(sprints.length === 1 && Object.keys(fishboneData[0]).length === 0) {
+    const checklists = Object.values(sprints)
+    let hasData = false
+    checklists.forEach(data => {
+        if(Object.values(data).length > 0) {
+            hasData = true
+        }
+    })
+
+    if(!hasData) {
         return <React.Fragment></React.Fragment>
     }
 
