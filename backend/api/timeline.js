@@ -56,6 +56,7 @@ module.exports = app => {
                 const projectsMap = array2map(projects, 'id')
                 buildUserName(projectsMap, usersMap)
 
+                summary.projectsIds = Object.keys(projectsMap)
                 summary.projects = Object.values(projectsMap)
                 summary.timeline.data = buildTimeline(summary.timeline.data, 'project', summary.projects)
                 resolve(summary)
@@ -81,11 +82,32 @@ module.exports = app => {
             }).catch(err => reject(err))
     })
 
+    const getEvaluations = (summary) => new Promise((resolve, reject) => {
+        app.db.select({
+            id: 'evaluations.id',
+            project: 'projects.name',
+            sprint: 'evaluations.sprint',
+            checklist: 'checklists.description',
+            score: 'evaluations.score',
+            user: 'users.name',
+            time: 'evaluations.created_at',
+        }).from('evaluations')
+            .leftJoin('projects', 'evaluations.projectId', 'projects.id')    
+            .leftJoin('checklists', 'evaluations.checklistId', 'checklists.id')
+            .leftJoin('users', 'evaluations.userId', 'users.id')
+            .whereIn('evaluations.projectId', summary.projectsIds)
+            .then(evaluations => {
+                summary.timeline.data = buildTimeline(summary.timeline.data, 'evaluation', evaluations)
+                resolve(summary)
+            }).catch(err => reject(err))
+    })
+
     const get = (req, res) => {
         const userId = req.decoded.id
 
         getProjects(userId)
             .then(getChecklists)
+            .then(getEvaluations)
             .then(summary => res.json(summary.timeline))
             .catch(err => res.status(500).json({ errors: [err] }))
     }

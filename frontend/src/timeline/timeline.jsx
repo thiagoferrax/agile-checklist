@@ -56,7 +56,7 @@ class Timeline extends Component {
     evaluationItem({ sprint, project, user, checklist, time }) {
         return (
             <TimelineItem key={Math.random()} icon="sliders" color="green" time={time}>
-                <a href="/#/evaluations">{sprint}</a> of <a href="/#/projects">{project}</a> was evaluated by <a href="#">{user}</a> using <a href="/#/checklists">{checklist}</a>
+                <a href="/#/evaluations">Sprint {sprint}</a> of <a href="/#/projects">{project}</a> was evaluated by <a href="#">{user}</a> using <a href="/#/checklists">{checklist}</a>
             </TimelineItem>
         )
     }
