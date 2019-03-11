@@ -43,7 +43,7 @@ export default props => {
                         <Radar
                             data={props.data}
                             width={100}
-                            height={50}
+                            height={45}
                             options={options}
                         />
                     </div>

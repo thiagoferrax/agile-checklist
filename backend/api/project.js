@@ -23,6 +23,7 @@ module.exports = app => {
         delete project.team
 
         if (project.id) {
+            delete project.userId
             project.updated_at = new Date()
 
             app.db('projects')

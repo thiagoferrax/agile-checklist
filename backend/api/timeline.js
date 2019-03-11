@@ -3,6 +3,21 @@ const { array2map } = require('../common/mapUtil')
 module.exports = app => {
     const { existsOrError } = app.api.validation
 
+    const buildTimeline = (timelineData, type, entities) => {
+        return entities.reduce((data, entity) => {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+            const date = entity.time.toLocaleDateString('en-US', options)
+            if (!data[date]) {
+                data[date] = []
+            }
+            data[date].push({
+                type,
+                data: { ...entity, time: entity.time.toLocaleTimeString('en-US') }
+            })
+            return data
+        }, timelineData)
+    }
+
     const getProjects = (userId) => new Promise((resolve, reject) => {
         const summary = { timeline: { data: {} } }
 
@@ -10,47 +25,42 @@ module.exports = app => {
             id: 'projects.id',
             project: 'projects.name',
             userId: 'projects.userId',
-            user: 'users.name',
+            time: 'projects.created_at',
             memberId: 'users.id',
-            time: 'projects.created_at'
+            memberName: 'users.name',
+            memberTime: 'users.created_at'
         }).from('projects')
             .leftJoin('teams', 'teams.projectId', 'projects.id')
             .leftJoin('users', 'teams.userId', 'users.id')
             .where({ 'projects.userId': userId })
             .orWhere({ 'users.id': userId })
-            .orderBy('projects.created_at', 'desc')
             .then(projects => {
-                const projectsMap = array2map(projects, 'id')
-                summary.projectsIds = Object.keys(projectsMap)
+                summary.team = projects && projects.reduce((users, member) => {
+                    users.push({ userId: member.memberId, user: member.memberName, time: member.memberTime })
+                    return users
+                }, [])
+                summary.timeline.data = buildTimeline(summary.timeline.data, 'user', summary.team)             
+
+                const usersMap = array2map(summary.team, 'userId')
+
+                let projectsMap = array2map(projects, 'id')
+                const projectIds = Object.keys(projectsMap)
+                projectIds.forEach(id => {                    
+                    const user = usersMap[projectsMap[id].userId].user
+                    projectsMap[id] = {...projectsMap[id], user}
+                })
+                            
                 summary.projects = Object.values(projectsMap)
+                summary.timeline.data = buildTimeline(summary.timeline.data, 'project', summary.projects)
                 resolve(summary)
             })
             .catch(err => reject(err))
-    })
-
-    const getTimeline = (summary) => new Promise((resolve, reject) => {
-        
-        summary.timeline.data = summary.projects.reduce((timelineData, project) => {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const date = project.time.toLocaleDateString('en-US', options)
-            if (!timelineData[date]) {
-                timelineData[date] = []
-            }
-            timelineData[date].push({
-                type: 'project',
-                data: { ...project, time: project.time.toLocaleTimeString('en-US') }
-            })
-            return timelineData
-        }, summary.timeline.data)
-
-        resolve(summary)
     })
 
     const get = (req, res) => {
         const userId = req.decoded.id
 
         getProjects(userId)
-            .then(getTimeline)
             .then(summary => res.json(summary.timeline))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
