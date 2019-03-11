@@ -18,6 +18,14 @@ module.exports = app => {
         }, timelineData)
     }
 
+    const buildUserName = (entityMap, usersMap) => {
+        const ids = Object.keys(entityMap)
+        ids.forEach(id => {
+            const user = usersMap[entityMap[id].userId].user
+            entityMap[id] = { ...entityMap[id], user }
+        })
+    }
+
     const getProjects = (userId) => new Promise((resolve, reject) => {
         const summary = { timeline: { data: {} } }
 
@@ -39,17 +47,15 @@ module.exports = app => {
                     users.push({ userId: member.memberId, user: member.memberName, time: member.memberTime })
                     return users
                 }, [])
-                summary.timeline.data = buildTimeline(summary.timeline.data, 'user', summary.team)             
+                summary.timeline.data = buildTimeline(summary.timeline.data, 'user', summary.team)
 
                 const usersMap = array2map(summary.team, 'userId')
+                summary.usersMap = usersMap
+                summary.membersIds = Object.keys(usersMap)
 
-                let projectsMap = array2map(projects, 'id')
-                const projectIds = Object.keys(projectsMap)
-                projectIds.forEach(id => {                    
-                    const user = usersMap[projectsMap[id].userId].user
-                    projectsMap[id] = {...projectsMap[id], user}
-                })
-                            
+                const projectsMap = array2map(projects, 'id')
+                buildUserName(projectsMap, usersMap)
+
                 summary.projects = Object.values(projectsMap)
                 summary.timeline.data = buildTimeline(summary.timeline.data, 'project', summary.projects)
                 resolve(summary)
@@ -57,10 +63,29 @@ module.exports = app => {
             .catch(err => reject(err))
     })
 
+    const getChecklists = (summary) => new Promise((resolve, reject) => {
+        app.db.select({
+            id: 'checklists.id',
+            checklist: 'checklists.description',
+            userId: 'checklists.userId',
+            time: 'checklists.created_at',
+        }).from('checklists')
+            .whereIn('checklists.userId', summary.membersIds)
+            .where('checklists.parentId', null)
+            .then(checklists => {
+                const checklistsMap = array2map(checklists, 'id')
+
+                buildUserName(checklistsMap, summary.usersMap)
+                summary.timeline.data = buildTimeline(summary.timeline.data, 'checklist', Object.values(checklistsMap))
+                resolve(summary)
+            }).catch(err => reject(err))
+    })
+
     const get = (req, res) => {
         const userId = req.decoded.id
 
         getProjects(userId)
+            .then(getChecklists)
             .then(summary => res.json(summary.timeline))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
