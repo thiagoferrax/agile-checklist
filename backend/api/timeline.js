@@ -4,45 +4,54 @@ module.exports = app => {
     const { existsOrError } = app.api.validation
 
     const getProjects = (userId) => new Promise((resolve, reject) => {
-        const data = [
-            {
-                date: '10 Feb. 2014',
-                logs: [{
-                    type: 'evaluation',
-                    data: { sprint: 'Sprint 1', project: 'Project One', user: 'Thiago Ferraz', checklist: 'Scrum', time: '10:30' }
-                }, {
-                    type: 'evaluation',
-                    data: { sprint: 'Sprint 1', project: 'Project One', user: 'Beatriz Ferraz', checklist: 'Scrum', time: '10:27' }
-                }, {
-                    type: 'checklist',
-                    data: { checklist: 'Scrum', user: 'Thiago Ferraz', time: '10:00' }
-                }, {
-                    type: 'project',
-                    data: { project: 'Project One', user: 'Thiago Ferraz', time: '9:47' }
-                }, {
-                    type: 'user',
-                    data: { user: 'Thiago Ferraz', time: '9:45' }
-                }]
-            }, {
-                date: '09 Feb. 2014',
-                logs: [
-                    {
-                        type: 'user',
-                        data: { user: 'Beatriz Ferraz', time: '7:45' }
-                    }
-                ]
-            }
-        ]
+        const summary = { timeline: { data: {} } }
 
-        const timeline = { data }
-        resolve(timeline) 
+        app.db.select({
+            id: 'projects.id',
+            project: 'projects.name',
+            userId: 'projects.userId',
+            user: 'users.name',
+            memberId: 'users.id',
+            time: 'projects.created_at'
+        }).from('projects')
+            .leftJoin('teams', 'teams.projectId', 'projects.id')
+            .leftJoin('users', 'teams.userId', 'users.id')
+            .where({ 'projects.userId': userId })
+            .orWhere({ 'users.id': userId })
+            .orderBy('projects.created_at', 'desc')
+            .then(projects => {
+                const projectsMap = array2map(projects, 'id')
+                summary.projectsIds = Object.keys(projectsMap)
+                summary.projects = Object.values(projectsMap)
+                resolve(summary)
+            })
+            .catch(err => reject(err))
+    })
+
+    const getTimeline = (summary) => new Promise((resolve, reject) => {
+        
+        summary.timeline.data = summary.projects.reduce((timelineData, project) => {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const date = project.time.toLocaleDateString('en-US', options)
+            if (!timelineData[date]) {
+                timelineData[date] = []
+            }
+            timelineData[date].push({
+                type: 'project',
+                data: { ...project, time: project.time.toLocaleTimeString('en-US') }
+            })
+            return timelineData
+        }, summary.timeline.data)
+
+        resolve(summary)
     })
 
     const get = (req, res) => {
         const userId = req.decoded.id
 
         getProjects(userId)
-            .then(timeline => res.json(timeline))
+            .then(getTimeline)
+            .then(summary => res.json(summary.timeline))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
 

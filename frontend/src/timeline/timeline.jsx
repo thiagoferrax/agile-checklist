@@ -80,9 +80,11 @@ class Timeline extends Component {
     }
 
     getTimelineItems(data) {
-        return data && data.reduce((items, day) => {
-            items.push(this.date(day.date))
-            day.logs.forEach(log =>  items.push(this[`${log.type}Item`](log.data)))
+        const dates = data && Object.keys(data)
+
+        return dates && dates.reduce((items, day) => {
+            items.push(this.date(day))
+            data[day].forEach(log =>  items.push(this[`${log.type}Item`](log.data)))
             return items
         }, [])
     }
