@@ -37,33 +37,33 @@ class Timeline extends Component {
         )
     }
 
-    projectItem({ project, user, time }) {
+    projectItem({ project, user, formattedTime }) {
         return (
-            <TimelineItem key={Math.random()} icon="cube" color="aqua" time={time}>
+            <TimelineItem key={Math.random()} icon="cube" color="aqua" time={formattedTime}>
                 <a href="/#/projects">{project}</a> was created by <a href="#">{user}</a>
             </TimelineItem>
         )
     }
 
-    userItem({ user, time }) {
+    userItem({ user, formattedTime }) {
         return (
-            <TimelineItem key={Math.random()} icon="user" color="yellow" time={time}>
+            <TimelineItem key={Math.random()} icon="user" color="yellow" time={formattedTime}>
                 <a href="#">{user}</a> was registered in <a href="#">My Checklist</a>
             </TimelineItem>
         )
     }
 
-    evaluationItem({ sprint, project, user, checklist, time }) {
+    evaluationItem({ sprint, project, user, checklist, formattedTime }) {
         return (
-            <TimelineItem key={Math.random()} icon="sliders" color="green" time={time}>
+            <TimelineItem key={Math.random()} icon="sliders" color="green" time={formattedTime}>
                 <a href="/#/evaluations">Sprint {sprint}</a> of <a href="/#/projects">{project}</a> was evaluated by <a href="#">{user}</a> using <a href="/#/checklists">{checklist}</a>
             </TimelineItem>
         )
     }
 
-    checklistItem({ checklist, user, time }) {
+    checklistItem({ checklist, user, formattedTime }) {
         return (
-            <TimelineItem key={Math.random()} icon="check" color="red" time={time}>
+            <TimelineItem key={Math.random()} icon="check" color="red" time={formattedTime}>
                 <a href="/#/checklists">{checklist}</a> was created by <a href="#">{user}</a>
             </TimelineItem>
         )
@@ -80,11 +80,16 @@ class Timeline extends Component {
     }
 
     getTimelineItems(data) {
-        const dates = data && Object.keys(data)
+        let dates = data && Object.keys(data)
+
+        dates = dates && dates.sort((d1, d2) => new Date(d2) - new Date(d1))
 
         return dates && dates.reduce((items, day) => {
             items.push(this.date(day))
-            data[day].forEach(log =>  items.push(this[`${log.type}Item`](log.data)))
+
+            const sortedData = data[day].sort((d1, d2) => new Date(d2.data.time) - new Date(d1.data.time))
+
+            sortedData.forEach(log =>  items.push(this[`${log.type}Item`](log.data)))
             return items
         }, [])
     }

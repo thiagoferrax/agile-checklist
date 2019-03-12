@@ -12,7 +12,7 @@ module.exports = app => {
             }
             data[date].push({
                 type,
-                data: { ...entity, time: entity.time.toLocaleTimeString('en-US') }
+                data: { ...entity, time: entity.time, formattedTime:entity.time.toLocaleTimeString('en-US') }
             })
             return data
         }, timelineData)
