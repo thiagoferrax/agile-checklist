@@ -65,8 +65,12 @@ module.exports = app => {
             .leftJoin('users', 'teams.userId', 'users.id')
             .whereIn('projects.id', summary.projectsIds)
             .then(projects => {
+                const distinctUsers = {}
                 summary.team = projects && projects.reduce((users, member) => {
-                    users.push({ userId: member.memberId, user: member.memberName, time: member.memberTime })
+                    if(!distinctUsers[member.memberId]) {
+                        distinctUsers[member.memberId] = 1
+                        users.push({ userId: member.memberId, user: member.memberName, time: member.memberTime })
+                    }                    
                     return users
                 }, [])
                 summary.timeline.data = buildTimeline(summary.timeline.data, 'user', summary.team)
