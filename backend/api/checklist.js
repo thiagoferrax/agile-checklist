@@ -48,7 +48,6 @@ module.exports = app => {
             id: req.body.id,
             description: req.body.description,
             parentId: req.body.parentId,
-            userId: req.decoded.id
         }
 
         if (req.params.id) checklist.id = req.params.id
