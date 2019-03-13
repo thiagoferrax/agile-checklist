@@ -14,10 +14,11 @@ module.exports = app => {
             }
             data[date].push({
                 type,
-                data: { ...entity, 
-                        time, 
-                        formattedTime: time.toLocaleTimeString('en-US') 
-                    }
+                data: {
+                    ...entity,
+                    time,
+                    formattedTime: time.toLocaleTimeString('en-US')
+                }
             })
             return data
         }, timelineData)
@@ -32,7 +33,7 @@ module.exports = app => {
     }
 
     const getProjectsIds = (userId) => new Promise((resolve, reject) => {
-        const summary = { timeline: { data: {} }, userId }
+        const summary = { timeline: { data: {} }, userId, membersIds: [userId], projects: [] }
 
         app.db.select({
             id: 'projects.id',
@@ -74,18 +75,21 @@ module.exports = app => {
             .leftJoin('users', 'teams.userId', 'users.id')
             .whereIn('projects.id', summary.projectsIds)
             .then(projects => {
-                summary.team = getTeam(projects)
-                summary.timeline.data = buildTimeline(summary.timeline.data, 'user', summary.team)
+                if (projects.length > 0) {
+                    summary.team = getTeam(projects)
+                    summary.timeline.data = buildTimeline(summary.timeline.data, 'user', summary.team)
 
-                summary.usersMap = array2map(summary.team, 'userId')
-                summary.membersIds = Object.keys(summary.usersMap)
+                    summary.usersMap = array2map(summary.team, 'userId')
+                    summary.membersIds = Object.keys(summary.usersMap)
 
-                const projectsMap = array2map(projects, 'id')
-                buildUserName(projectsMap, summary.usersMap)
+                    const projectsMap = array2map(projects, 'id')
+                    buildUserName(projectsMap, summary.usersMap)
 
-                summary.projectsIds = Object.keys(projectsMap)
-                summary.projects = Object.values(projectsMap)
-                summary.timeline.data = buildTimeline(summary.timeline.data, 'project', summary.projects)
+                    summary.projectsIds = Object.keys(projectsMap)
+                    summary.projects = Object.values(projectsMap)
+                    summary.timeline.data = buildTimeline(summary.timeline.data, 'project', summary.projects)
+                }
+
                 resolve(summary)
             })
             .catch(err => reject(err))
@@ -128,7 +132,7 @@ module.exports = app => {
     })
 
     const getSingleUser = (summary) => new Promise((resolve, reject) => {
-        if (Object.keys(summary.timeline.data).length < 1) {
+        if (Object.keys(summary.projects).length < 1) {
             app.db.select({
                 id: 'users.id',
                 user: 'users.name',
