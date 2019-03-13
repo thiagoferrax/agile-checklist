@@ -19,8 +19,12 @@ function submit(values, url) {
                 ])
             })
             .catch(e => {
-                e.response.data.errors.forEach(
-                    error => toastr.error('Error', error))
+                if(!e.response) {
+                    toastr.error('Backend application and database is not accessible!')
+                } else {
+                    e.response.data.errors.forEach(
+                        error => toastr.error('Error', error))
+                }                
             })
     }
 }
