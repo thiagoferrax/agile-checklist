@@ -8,6 +8,7 @@ import { getList as getChecklists, getTree } from '../checklist/checklistActions
 import { getList as getProjects } from '../project/projectActions'
 import Tree from 'tree-slide-bar'
 import If from '../common/operator/if'
+import Grid from '../common/layout/grid'
 
 import Select from '../common/form/select'
 
@@ -27,6 +28,30 @@ class EvaluationForm extends Component {
         return sprints
     }
 
+    getChecklist(checklist) {
+        return (
+            <Grid cols='12'>
+                <div className="box box-primary">
+                    <div className="box-header with-border">
+                        <i className="fa fa-check"></i>
+                        <h3 className="box-title">&nbsp;&nbsp;MY CHECKLIST</h3>
+
+                        <div className="box-tools pull-right">
+                            <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="box-body">
+                        <Field
+                            name='checklist'
+                            component={Tree}
+                            tree={checklist}
+                        />
+                    </div>
+                </div>
+            </Grid >
+        )
+    }
 
     render() {
 
@@ -44,7 +69,7 @@ class EvaluationForm extends Component {
                         component={Select} readOnly={readOnly} inputOnChange={selectChecklist}
                         options={checklists.filter(u => u.parentId === null)} optionValue='id' optionLabel='description' />
                     <If test={checklist.length > 0}>
-                        <Field name='checklist' legend='My checklist' component={Tree} tree={checklist} />
+                        {this.getChecklist(checklist)}
                     </If>
                 </div>
                 <div className='box-footer'>

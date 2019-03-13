@@ -45,8 +45,40 @@ class ChecklistForm extends Component {
         this.props.clone(checklist)
     }
 
+    getChecklists(tree) {
+        const { showDelete, showUpdate } = this.props
+        return tree && tree.map(checklist => {
+            console.log('checklist', checklist)
+            return (
+                <Grid cols='12'>
+                    <div className="box box-primary">
+                        <div className="box-header with-border">
+                            <i className="fa fa-check"></i>
+                            <h3 className="box-title">&nbsp;&nbsp;MY CHECKLIST - {checklist.description}</h3>
+
+                            <div className="box-tools pull-right">
+                                <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="box-body">
+                            <Field
+                                key={`checklist_${Math.random()}`}
+                                name={`checklist_${Math.random()}`}
+                                component={Tree}
+                                tree={[checklist]}
+                                hideSlideBar={true}
+                                onEdit={showUpdate}
+                                onDelete={showDelete} />
+                        </div>
+                    </div>
+                </Grid >
+            )
+        })
+    }
+
     render() {
-        const { handleSubmit, showDelete, showUpdate, readOnly, list, description, parentId, tree, init } = this.props
+        const { handleSubmit, readOnly, list, description, parentId, tree, init } = this.props
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
@@ -87,7 +119,7 @@ class ChecklistForm extends Component {
                 </div>
                 <div className='box-footer'>
                     <If test={!readOnly}>
-                        <Field name='checklist' legend='My checklists' component={Tree} tree={tree} hideSlideBar={true} onEdit={showUpdate} onDelete={showDelete} />
+                        {this.getChecklists(tree)}
                     </If>
                 </div>
             </form>
