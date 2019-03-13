@@ -47,10 +47,15 @@ class ChecklistForm extends Component {
 
     getChecklists(tree) {
         const { showDelete, showUpdate } = this.props
+        let cols = '12 12 12 6'
+        if(tree && tree.length == 1) {
+            cols = '12'
+        }
+
         return tree && tree.map(checklist => {
             console.log('checklist', checklist)
             return (
-                <Grid cols='12'>
+                <Grid cols={cols}>
                     <div className="box box-primary">
                         <div className="box-header with-border">
                             <i className="fa fa-check"></i>
@@ -116,11 +121,11 @@ class ChecklistForm extends Component {
                             </div>
                         </If>
                     </Grid>
-                </div>
-                <div className='box-footer'>
                     <If test={!readOnly}>
                         {this.getChecklists(tree)}
                     </If>
+                </div>
+                <div className='box-footer'>                    
                 </div>
             </form>
         )
