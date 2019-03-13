@@ -6,6 +6,7 @@ import { getTimeline } from './timelinedActions'
 import ContentHeader from '../common/template/contentHeader'
 import Content from '../common/template/content'
 import TimelineItem from '../common/template/timelineItem'
+import './timeline.css'
 
 class Timeline extends Component {
     componentWillMount() {
