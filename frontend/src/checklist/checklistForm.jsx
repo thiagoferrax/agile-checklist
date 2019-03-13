@@ -67,8 +67,7 @@ class ChecklistForm extends Component {
                         </div>
                         <div className="box-body">
                             <Field
-                                key={`checklist_${Math.random()}`}
-                                name={`checklist_${Math.random()}`}
+                                name={`checklist_${checklist.id}`}
                                 component={Tree}
                                 tree={[checklist]}
                                 hideSlideBar={true}
