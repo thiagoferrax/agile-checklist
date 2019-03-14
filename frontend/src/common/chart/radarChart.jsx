@@ -11,19 +11,13 @@ export default props => {
         legend: {
             position: 'right',
         },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    max: 10,
-                    min: 0,
-                    stepSize: 2
-                }
-            }]
+        scale: {
+            ticks: {
+                beginAtZero: true,
+                max: 10,
+                stepSize: 2
+            }
         }
-    }
-
-    if (props.options) {
-        options = props.options
     }
 
     return (

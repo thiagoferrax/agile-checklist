@@ -4,23 +4,10 @@ import RadarChart from './radarChart'
 const MAX_DATASETS = 1
 
 export default props => {     
-    let options = {
-        legend: {
-            position: 'right',
-        },
-        scale: {
-            ticks: {
-                beginAtZero: true,
-                max: 10,
-                stepSize: 2
-            }
-        }
-    }
-
     const chartData = getRadarChartData(props.evaluations)
 
     if(chartData && chartData.categories > 2) {
-        return (<RadarChart cols={props.cols} data={chartData} options={options} project={props.project}/>)
+        return (<RadarChart cols={props.cols} data={chartData} project={props.project}/>)
     } else {
         return (<React.Fragment/>)
     }
@@ -33,14 +20,14 @@ const getDataSet = (datasets, checklistId) => {
 const getChartColor = (index) => {
 
     const colors = [
-        'rgb(0, 192, 239, .3)',
-        'rgb(216, 27, 96, .3)',
-        'rgb(104,115,140, .3)',
-        'rgb(48, 187, 187, .3)',
-        'rgb(11, 120, 206, .3)',
-        'rgb(255, 119, 1, .3)',
-        'rgb(17, 17, 17, .3)',
-        'rgb(96, 92, 168, .3)'
+        'rgb(0, 192, 239, .4)',
+        'rgb(216, 27, 96, .4)',
+        'rgb(104,115,140, .4)',
+        'rgb(48, 187, 187, .4)',
+        'rgb(11, 120, 206, .4)',
+        'rgb(255, 119, 1, .4)',
+        'rgb(17, 17, 17, .4)',
+        'rgb(96, 92, 168, .4)'
         
     ]
 
