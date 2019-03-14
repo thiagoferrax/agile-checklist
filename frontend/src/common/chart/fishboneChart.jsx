@@ -3,7 +3,7 @@ import FishboneChart from 'fishbone-chart'
 import Grid from '../layout/grid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFish } from '@fortawesome/free-solid-svg-icons'
-import './fishboneChart.css'
+import './chart.css'
 
 export default props => {
     if (!props.data) {
@@ -37,9 +37,9 @@ export default props => {
                 </div>
                 <div className="box-body">
                     <p class="text-center">
-                        {'Items that scored <= 5.0 by category'}
+                        {'Items that scored <= 5.0 per category'}
                     </p>
-                    <div className="chart margin_top">
+                    <div className="chart">
                         <FishboneChart data={props.data} />
                     </div>
                 </div>

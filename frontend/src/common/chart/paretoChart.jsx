@@ -3,6 +3,7 @@ import ParetoChart from 'pareto-chart';
 import Grid from '../layout/grid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartLine } from '@fortawesome/free-solid-svg-icons'
+import './chart.css'
 
 export default props => {
     if (!props.data) {
@@ -36,7 +37,7 @@ export default props => {
                 </div>
                 <div className="box-body">
                     <p class="text-center">
-                        {'Number of items that scored <= 5.0 by category'}
+                        {'Number of items that scored <= 5.0 per category'}
                     </p>
                     <div className="chart">
                         <ParetoChart

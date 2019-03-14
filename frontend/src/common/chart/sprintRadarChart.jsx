@@ -1,5 +1,6 @@
 import React from 'react'
 import RadarChart from './radarChart'
+import './chart.css'
 
 const MAX_DATASETS = 1
 
@@ -79,7 +80,15 @@ const getRadarChartData = (evaluations) => {
                 label: sprint,
                 data,
                 hidden,
-                borderWidth: 2,
+                pointBorderColor: getChartBorderColor(color),
+                pointBackgroundColor: getChartColor(color),
+                pointBorderWidth: 1,
+                pointHoverRadius: 4,
+                pointHoverBackgroundColor: getChartColor(color),
+                pointHoverBorderColor: getChartBorderColor(color),
+                pointHoverBorderWidth: 1.5,
+                pointRadius: 3,
+                borderWidth: 1.5,
                 backgroundColor: getChartColor(color),
                 borderColor: getChartBorderColor(color)
             })

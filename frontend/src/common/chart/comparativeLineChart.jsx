@@ -1,5 +1,6 @@
 import React from 'react'
 import LineChart from './lineChart'
+import './chart.css'
 
 const MAX_DATASETS = 2
 
@@ -82,7 +83,7 @@ const getLineChartData = (evaluations) => {
                 label: sprint,
                 data,
                 hidden,
-                borderWidth: 2,
+                borderWidth: 1.5,
                 backgroundColor: getChartColor(color),
                 borderColor: getChartBorderColor(color)
             })

@@ -1,5 +1,6 @@
 import React from 'react'
 import BarChart from './barChart'
+import './chart.css'
 
 export default props => {
     const data = getBarChartData(props.evaluations, props.project.id)
@@ -78,7 +79,7 @@ const getBarChartData = (evaluations, projectId) => {
             map.datasets.push({
                 label: checklist,
                 data,
-                borderWidth: 2,
+                borderWidth: 1.5,
                 backgroundColor: getChartColor(color),
                 borderColor: getChartBorderColor(color)
             })
