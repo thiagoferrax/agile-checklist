@@ -67,7 +67,8 @@ class ChecklistForm extends Component {
                                 tree={[checklist]}
                                 hideSlideBar={true}
                                 onEdit={showUpdate}
-                                onDelete={showDelete} />
+                                onDelete={showDelete} 
+                                shrink={true}/>
                         </div>
                     </div>
                 </Grid >
