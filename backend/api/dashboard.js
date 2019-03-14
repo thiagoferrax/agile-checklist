@@ -147,7 +147,7 @@ module.exports = app => {
 
     const getRootCauses = (evaluation, evaluations) => {
         return evaluations && evaluations.reduce((causes, e) => {
-            if (e.parentId === evaluation.checklistId && e.sprint === evaluation.sprint && e.score < 7) {
+            if (e.parentId === evaluation.checklistId && e.sprint === evaluation.sprint && e.score <= 5) {
                 if (!hasChild(e, evaluations)) {
                     causes.push(`${e.checklistDescription} | ${parseFloat(e.score).toFixed(1)}`)
                 }

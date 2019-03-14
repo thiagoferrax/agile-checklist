@@ -35,6 +35,9 @@ export default props => {
                     </div>
                 </div>
                 <div className="box-body">
+                    <p class="text-center">
+                        {'Items that scored <= 5.0 by category'}
+                    </p>
                     <div className="chart">
                         <ParetoChart
                             width={100}
