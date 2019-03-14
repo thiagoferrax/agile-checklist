@@ -1,9 +1,8 @@
 
 .timeline > li > .timeline-item > .timeline-header {
-    margin: 0;
-    color: #555;
-    border-bottom: 1px solid #f4f4f4;
-    padding: 10px;
     font-size: 14px;
-    line-height: 1.1;
+}
+
+.timeline > li > .timeline-item > .time {
+    color: #555;
 }

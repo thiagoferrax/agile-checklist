@@ -10,8 +10,10 @@ class EvaluatonList extends Component {
     }
 
     getFormatedDate(isoDate) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' }
+        
         const date = new Date(isoDate)
-        return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()} `
+        return `${date.toLocaleDateString('en-US', options)} at ${date.toLocaleTimeString('en-US')}`
     }
 
     renderRows() {
