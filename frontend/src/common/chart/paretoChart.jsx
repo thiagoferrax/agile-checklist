@@ -36,15 +36,15 @@ export default props => {
                     </div>
                 </div>
                 <div className="box-body">
-                    <p className="text-center">
-                        {'Number of items that scored <= 5.0 per category'}
-                    </p>
                     <div className="chart">
                         <ParetoChart
                             width={100}
                             height={20}
                             data={props.data} />
                     </div>
+                </div>
+                <div className="box-footer">
+                    {'Number of items (score <= 5.0) per category'}
                 </div>
             </div>
         </Grid >

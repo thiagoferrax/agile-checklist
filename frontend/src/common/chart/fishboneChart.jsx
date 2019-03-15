@@ -36,12 +36,12 @@ export default props => {
                     </div>
                 </div>
                 <div className="box-body">
-                    <p className="text-center">
-                        {'Items that scored <= 5.0 per category'}
-                    </p>
                     <div className="chart">
                         <FishboneChart data={props.data} />
                     </div>
+                </div>
+                <div className="box-footer">
+                    {'Items (score <= 5.0) per category'}
                 </div>
             </div>
         </Grid >
