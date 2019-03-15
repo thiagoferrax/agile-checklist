@@ -26,7 +26,7 @@ class Timeline extends Component {
 
         return (
             <div>
-                <ContentHeader title='Timeline' small='Main events' />
+                <ContentHeader title='Timeline' small='Main Events' />
                 <Content>
                     <ul className="timeline">
                         {this.getTimelineItems(timelineData)}

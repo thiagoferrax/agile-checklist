@@ -24,7 +24,7 @@ class ProjectForm extends Component {
                     <Field name='team' label='Team' cols='12 4'
                         component={Select} readOnly={readOnly} options={userList} optionValue='id' optionLabel='name' isMulti={true} />
                 </div>
-                <div className='box-footer'>
+                <div className='box-footer text-right'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>
                         {this.props.submitLabel}
                     </button>

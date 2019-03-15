@@ -35,11 +35,6 @@ class EvaluationForm extends Component {
                     <div className="box-header with-border">
                         <i className="fa fa-check"></i>
                         <h3 className="box-title">&nbsp;&nbsp;MY CHECKLIST</h3>
-
-                        <div className="box-tools pull-right">
-                            <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
-                            </button>
-                        </div>
                     </div>
                     <div className="box-body">
                         <Field
@@ -72,7 +67,7 @@ class EvaluationForm extends Component {
                         {this.getChecklist(checklist)}
                     </If>
                 </div>
-                <div className='box-footer'>
+                <div className='box-footer text-right'>
                     <button type='submit' className={`btn btn-${this.props.submitClass}`}>
                         {this.props.submitLabel}
                     </button>

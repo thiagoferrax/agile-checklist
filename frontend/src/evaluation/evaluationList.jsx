@@ -47,7 +47,7 @@ class EvaluatonList extends Component {
                             <th>Sprint</th>
                             <th>Checklist</th>
                             <th>Score</th>
-                            <th>Date</th>
+                            <th>Created at</th>
                             <th className='table-actions'>Actions</th>
                         </tr>
                     </thead>

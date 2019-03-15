@@ -46,7 +46,7 @@ class Dashboard extends Component {
         const { projects, number_checklists, number_evaluations, members } = this.props.summary
         return (
             <div>
-                <ContentHeader title='Dashboard' small='Control panel' />
+                <ContentHeader title='Dashboard' small='Control Panel' />
                 <Content>
                     <Row>
                         <InfoBox cols='12 6 3' color='aqua' icon='cube'

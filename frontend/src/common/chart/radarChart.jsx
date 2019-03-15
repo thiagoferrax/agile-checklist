@@ -26,11 +26,6 @@ export default props => {
                 <div className="box-header with-border">
                 <i className="icon ion-md-pulse"></i>                
                     <h3 className="box-title">&nbsp;&nbsp;RADAR - {props.project}</h3>
-
-                    <div className="box-tools pull-right">
-                        <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
-                        </button>
-                    </div>
                 </div>
                 <div className="box-body">
                     <div className="chart">
@@ -41,6 +36,9 @@ export default props => {
                             options={options}
                         />
                     </div>
+                </div>
+                <div className="box-footer">
+                    {'Radar of average score per category'}
                 </div>
             </div>
         </Grid >

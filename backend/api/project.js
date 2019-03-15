@@ -103,6 +103,7 @@ module.exports = app => {
                 id: 'projects.id',
                 name: 'projects.name',
                 userId: 'projects.userId',
+                date: 'projects.created_at'
             }
         ).from('projects')
             .leftJoin('teams', 'teams.projectId', 'projects.id')
