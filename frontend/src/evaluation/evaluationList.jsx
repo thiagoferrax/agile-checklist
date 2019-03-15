@@ -26,7 +26,7 @@ class EvaluatonList extends Component {
                 <td>{evaluation.score ? parseFloat(evaluation.score).toFixed(1) : '0.0'}</td>
                 <td>{this.getFormatedDate(evaluation.date)}</td>
                 <td>
-                    <button className='btn btn-warning' onClick={() => this.props.showUpdate(evaluation)}>
+                    <button className='btn btn-default' onClick={() => this.props.showUpdate(evaluation)}>
                         <i className='icon ion-md-create'></i>
                     </button>
                     <button className='btn btn-danger' onClick={() => this.props.showDelete(evaluation)}>

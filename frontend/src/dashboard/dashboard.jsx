@@ -22,7 +22,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         this.interval = setInterval(() => this.props.getSummary(), 5000)
-    }    
+    }
 
     componentWillUnmount() {
         clearInterval(this.interval)
@@ -33,12 +33,12 @@ class Dashboard extends Component {
 
         return projects.map(
             project => ([
-                        <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluations} project={project}/>,
-                        <ComparativeLineChart key={`lineChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
-                        <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name}/>,
-                        <ParetoChart key={`paretoChart_${project.id}`} cols='12' data={paretoData[project.id]} project={project.name}/>,
-                        <FishboneChart key={`fishboneChart_${project.id}`} cols='12' data={fishboneData[project.id]} project={project.name}/>
-                    ])
+                <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluations} project={project} />,
+                <ComparativeLineChart key={`lineChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name} />,
+                <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name} />,
+                <ParetoChart key={`paretoChart_${project.id}`} cols='12' data={paretoData[project.id]} project={project.name} />,
+                <FishboneChart key={`fishboneChart_${project.id}`} cols='12' data={fishboneData[project.id]} project={project.name} />
+            ])
         )
     }
 
@@ -51,19 +51,19 @@ class Dashboard extends Component {
                     <Row>
                         <InfoBox cols='12 6 3' color='aqua' icon='cube'
                             value={projects.length} text='Projects' />
-                        <InfoBox cols='12 6 3' color='red' icon='checkbox-outline'
-                            value={number_checklists} text='Checklists' />
-                        <InfoBox cols='12 6 3' color='green' icon='options'
-                            value={number_evaluations} text='Evaluations' />
-                        <InfoBox cols='12 6 3' color='yellow' icon='people '
+                        <InfoBox cols='12 6 3' color='red' icon='people '
                             value={members.length} text='Members' />
+                        <InfoBox cols='12 6 3' color='green' icon='checkbox-outline'
+                            value={number_checklists} text='Checklists' />
+                        <InfoBox cols='12 6 3' color='yellow' icon='options'
+                            value={number_evaluations} text='Evaluations' />
                     </Row>
                     <Row>
                         {this.renderProjects()}
                     </Row>
                 </Content>
-                <br/>
-                <br/>
+                <br />
+                <br />
             </div>
         )
     }

@@ -36,7 +36,7 @@ export default props => {
                     </div>
                 </div>
                 <div className="box-body">
-                    <p class="text-center">
+                    <p className="text-center">
                         {'Number of items that scored <= 5.0 per category'}
                     </p>
                     <div className="chart">

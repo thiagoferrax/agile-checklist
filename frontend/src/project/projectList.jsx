@@ -15,7 +15,7 @@ class ProjectList extends Component {
             <tr key={project.id}>
                 <td>{project.name}</td>
                 <td>
-                    <button className='btn btn-warning' onClick={() => this.props.prepareToShow(project.id, showUpdate)}>
+                    <button className='btn btn-default' onClick={() => this.props.prepareToShow(project.id, showUpdate)}>
                         <i className='icon ion-md-create'></i>
                     </button>
                     <button className='btn btn-danger' onClick={() => this.props.prepareToShow(project.id, showDelete)}>

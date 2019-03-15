@@ -1,5 +1,5 @@
 import React from 'react'
-import { Bar } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2'
 import Grid from '../layout/grid'
 
 export default props => {

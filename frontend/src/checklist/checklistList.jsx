@@ -17,17 +17,12 @@ class ChecklistList extends Component {
                 <td>{checklist.description}</td>
                 <td>{checklist.parentPath}</td>
                 <td>
-                    <button className='btn btn-warning' onClick={() => this.props.showUpdate(checklist)}>
+                    <button className='btn btn-default' onClick={() => this.props.showUpdate(checklist)}>
                         <i className='icon ion-md-create'></i>
                     </button>
                     <button className='btn btn-danger' onClick={() => this.props.showDelete(checklist)}>
                         <i className='icon ion-md-trash'></i>
                     </button>
-                    <If test={!checklist.parentPath}>
-                        <button type='button' className='btn btn-info' onClick={() => { }}>
-                            <i className="icon ion-md-share"></i>
-                        </button>
-                    </If>
                 </td>
             </tr>
         ))

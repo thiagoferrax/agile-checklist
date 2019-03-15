@@ -40,7 +40,7 @@ class Timeline extends Component {
 
     projectItem({ project, user, formattedTime }) {
         return (
-            <TimelineItem key={Math.random()} icon="cube" color="aqua" time={formattedTime}>
+            <TimelineItem key={`projects_${formattedTime}`} icon="cube" color="aqua" time={formattedTime}>
                 <a href="/#/projects">{project}</a> was created by <a href="#">{user}</a>
             </TimelineItem>
         )
@@ -48,7 +48,7 @@ class Timeline extends Component {
 
     userItem({ user, formattedTime }) {
         return (
-            <TimelineItem key={Math.random()} icon="user" color="yellow" time={formattedTime}>
+            <TimelineItem key={`users_${formattedTime}`} icon="user" color="red" time={formattedTime}>
                 <a href="#">{user}</a> was registered in <a href="#">My Checklist</a>
             </TimelineItem>
         )
@@ -56,7 +56,7 @@ class Timeline extends Component {
 
     evaluationItem({ sprint, project, user, checklist, formattedTime }) {
         return (
-            <TimelineItem key={Math.random()} icon="sliders" color="green" time={formattedTime}>
+            <TimelineItem key={`evaluations_${formattedTime}`} icon="sliders" color="yellow" time={formattedTime}>
                 <a href="/#/evaluations">Sprint {sprint}</a> of <a href="/#/projects">{project}</a> was evaluated by <a href="#">{user}</a> using <a href="/#/checklists">{checklist}</a>
             </TimelineItem>
         )
@@ -64,7 +64,7 @@ class Timeline extends Component {
 
     checklistItem({ checklist, user, formattedTime }) {
         return (
-            <TimelineItem key={Math.random()} icon="check" color="red" time={formattedTime}>
+            <TimelineItem key={`checklists_${formattedTime}`} icon="check" color="green" time={formattedTime}>
                 <a href="/#/checklists">{checklist}</a> was created by <a href="#">{user}</a>
             </TimelineItem>
         )
