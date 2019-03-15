@@ -66,7 +66,7 @@ export default class Select extends Component {
     }
 
     render() {
-        const {cols, name, label, optionValue, optionLabel} = this.props
+        const {cols, name, label, optionValue, optionLabel, autoFocus, readOnly} = this.props
         return (            
             <Grid cols={cols}>
                 <div className='form-group'>
@@ -76,7 +76,7 @@ export default class Select extends Component {
                         onChange={e => this.handleChange(e)} 
                         getOptionValue={opt=>opt[optionValue || 'value']} 
                         getOptionLabel={opt=>opt[optionLabel || 'label']} 
-                        value={this.getValue()}/>
+                        value={this.getValue()} autoFocus={autoFocus} readOnly={readOnly}/>
                 </div>
             </Grid>
         )

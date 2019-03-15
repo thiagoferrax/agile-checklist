@@ -82,7 +82,7 @@ class ChecklistForm extends Component {
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
                     <Field name='description' value={description} component={LabelAndInput} readOnly={readOnly}
-                        label='Item description' cols='12 4' placeholder='Enter the item description' />
+                        label='Item description' cols='12 4' placeholder='Enter the item description' autoFocus={true} />
 
                     <Field name='parentId' value={parentId} component={Select} readOnly={readOnly}
                         label='Parent path' cols='12 6' options={list}

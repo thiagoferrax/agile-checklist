@@ -56,7 +56,7 @@ class EvaluationForm extends Component {
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
                     <Field name='projectId' label='Project' cols='12 4'
-                        component={Select} readOnly={readOnly} options={projects} optionValue='id' optionLabel='name' />
+                        component={Select} readOnly={readOnly} options={projects} optionValue='id' optionLabel='name' autoFocus={true}/>
                     <Field name='sprint' label='Sprint' cols='12 4'
                         component={Select} readOnly={readOnly}
                         options={this.getSprintList()} optionValue='id' optionLabel='name' />

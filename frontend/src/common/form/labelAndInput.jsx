@@ -7,7 +7,7 @@ export default props => (
             <label htmlFor={props.name}>{props.label}</label>
             <input {...props.input} className='form-control'
                  placeholder={props.placeholder}
-                 readOnly={props.readOnly} type={props.type} />
+                 readOnly={props.readOnly} type={props.type} autoFocus={props.autoFocus}/>
         </div>
     </Grid>
 )
