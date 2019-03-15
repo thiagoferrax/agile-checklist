@@ -1,9 +1,7 @@
-.wrapper {
-    background-color: #fff!important;
-}
-
 .login-box-body {
-    background-color: #eee;
+    background-color: #FFF;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
 }
 
 .login-box button {

@@ -43,19 +43,21 @@ class Auth extends Component {
                         <Field component={Input} type="password" name="confirm_password"
                             placeholder="Confirm password" icon='lock' hide={loginMode} />
                         <Row>
-                            <Grid cols="4">
+                            <Grid cols="12">
                                 <button type="submit"
                                     className="btn btn-primary btn-block btn-flat">
-                                    {loginMode ? 'Enter' : 'Register'}
+                                    {loginMode ? 'Sign In' : 'Register'}
                                 </button>
                             </Grid>
                         </Row>
                     </form>
                     <br />
-                    <a onClick={() => this.changeMode()}>
-                        {loginMode ? 'New user? Register here!' :
-                            'Already registered? Login here!'}
-                    </a>
+                    <div className="text-center">
+                        <a onClick={() => this.changeMode()}>
+                            {loginMode ? 'New user? Register here!' :
+                                'Already registered? Login here!'}
+                        </a>
+                    </div>
                 </div>
                 <Messages />
             </div>
