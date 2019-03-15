@@ -1,3 +1,7 @@
+.wrapper {
+    background-color: #ecf0f5 !important;
+}
+
 .login-box-body {
     background-color: #FFF;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
