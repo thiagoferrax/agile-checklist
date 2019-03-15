@@ -6,3 +6,7 @@
 .timeline > li > .timeline-item > .time {
     color: #555;
 }
+
+.timeline > .time-label > span {
+    padding: 5px 10px;
+}
