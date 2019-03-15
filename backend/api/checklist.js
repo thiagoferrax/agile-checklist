@@ -21,14 +21,18 @@ module.exports = app => {
 
         if (checklist.id) {
             if (checklist.parentId) {
-                app.db('checklists').then(checklists => withPath(checklists)).then(tree => {
-                    const parentIds = tree.filter(c => c.id === checklist.parentId)[0].parentPathIds
-                    if (parentIds.includes(+checklist.id)) {
-                        res.status(400).json({ errors: ['Circular reference is not permitted!'] })
-                    } else {
-                        update(req, res)
-                    }
-                })
+                if(+checklist.id === +checklist.parentId) {
+                    res.status(400).json({ errors: ['Circular reference is not permitted!'] })
+                } else {
+                    app.db('checklists').then(checklists => withPath(checklists)).then(tree => {
+                        const parentIds = tree.filter(c => c.id === checklist.parentId)[0].parentPathIds
+                        if (parentIds.includes(+checklist.id)) {
+                            res.status(400).json({ errors: ['Circular reference is not permitted!'] })
+                        } else {
+                            update(req, res)
+                        }
+                    })   
+                }                
             } else {
                 update(req, res)
             }

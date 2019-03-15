@@ -40,16 +40,21 @@ class ChecklistForm extends Component {
     }
 
     cloneChecklist() {
-        const { tree, parentId } = this.props
+        let { tree, parentId } = this.props
+
+        if(!parentId) {
+            parentId = undefined
+        }
+
         const checklist = this.getChecklistById(tree || [], parentId)
-        this.props.clone(checklist)
+            this.props.clone(checklist)
     }
 
     getChecklists(tree) {
         const { showDelete, showUpdate } = this.props
         return tree && tree.map(checklist => {
             return (
-                <Grid cols='12'>
+                <Grid key={`checklist_${checklist.id}`} cols='12'>
                     <div className="box box-primary">
                         <div className="box-header with-border">
                             <i className="fa fa-check"></i>
