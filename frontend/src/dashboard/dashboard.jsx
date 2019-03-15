@@ -53,9 +53,9 @@ class Dashboard extends Component {
                             value={projects.length} text='Projects' />
                         <InfoBox cols='12 6 3' color='red' icon='people '
                             value={members.length} text='Members' />
-                        <InfoBox cols='12 6 3' color='green' icon='checkbox-outline'
+                        <InfoBox cols='12 6 3' color='yellow' icon='checkbox-outline'
                             value={number_checklists} text='Checklists' />
-                        <InfoBox cols='12 6 3' color='yellow' icon='options'
+                        <InfoBox cols='12 6 3' color='green' icon='options'
                             value={number_evaluations} text='Evaluations' />
                     </Row>
                     <Row>

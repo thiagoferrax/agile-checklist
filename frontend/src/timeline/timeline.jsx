@@ -56,7 +56,7 @@ class Timeline extends Component {
 
     evaluationItem({ sprint, project, user, checklist, formattedTime }) {
         return (
-            <TimelineItem key={`evaluations_${formattedTime}`} icon="sliders" color="yellow" time={formattedTime}>
+            <TimelineItem key={`evaluations_${formattedTime}`} icon="sliders" color="green" time={formattedTime}>
                 <a href="/#/evaluations">Sprint {sprint}</a> of <a href="/#/projects">{project}</a> was evaluated by <a href="#">{user}</a> using <a href="/#/checklists">{checklist}</a>
             </TimelineItem>
         )
@@ -64,7 +64,7 @@ class Timeline extends Component {
 
     checklistItem({ checklist, user, formattedTime }) {
         return (
-            <TimelineItem key={`checklists_${formattedTime}`} icon="check" color="green" time={formattedTime}>
+            <TimelineItem key={`checklists_${formattedTime}`} icon="check" color="yellow" time={formattedTime}>
                 <a href="/#/checklists">{checklist}</a> was created by <a href="#">{user}</a>
             </TimelineItem>
         )

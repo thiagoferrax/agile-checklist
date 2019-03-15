@@ -28,7 +28,7 @@
     "redux-multi": "0.1.12",
     "redux-promise": "0.6.0",
     "redux-thunk": "2.3.0",
-    "tree-slide-bar": "1.0.29"
+    "tree-slide-bar": "1.0.30"
   },
   "scripts": {
     "start": "react-scripts start",

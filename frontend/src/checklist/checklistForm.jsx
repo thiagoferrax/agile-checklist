@@ -102,14 +102,14 @@ class ChecklistForm extends Component {
                         </If>
                         <If test={!readOnly}>
                             <div className='buttons_checklist_form'>
-                                <button type='submit' className='btn btn-success'>
-                                    <i className="icon ion-md-checkmark"></i>
+                                <button type='submit' className='btn btn-primary' title="Save">
+                                    <i className="fa fa-check"></i>
                                 </button>
-                                <button type='button' className='btn btn-warning' onClick={this.cloneChecklist}>
-                                    <i className="icon ion-md-copy"></i>
+                                <button type='button' className='btn btn-warning' onClick={this.cloneChecklist} title="Clone Parent path">
+                                    <i className="fa fa-copy"></i>
                                 </button>
                                 <button type='button' className='btn btn-default'
-                                    onClick={init}>
+                                    onClick={init} title="Clear">
                                     <i className="icon ion-md-close"></i>
                                 </button>
                             </div>
