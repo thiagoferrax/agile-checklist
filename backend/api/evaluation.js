@@ -116,6 +116,7 @@ module.exports = app => {
             .leftJoin('projects', 'evaluations.projectId', 'projects.id')
             .leftJoin('checklists', 'evaluations.checklistId', 'checklists.id')
             .where({'evaluations.userId': req.decoded.id})
+            .orderBy('evaluations.created_at', 'desc')
             .then(evaluations => res.json(evaluations))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
