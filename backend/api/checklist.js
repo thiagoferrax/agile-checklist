@@ -156,9 +156,6 @@ module.exports = app => {
         } else {
             app.db.select({
                 id: 'projects.id',
-                project: 'projects.name',
-                userId: 'projects.userId',
-                time: 'projects.created_at',
                 memberId: 'users.id',
                 memberName: 'users.name',
                 memberTime: 'users.created_at'
@@ -241,14 +238,14 @@ module.exports = app => {
 
         try {
             existsOrError(checklist, 'Parent path was not informed!')
+
+            checklist.description += ' (NEW)'
+            saveChecklist(checklist, checklist.parentId, res)
+
+            res.status(204).send()
         } catch (msg) {
             res.status(400).json({ errors: [msg] })
         }
-
-        checklist.description += ' (NEW)'
-        saveChecklist(checklist, checklist.parentId, res)
-
-        res.status(204).send()
     }
 
     const saveChecklist = (item, parentId, res) => {

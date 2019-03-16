@@ -25,7 +25,7 @@ class ChecklistForm extends Component {
         this.props.getTree()
     }
 
-    getChecklistById(tree, checklistId, found = null) {
+    getChecklistById(tree, checklistId, found = undefined) {
         return tree.reduce((found, checklist) => {
             if (checklist.id === checklistId) {
                 found = checklist
