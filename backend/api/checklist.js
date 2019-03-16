@@ -187,10 +187,25 @@ module.exports = app => {
             .catch(err => reject(err))
     })
 
+    const removeItemsWithoutRoot = (checklists) => new Promise((resolve, reject) => {
+        const getNewList = (tree, initialList = []) => {
+            return tree && tree.reduce((newList, checklist) => {
+                newList.push(checklist)
+                return getNewList(checklist.children, newList)
+            }, initialList)
+        }
+
+        const itemsWithRoot = toTree(checklists)
+        const newList = getNewList(itemsWithRoot)
+
+        resolve(newList)
+    })
+
     const get = (req, res) => {
         return getProjectsIds(req.decoded.id)
             .then(getMembersIds)
             .then(getChecklists)
+            .then(removeItemsWithoutRoot)
             .then(checklists => res.json(withPath(checklists)))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
