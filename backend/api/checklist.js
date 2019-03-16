@@ -129,11 +129,11 @@ module.exports = app => {
             .where({ 'projects.userId': userId })
             .orWhere({ 'users.id': userId })
             .then(projects => {
-               if(projects.length > 0) {
+                if (projects.length > 0) {
                     const projectsMap = array2map(projects, 'id')
                     projectsIds = Object.keys(projectsMap)
                 }
-                resolve({userId, projectsIds})
+                resolve({ userId, projectsIds })
             })
             .catch(err => reject(err))
     })
@@ -149,9 +149,9 @@ module.exports = app => {
         }, [])
     }
 
-    const getMembersIds = ({userId, projectsIds}) => new Promise((resolve, reject) => {
+    const getMembersIds = ({ userId, projectsIds }) => new Promise((resolve, reject) => {
         let membersIds = [userId]
-        if(projectsIds.length === 0) {
+        if (projectsIds.length === 0) {
             resolve(membersIds)
         } else {
             app.db.select({
@@ -172,12 +172,12 @@ module.exports = app => {
                         const usersMap = array2map(team, 'userId')
                         membersIds = Object.keys(usersMap)
                     }
-    
+
                     resolve(membersIds)
                 })
                 .catch(err => reject(err))
-        } 
-        
+        }
+
     })
 
     const getChecklists = (membersIds) => new Promise((resolve, reject) => {
@@ -220,6 +220,14 @@ module.exports = app => {
     }
 
     const getTree = (req, res) => {
+        return getProjectsIds(req.decoded.id)
+            .then(getMembersIds)
+            .then(getChecklists)
+            .then(checklists => res.json(toTree(checklists)))
+            .catch(err => res.status(500).json({ errors: [err] }))
+    }
+
+    const getMyTree = (req, res) => {
         return getChecklists([req.decoded.id])
             .then(checklists => res.json(toTree(checklists)))
             .catch(err => res.status(500).json({ errors: [err] }))
@@ -266,5 +274,5 @@ module.exports = app => {
         }, initialChecklists)
     }
 
-    return { save, remove, get, getMyChecklists, getById, getTree, clone }
+    return { save, remove, get, getMyChecklists, getById, getTree, getMyTree, clone }
 }

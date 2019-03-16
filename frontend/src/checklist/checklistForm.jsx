@@ -77,7 +77,7 @@ class ChecklistForm extends Component {
     }
 
     render() {
-        const { handleSubmit, readOnly, myChecklists, description, parentId, tree, init } = this.props
+        const { handleSubmit, readOnly, list, description, parentId, tree, init } = this.props
         return (
             <form role='form' onSubmit={handleSubmit}>
                 <div className='box-body'>
@@ -85,7 +85,7 @@ class ChecklistForm extends Component {
                         label='Item description' cols='12 4' placeholder='Enter the item description' autoFocus={true} />
 
                     <Field name='parentId' value={parentId} component={Select} readOnly={readOnly}
-                        label='Parent path' cols='12 6' options={myChecklists}
+                        label='Parent path' cols='12 6' options={list}
                         optionValue='id' optionLabel='path' inputOnChange={this.props.selectParent} />
 
                     <Grid cols='12 2'>
@@ -131,7 +131,7 @@ ChecklistForm = reduxForm({ form: 'checklistForm', destroyOnUnmount: false })(Ch
 const mapStateToProps = state => ({
     description: state.checklist.description,
     parentId: state.checklist.parentId,
-    myChecklists: state.checklist.myChecklists,
+    list: state.checklist.list,
     tree: state.checklist.tree
 })
 

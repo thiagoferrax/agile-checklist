@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getMyChecklists, showUpdate, showDelete } from './checklistActions'
+import { getList, showUpdate, showDelete } from './checklistActions'
 import If from '../common/operator/if'
 
 class ChecklistList extends Component {
 
     componentWillMount() {
-        this.props.getMyChecklists()
+        this.props.getList()
     }
 
     renderRows() {
-        const list = this.props.myChecklists || []
+        const list = this.props.list || []
         return list.map(checklist => (
             <tr key={checklist.id}>
                 <td>{checklist.description}</td>
@@ -49,7 +49,7 @@ class ChecklistList extends Component {
 }
 
 const mapStateToProps = state => ({
-    myChecklists: state.checklist.myChecklists
+    list: state.checklist.list
 })
-const mapDispatchToProps = dispatch => bindActionCreators({ getMyChecklists, showUpdate, showDelete }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ getList, showUpdate, showDelete }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(ChecklistList)

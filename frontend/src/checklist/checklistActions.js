@@ -30,6 +30,14 @@ export function getTree() {
     }
 }
 
+export function getMyTree() {  
+    const request = axios.get(`${consts.API_URL}/checklists/tree/my`)
+    return {
+        type: 'MY_TREE_FETCHED',
+        payload: request
+    }
+}
+
 export function clone(checklist) {  
     return dispatch => {
         axios['post'](`${consts.API_URL}/checklists/clone`, {checklist})
