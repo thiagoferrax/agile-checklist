@@ -19,7 +19,7 @@ export default props => {
                         <Bar
                             data={props.data}
                             width={100}
-                            height={15}
+                            height={20}
                             options={{
                                 legend: {
                                     position: 'right',

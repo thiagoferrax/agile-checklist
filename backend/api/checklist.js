@@ -1,3 +1,5 @@
+const { array2map } = require('../common/mapUtil')
+
 module.exports = app => {
     const { existsOrError, notExistsOrError } = app.api.validation
 
@@ -21,7 +23,7 @@ module.exports = app => {
 
         if (checklist.id) {
             if (checklist.parentId) {
-                if(+checklist.id === +checklist.parentId) {
+                if (+checklist.id === +checklist.parentId) {
                     res.status(400).json({ errors: ['Circular reference is not permitted!'] })
                 } else {
                     app.db('checklists').then(checklists => withPath(checklists)).then(tree => {
@@ -31,8 +33,8 @@ module.exports = app => {
                         } else {
                             update(req, res)
                         }
-                    })   
-                }                
+                    })
+                }
             } else {
                 update(req, res)
             }
@@ -117,8 +119,84 @@ module.exports = app => {
         return checklistsWithPath
     }
 
-    const get = (req, res) => {
+    const getProjectsIds = (userId) => new Promise((resolve, reject) => {
+        let projectsIds = []
+        app.db.select({
+            id: 'projects.id',
+        }).from('projects')
+            .leftJoin('teams', 'teams.projectId', 'projects.id')
+            .leftJoin('users', 'teams.userId', 'users.id')
+            .where({ 'projects.userId': userId })
+            .orWhere({ 'users.id': userId })
+            .then(projects => {
+               if(projects.length > 0) {
+                    const projectsMap = array2map(projects, 'id')
+                    projectsIds = Object.keys(projectsMap)
+                }
+                resolve({userId, projectsIds})
+            })
+            .catch(err => reject(err))
+    })
+
+    const getTeam = projects => {
+        const distinctUsers = {}
+        return projects && projects.reduce((users, member) => {
+            if (!distinctUsers[member.memberId]) {
+                distinctUsers[member.memberId] = 1
+                users.push({ userId: member.memberId, user: member.memberName, time: member.memberTime })
+            }
+            return users
+        }, [])
+    }
+
+    const getMembersIds = ({userId, projectsIds}) => new Promise((resolve, reject) => {
+        let membersIds = [userId]
+        if(projectsIds.length === 0) {
+            resolve(membersIds)
+        } else {
+            app.db.select({
+                id: 'projects.id',
+                project: 'projects.name',
+                userId: 'projects.userId',
+                time: 'projects.created_at',
+                memberId: 'users.id',
+                memberName: 'users.name',
+                memberTime: 'users.created_at'
+            }).from('projects')
+                .leftJoin('teams', 'teams.projectId', 'projects.id')
+                .leftJoin('users', 'teams.userId', 'users.id')
+                .whereIn('projects.id', projectsIds)
+                .then(projects => {
+                    if (projects.length > 0) {
+                        const team = getTeam(projects)
+                        const usersMap = array2map(team, 'userId')
+                        membersIds = Object.keys(usersMap)
+                    }
+    
+                    resolve(membersIds)
+                })
+                .catch(err => reject(err))
+        } 
+        
+    })
+
+    const getChecklists = (membersIds) => new Promise((resolve, reject) => {
         app.db('checklists')
+            .whereIn('checklists.userId', membersIds)
+            .then(checklists => resolve(withPath(checklists)))
+            .catch(err => reject(err))
+    })
+
+    const get = (req, res) => {
+        return getProjectsIds(req.decoded.id)
+            .then(getMembersIds)
+            .then(getChecklists)
+            .then(checklists => res.json(withPath(checklists)))
+            .catch(err => res.status(500).json({ errors: [err] }))
+    }
+
+    const getMyChecklists = (req, res) => {
+        return getChecklists([req.decoded.id])
             .then(checklists => res.json(withPath(checklists)))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
@@ -142,7 +220,7 @@ module.exports = app => {
     }
 
     const getTree = (req, res) => {
-        app.db('checklists')
+        return getChecklists([req.decoded.id])
             .then(checklists => res.json(toTree(checklists)))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
@@ -188,5 +266,5 @@ module.exports = app => {
         }, initialChecklists)
     }
 
-    return { save, remove, get, getById, getTree, clone }
+    return { save, remove, get, getMyChecklists, getById, getTree, clone }
 }

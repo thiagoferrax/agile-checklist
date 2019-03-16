@@ -14,6 +14,14 @@ export function getList() {
     }
 }
 
+export function getMyChecklists() {
+    const request = axios.get(`${consts.API_URL}/checklists/my`)
+    return {
+        type: 'MY_CHECKLISTS_FETCHED',
+        payload: request
+    }
+}
+
 export function getTree() {  
     const request = axios.get(`${consts.API_URL}/checklists/tree`)
     return {
