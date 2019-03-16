@@ -12,10 +12,8 @@ module.exports = app => {
 
     protectedApi.post('/checklists', app.api.checklist.save)
     protectedApi.get('/checklists', app.api.checklist.get)
-    protectedApi.get('/checklists/my', app.api.checklist.getMyChecklists)
     protectedApi.post('/checklists/clone', app.api.checklist.clone)       
     protectedApi.get('/checklists/tree', app.api.checklist.getTree)
-    protectedApi.get('/checklists/tree/my', app.api.checklist.getMyTree)
     protectedApi.put('/checklists/:id', app.api.checklist.save)
     protectedApi.delete('/checklists/:id', app.api.checklist.remove)
     protectedApi.get('/checklists/:id', app.api.checklist.getById)

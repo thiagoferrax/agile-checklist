@@ -195,12 +195,6 @@ module.exports = app => {
             .catch(err => res.status(500).json({ errors: [err] }))
     }
 
-    const getMyChecklists = (req, res) => {
-        return getChecklists([req.decoded.id])
-            .then(checklists => res.json(withPath(checklists)))
-            .catch(err => res.status(500).json({ errors: [err] }))
-    }
-
     const getById = (req, res) => {
         app.db('checklists')
             .where({ id: req.params.id })
@@ -223,12 +217,6 @@ module.exports = app => {
         return getProjectsIds(req.decoded.id)
             .then(getMembersIds)
             .then(getChecklists)
-            .then(checklists => res.json(toTree(checklists)))
-            .catch(err => res.status(500).json({ errors: [err] }))
-    }
-
-    const getMyTree = (req, res) => {
-        return getChecklists([req.decoded.id])
             .then(checklists => res.json(toTree(checklists)))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
@@ -274,5 +262,5 @@ module.exports = app => {
         }, initialChecklists)
     }
 
-    return { save, remove, get, getMyChecklists, getById, getTree, getMyTree, clone }
+    return { save, remove, get, getById, getTree, clone }
 }
