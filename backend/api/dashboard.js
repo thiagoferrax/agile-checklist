@@ -93,6 +93,7 @@ module.exports = app => {
             .leftJoin('checklists', 'evaluations.checklistId', 'checklists.id')
             .whereIn('evaluations.projectId', summary.projectsIds)
             .then(evaluations => {
+                summary.pureEvaluations = evaluations
                 summary.number_evaluations = evaluations.length
                 summary.evaluations = mergeEvaluations(evaluations)
 
@@ -230,7 +231,18 @@ module.exports = app => {
 
     const average = array => format(array.reduce((a, b) => a + b, 0) / array.length)
 
-    const getEvaluationsByChecklist = (evaluations) => {
+    const getTeamParticipation = (projectId, sprint, checklist, members, pureEvaluations) => {
+        const projectMembers = members.filter(m => m.projectId = projectId).map(m => m.userId)
+
+        const membersThatEvaluated = pureEvaluations.filter(
+            e => e.sprint === sprint
+                && e.projectId === projectId
+                && e.checklistId === checklist).map(e => e.userId)
+
+        return 100 * membersThatEvaluated.length / projectMembers.length
+    }
+
+    const getEvaluationsByChecklist = (evaluations, members, pureEvaluations) => {
         const projectsIds = [... new Set(evaluations.map(e => +e.projectId))]
 
         return projectsIds.reduce((evaluationsMap, projectId) => {
@@ -254,6 +266,8 @@ module.exports = app => {
                 const currentEvaluation =
                     evaluationsChecklist[evaluationsChecklist.length - 1]
 
+                const teamParticipation = getTeamParticipation(projectId, currentEvaluation.sprint, checklist, members, pureEvaluations)
+
                 const totalAverage = average(scores)
 
                 if (!evaluationsMap.hasOwnProperty(projectId)) {
@@ -268,7 +282,7 @@ module.exports = app => {
                         percentageDirection: 'up'
                     },
                     teamParticipation: {
-                        value: 90,
+                        value: teamParticipation,
                         percentage: 13,
                         percentageDirection: 'up'
                     },
@@ -316,14 +330,18 @@ module.exports = app => {
         projects.forEach(project => {
             const before = beforeProjectsMap[project]
             const current = currentProjectsMap[project]
-            
+
             current.forEach(map => {
                 const beforeMap = before.filter(beforeMap => beforeMap.checklistId === map.checklistId)
                 if (beforeMap.length > 0) {
                     map.currentScore.percentage = calculatePercentage(beforeMap[0].currentScore.value, map.currentScore.value)
                     map.currentScore.percentageDirection = getPercentageDirection(map.currentScore.percentage)
                     map.currentScore.percentage *= Math.sign(map.currentScore.percentage)
-                    
+
+                    map.teamParticipation.percentage = calculatePercentage(beforeMap[0].teamParticipation.value, map.teamParticipation.value)
+                    map.teamParticipation.percentageDirection = getPercentageDirection(map.teamParticipation.percentage)
+                    map.teamParticipation.percentage *= Math.sign(map.teamParticipation.percentage)
+
                     map.totalAverage.percentage = calculatePercentage(beforeMap[0].totalAverage.value, map.totalAverage.value)
                     map.totalAverage.percentageDirection = getPercentageDirection(map.totalAverage.percentage)
                     map.totalAverage.percentage *= Math.sign(map.totalAverage.percentage)
@@ -338,8 +356,11 @@ module.exports = app => {
         let evaluations = [...summary.evaluations]
 
         const lastElement = evaluations.pop()
-        const before = getEvaluationsByChecklist(evaluations)
-        const current = getEvaluationsByChecklist(summary.evaluations)
+
+        const members = summary.members
+        const pureEvaluations = summary.pureEvaluations
+        const before = getEvaluationsByChecklist(evaluations, members, pureEvaluations)
+        const current = getEvaluationsByChecklist(summary.evaluations, members, pureEvaluations)
         const summaryData = updateSummaryDataPercentages(before, current)
 
         summary.summaryData = summaryData
