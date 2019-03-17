@@ -5,3 +5,19 @@
 .description-block > .description-header {
     font-size: 14px;
 }
+
+.btn-default_ {
+    background-color: transparent;
+    color: #444;
+    border-color: none;
+}
+
+.btn_ {
+    border-radius: 3px;
+    box-shadow: none;
+    border: none;
+}
+
+:focus {
+    outline: none !important;
+}

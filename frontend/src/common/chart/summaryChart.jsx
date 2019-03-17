@@ -8,7 +8,12 @@ export default class SummaryChart extends Component {
         this.state = INITIAL_STATE
     }
 
-    selectDataset(index) {
+    nextChecklist() {
+        let index = this.state.index
+        index++
+        if(!this.props.summaryData[index]) {
+            index = 0
+        }
         this.setState({ index })
     }
 
@@ -30,7 +35,7 @@ export default class SummaryChart extends Component {
             <div className="row">
                 <div className="col-sm-2 col-xs-6">
                     <div className="description-block border-right">
-                        <span className="fa fa-chevron-right"></span><span className="fa fa-chevron-right"></span>
+                        <button type="button" class="btn_ btn-default_" title="Next Checklist" onClick={() => this.nextChecklist()}><i class="fa fa-chevron-right"></i><i class="fa fa-chevron-right"></i></button>
                         <h5 className="description-header">{this.props.summaryData[this.state.index].checklist}</h5>
                         <span className="description-text">CHECKLIST</span>
                     </div>
