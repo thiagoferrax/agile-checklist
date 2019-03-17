@@ -15,12 +15,12 @@ export default props => {
             pointRadius: 1,
             xAxes: [{
                 gridLines: {
-                    display:false
+                    display: false
                 }
             }],
             yAxes: [{
                 gridLines: {
-                    display:false
+                    display: false
                 },
                 ticks: {
                     max: 10,
@@ -44,7 +44,7 @@ export default props => {
         <Grid cols={props.cols}>
             <div className="box box-primary">
                 <div className="box-header with-border">
-                <i className="fa fa-area-chart"></i>
+                    <i className="fa fa-area-chart"></i>
                     <h3 className="box-title">&nbsp;&nbsp;COMPARISON - {props.project}</h3>
                 </div>
                 <div className="box-body">
@@ -58,7 +58,7 @@ export default props => {
                     </div>
                 </div>
                 <div className="box-footer">
-                    {'Comparison of average score per category'}
+                    <i className="icon ion-md-information-circle-outline"></i> {'Comparison of average score per category'}
                 </div>
             </div>
         </Grid >

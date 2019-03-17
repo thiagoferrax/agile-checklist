@@ -14,15 +14,15 @@ export default props => {
     const checklists = Object.values(sprints)
     let hasData = false
     checklists.forEach(data => {
-        if(Object.values(data).length > 0) {
+        if (Object.values(data).length > 0) {
             hasData = true
         }
     })
 
-    if(!hasData) {
+    if (!hasData) {
         return <React.Fragment></React.Fragment>
     }
-    
+
     return (
         <Grid cols={props.cols}>
             <div className="box box-primary">
@@ -39,7 +39,7 @@ export default props => {
                     </div>
                 </div>
                 <div className="box-footer">
-                    {'Number of items (average score <= 5.0) per category'}
+                    <i className="icon ion-md-information-circle-outline"></i> {'Number of items (average score <= 5.0) per category'}
                 </div>
             </div>
         </Grid >

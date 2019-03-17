@@ -24,7 +24,7 @@ export default props => {
         <Grid cols={props.cols}>
             <div className="box box-primary">
                 <div className="box-header with-border">
-                <i className="icon ion-md-pulse"></i>                
+                    <i className="icon ion-md-pulse"></i>
                     <h3 className="box-title">&nbsp;&nbsp;RADAR - {props.project}</h3>
                 </div>
                 <div className="box-body">
@@ -38,7 +38,7 @@ export default props => {
                     </div>
                 </div>
                 <div className="box-footer">
-                    {'Radar of average score per category'}
+                    <i className="icon ion-md-information-circle-outline"></i> {'Radar of average score per category'}
                 </div>
             </div>
         </Grid >

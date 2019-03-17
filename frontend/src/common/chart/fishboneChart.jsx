@@ -36,7 +36,7 @@ export default props => {
                     </div>
                 </div>
                 <div className="box-footer">
-                    {'Items (average score <= 5.0) per category'}
+                    <i className="icon ion-md-information-circle-outline"></i> {'Items (average score <= 5.0) per category'}
                 </div>
             </div>
         </Grid >

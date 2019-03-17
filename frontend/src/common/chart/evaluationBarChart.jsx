@@ -4,10 +4,12 @@ import './chart.css'
 
 export default props => {
     const data = getBarChartData(props.evaluations, props.project.id)
+
     if(!data) {
         return <React.Fragment/>
     }
-    return (<BarChart cols={props.cols} data={data} project={props.project.name}/>)
+
+    return (<BarChart cols={props.cols} data={data} project={props.project.name} summaryData={props.summaryData}/>)
 }
 
 const getDataSet = (datasets, checklistId) => {

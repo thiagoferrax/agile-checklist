@@ -1,6 +1,7 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
 import Grid from '../layout/grid'
+import SummaryChart from './summaryChart'
 
 export default props => {
     if (!props.data) {
@@ -15,6 +16,9 @@ export default props => {
                     <h3 className="box-title">&nbsp;&nbsp;PROGRESS - {props.project}</h3>
                 </div>
                 <div className="box-body">
+                    <p class="text-center">
+                        Average score per sprint: 1 Jan, 2014 - 30 Jul, 2014
+                    </p>
                     <div className="chart">
                         <Bar
                             data={props.data}
@@ -27,7 +31,7 @@ export default props => {
                                 scales: {
                                     xAxes: [{
                                         gridLines: {
-                                            display:false
+                                            display: false
                                         }
                                     }],
                                     yAxes: [{
@@ -37,17 +41,17 @@ export default props => {
                                             stepSize: 2
                                         },
                                         gridLines: {
-                                            display:false
+                                            display: false
                                         }
                                     }]
                                 }
-                               
+
                             }}
                         />
                     </div>
                 </div>
                 <div className="box-footer">
-                    {'Progress of average score per sprint'}
+                    <SummaryChart summaryData={props.summaryData} />
                 </div>
             </div>
         </Grid >

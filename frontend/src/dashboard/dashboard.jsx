@@ -29,11 +29,11 @@ class Dashboard extends Component {
     }
 
     renderProjects() {
-        const { projects, evaluations, sprintEvaluations, fishboneData, paretoData } = this.props.summary
+        const { projects, evaluations, sprintEvaluations, fishboneData, paretoData, summaryData } = this.props.summary
 
         return projects.map(
             project => ([
-                <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluations} project={project} />,
+                <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluations} project={project} summaryData={summaryData} />,
                 <ComparativeLineChart key={`lineChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name} />,
                 <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name} />,
                 <ParetoChart key={`paretoChart_${project.id}`} cols='12' data={paretoData[project.id]} project={project.name} />,

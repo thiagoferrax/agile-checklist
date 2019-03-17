@@ -38,11 +38,11 @@ module.exports = app => {
     })
 
     const getNumberChecklists = (summary) => new Promise((resolve, reject) => {
-        let members = summary.members 
-        if(!members.length) {
+        let members = summary.members
+        if (!members.length) {
             members = [summary.userId]
         }
-        
+
         app.db('checklists').countDistinct('id')
             .whereIn('userId', members)
             .where('parentId', null)
@@ -209,7 +209,7 @@ module.exports = app => {
                     } else {
                         delete data[sprint][evaluation.checklistDescription]
                     }
-                        
+
                     return data
                 }, {})
 
@@ -220,6 +220,38 @@ module.exports = app => {
         } else {
             reject('No evaluations found')
         }
+    })
+
+    const getSummaryData = (summary) => new Promise((resolve, reject) => {
+        summary.summaryData = [
+            {
+                checklist: 'Scrum',
+                currentScore: {
+                    value: 4.0,
+                    percentage: 17,
+                    percentageDirection: 'up'
+                },
+                teamParticipation: {
+                    value: 90,
+                    percentage: 13,
+                    percentageDirection: 'up'
+                },
+                minimumScore: {
+                    value: 4.9,
+                    sprint: 1
+                },
+                maximumScore: {
+                    value: 7.3,
+                    sprint: 2
+                },
+                totalAverage: {
+                    value: 5.2,
+                    percentage: 16,
+                    percentageDirection: 'up'
+                }
+            }
+        ]
+        resolve(summary)
     })
 
     const get = (req, res) => {
@@ -233,6 +265,7 @@ module.exports = app => {
             .then(getSprintEvaluations)
             .then(getFishboneData)
             .then(getParetoData)
+            .then(getSummaryData)
             .then(summary => res.json(summary))
             .catch(err => res.status(500).json({ errors: [err] }))
     }
