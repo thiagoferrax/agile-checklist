@@ -222,12 +222,36 @@ module.exports = app => {
         }
     })
 
-    const getSummaryData = (summary) => new Promise((resolve, reject) => {
-        summary.summaryData = [
-            {
-                checklist: 'Scrum',
+    const format = value => parseFloat(value).toFixed(1)
+
+    const average = array => format(array.reduce((a, b) => a + b, 0) / array.length)
+
+    const getEvaluationsByChecklist = (evaluations) => {
+        const evaluationsByChecklist = []
+        const checklists = evaluations.map(e => +e.checklistId)
+
+        checklists.map(checklist => {
+            const evaluationsChecklist = evaluations.filter(e => e.checklistId === checklist)
+            const scores = evaluationsChecklist.map(e => +e.score)
+
+            const min = Math.min(...scores)
+            const minIndex = scores.indexOf(min)
+            const minEvaluation = evaluationsChecklist[minIndex]
+
+            const max = Math.max(...scores)
+            const maxIndex = scores.indexOf(max)
+            const maxEvaluation = evaluationsChecklist[maxIndex]
+
+            const currentEvaluation =
+                evaluationsChecklist[evaluationsChecklist.length - 1]
+
+            const totalAverage = average(scores)
+
+            evaluationsByChecklist.push({
+                checklist: minEvaluation.checklistDescription,
+                checklistId: minEvaluation.checklistId,
                 currentScore: {
-                    value: 4.0,
+                    value: format(currentEvaluation.score),
                     percentage: 17,
                     percentageDirection: 'up'
                 },
@@ -237,20 +261,67 @@ module.exports = app => {
                     percentageDirection: 'up'
                 },
                 minimumScore: {
-                    value: 4.9,
-                    sprint: 1
+                    value: format(minEvaluation.score),
+                    sprint: minEvaluation.sprint
                 },
                 maximumScore: {
-                    value: 7.3,
-                    sprint: 2
+                    value: format(maxEvaluation.score),
+                    sprint: maxEvaluation.sprint
                 },
                 totalAverage: {
-                    value: 5.2,
+                    value: totalAverage,
                     percentage: 16,
                     percentageDirection: 'up'
                 }
+            })
+        })
+        return evaluationsByChecklist
+    }
+
+    const calculatePercentage = (before, current) => {
+        let percentage = 0
+        if (current !== 0) {
+            percentage = (current - before) * 100 / current
+        }
+        return format(percentage)
+    }
+
+    const getPercentageDirection = (percentage) => {
+        let percentageDirection = 'right'
+        if (percentage > 0) {
+            percentageDirection = 'up'
+        } else if (percentage < 0) {
+            percentageDirection = 'down'
+        }
+        return percentageDirection
+    }
+
+    const updateSummaryDataPercentages = (before, current) => {
+        current.forEach(map => {
+            const beforeMap = before.filter(beforeMap => beforeMap.checklistId === map.checklistId)
+
+            if (beforeMap.length > 0) {
+                map.currentScore.percentage = calculatePercentage(beforeMap[0].currentScore.value, map.currentScore.value)
+                map.currentScore.percentageDirection = getPercentageDirection(map.currentScore.percentage)
+                map.currentScore.percentage *= Math.sign(map.currentScore.percentage)
+
+                map.totalAverage.percentage = calculatePercentage(beforeMap[0].totalAverage.value, map.totalAverage.value)
+                map.totalAverage.percentageDirection = getPercentageDirection(map.totalAverage.percentage)
+                map.totalAverage.percentage *= Math.sign(map.totalAverage.percentage)
             }
-        ]
+        })
+
+        return current
+    }
+
+    const getSummaryData = (summary) => new Promise((resolve, reject) => {
+        let evaluations = [...summary.evaluations]
+        const lastElement = evaluations.pop()
+        const before = getEvaluationsByChecklist(evaluations)
+        const current = getEvaluationsByChecklist(summary.evaluations)
+        const summaryData = updateSummaryDataPercentages(before, current)
+
+        summary.summaryData = summaryData
         resolve(summary)
     })
 

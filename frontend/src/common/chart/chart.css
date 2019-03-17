@@ -1,3 +1,7 @@
 .chart {
     padding: 10px;
 }
+
+.description-block > .description-header {
+    font-size: 14px;
+}
