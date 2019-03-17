@@ -30,7 +30,11 @@ module.exports = app => {
         app.db('teams').distinct('userId')
             .whereIn('projectId', summary.projectsIds)
             .then(members => {
-                summary.members = members.map(member => member.userId)
+                summary.members = members.map(member => ({
+                    userId: member.userId,
+                    projectId: member.projectId
+                }
+                ))
 
                 resolve(summary)
             })
@@ -38,7 +42,7 @@ module.exports = app => {
     })
 
     const getNumberChecklists = (summary) => new Promise((resolve, reject) => {
-        let members = summary.members
+        let members = summary.members.map(member => member.userId)
         if (!members.length) {
             members = [summary.userId]
         }
@@ -227,55 +231,65 @@ module.exports = app => {
     const average = array => format(array.reduce((a, b) => a + b, 0) / array.length)
 
     const getEvaluationsByChecklist = (evaluations) => {
-        const evaluationsByChecklist = []
-        const checklists = evaluations.map(e => +e.checklistId)
+        const projectsIds = [... new Set(evaluations.map(e => +e.projectId))]
 
-        checklists.map(checklist => {
-            const evaluationsChecklist = evaluations.filter(e => e.checklistId === checklist)
-            const scores = evaluationsChecklist.map(e => +e.score)
+        return projectsIds.reduce((evaluationsMap, projectId) => {
+            const projectEvaluations = evaluations.filter(e => e.projectId === projectId)
+            const checklists = [... new Set(projectEvaluations.map(e => +e.checklistId))]
 
-            const min = Math.min(...scores)
-            const minIndex = scores.indexOf(min)
-            const minEvaluation = evaluationsChecklist[minIndex]
+            checklists.map(checklist => {
 
-            const max = Math.max(...scores)
-            const maxIndex = scores.indexOf(max)
-            const maxEvaluation = evaluationsChecklist[maxIndex]
+                const evaluationsChecklist = projectEvaluations.filter(e => e.checklistId === checklist)
 
-            const currentEvaluation =
-                evaluationsChecklist[evaluationsChecklist.length - 1]
+                const scores = evaluationsChecklist.map(e => +e.score)
 
-            const totalAverage = average(scores)
+                const min = Math.min(...scores)
+                const minIndex = scores.indexOf(min)
+                const minEvaluation = evaluationsChecklist[minIndex]
 
-            evaluationsByChecklist.push({
-                checklist: minEvaluation.checklistDescription,
-                checklistId: minEvaluation.checklistId,
-                currentScore: {
-                    value: format(currentEvaluation.score),
-                    percentage: 17,
-                    percentageDirection: 'up'
-                },
-                teamParticipation: {
-                    value: 90,
-                    percentage: 13,
-                    percentageDirection: 'up'
-                },
-                minimumScore: {
-                    value: format(minEvaluation.score),
-                    sprint: minEvaluation.sprint
-                },
-                maximumScore: {
-                    value: format(maxEvaluation.score),
-                    sprint: maxEvaluation.sprint
-                },
-                totalAverage: {
-                    value: totalAverage,
-                    percentage: 16,
-                    percentageDirection: 'up'
+                const max = Math.max(...scores)
+                const maxIndex = scores.indexOf(max)
+                const maxEvaluation = evaluationsChecklist[maxIndex]
+
+                const currentEvaluation =
+                    evaluationsChecklist[evaluationsChecklist.length - 1]
+
+                const totalAverage = average(scores)
+
+                if (!evaluationsMap.hasOwnProperty(projectId)) {
+                    evaluationsMap[projectId] = []
                 }
+                evaluationsMap[projectId].push({
+                    checklist: minEvaluation.checklistDescription,
+                    checklistId: minEvaluation.checklistId,
+                    currentScore: {
+                        value: format(currentEvaluation.score),
+                        percentage: 17,
+                        percentageDirection: 'up'
+                    },
+                    teamParticipation: {
+                        value: 90,
+                        percentage: 13,
+                        percentageDirection: 'up'
+                    },
+                    minimumScore: {
+                        value: format(minEvaluation.score),
+                        sprint: minEvaluation.sprint
+                    },
+                    maximumScore: {
+                        value: format(maxEvaluation.score),
+                        sprint: maxEvaluation.sprint
+                    },
+                    totalAverage: {
+                        value: totalAverage,
+                        percentage: 16,
+                        percentageDirection: 'up'
+                    }
+                })
             })
-        })
-        return evaluationsByChecklist
+            return evaluationsMap
+
+        }, {})
     }
 
     const calculatePercentage = (before, current) => {
@@ -296,26 +310,33 @@ module.exports = app => {
         return percentageDirection
     }
 
-    const updateSummaryDataPercentages = (before, current) => {
-        current.forEach(map => {
-            const beforeMap = before.filter(beforeMap => beforeMap.checklistId === map.checklistId)
+    const updateSummaryDataPercentages = (beforeProjectsMap, currentProjectsMap) => {
+        const projects = Object.keys(currentProjectsMap)
 
-            if (beforeMap.length > 0) {
-                map.currentScore.percentage = calculatePercentage(beforeMap[0].currentScore.value, map.currentScore.value)
-                map.currentScore.percentageDirection = getPercentageDirection(map.currentScore.percentage)
-                map.currentScore.percentage *= Math.sign(map.currentScore.percentage)
+        projects.forEach(project => {
+            const before = beforeProjectsMap[project]
+            const current = currentProjectsMap[project]
+            
+            current.forEach(map => {
+                const beforeMap = before.filter(beforeMap => beforeMap.checklistId === map.checklistId)
+                if (beforeMap.length > 0) {
+                    map.currentScore.percentage = calculatePercentage(beforeMap[0].currentScore.value, map.currentScore.value)
+                    map.currentScore.percentageDirection = getPercentageDirection(map.currentScore.percentage)
+                    map.currentScore.percentage *= Math.sign(map.currentScore.percentage)
+                    
+                    map.totalAverage.percentage = calculatePercentage(beforeMap[0].totalAverage.value, map.totalAverage.value)
+                    map.totalAverage.percentageDirection = getPercentageDirection(map.totalAverage.percentage)
+                    map.totalAverage.percentage *= Math.sign(map.totalAverage.percentage)
+                }
+            })
 
-                map.totalAverage.percentage = calculatePercentage(beforeMap[0].totalAverage.value, map.totalAverage.value)
-                map.totalAverage.percentageDirection = getPercentageDirection(map.totalAverage.percentage)
-                map.totalAverage.percentage *= Math.sign(map.totalAverage.percentage)
-            }
         })
-
-        return current
+        return currentProjectsMap
     }
 
     const getSummaryData = (summary) => new Promise((resolve, reject) => {
         let evaluations = [...summary.evaluations]
+
         const lastElement = evaluations.pop()
         const before = getEvaluationsByChecklist(evaluations)
         const current = getEvaluationsByChecklist(summary.evaluations)
