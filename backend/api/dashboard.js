@@ -355,8 +355,10 @@ module.exports = app => {
     const getSummaryData = (summary) => new Promise((resolve, reject) => {
         let evaluations = [...summary.evaluations]
 
-        const lastElement = evaluations.pop()
-
+        if(evaluations.length > 1) {
+            evaluations.pop()
+        }
+        
         const members = summary.members
         const pureEvaluations = summary.pureEvaluations
         const before = getEvaluationsByChecklist(evaluations, members, pureEvaluations)
