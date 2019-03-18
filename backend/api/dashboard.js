@@ -239,7 +239,14 @@ module.exports = app => {
                 && e.projectId === projectId
                 && e.checklistId === checklist).map(e => e.userId)
 
-        return 100 * membersThatEvaluated.length / projectMembers.length
+        let nMembers = 0
+        projectMembers.forEach(member => {
+            if(membersThatEvaluated.includes(member)) {
+                nMembers++
+            }
+        })
+
+        return 100 * nMembers / projectMembers.length
     }
 
     const getEvaluationsByChecklist = (evaluations, members, pureEvaluations) => {

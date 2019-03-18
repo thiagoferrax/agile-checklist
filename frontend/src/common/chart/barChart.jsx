@@ -17,7 +17,7 @@ export default props => {
                 </div>
                 <div className="box-body">
                     <p class="text-center">
-                        Average score per sprint: 1 Jan, 2014 - 30 Jul, 2014
+                        Average score per sprint: {props.dateInterval}
                     </p>
                     <div className="chart">
                         <Bar

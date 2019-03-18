@@ -5,11 +5,20 @@ import './chart.css'
 export default props => {
     const data = getBarChartData(props.evaluations, props.project.id)
 
-    if(!data) {
-        return <React.Fragment/>
+    const dateInterval = getDateInterval(props.evaluations, props.project.id)
+
+    if (!data) {
+        return <React.Fragment />
     }
 
-    return (<BarChart cols={props.cols} data={data} project={props.project.name} summaryData={props.summaryData}/>)
+    return (
+        <BarChart
+            cols={props.cols}
+            data={data}
+            project={props.project.name}
+            summaryData={props.summaryData}
+            dateInterval={dateInterval} />
+    )
 }
 
 const getDataSet = (datasets, checklistId) => {
@@ -27,7 +36,7 @@ const getChartColor = (index) => {
         'rgb(255, 119, 1, .4)',
         'rgb(17, 17, 17, .4)',
         'rgb(96, 92, 168, .4)'
-        
+
     ]
 
     if (index > colors.length) {
@@ -52,6 +61,34 @@ const getChartBorderColor = (index) => {
         index -= colors.length
     }
     return colors[index]
+}
+
+const getFormatedDate = (isoDate) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+
+    const date = new Date(isoDate)
+    return date.toLocaleDateString('en-US', options)
+}
+
+const getDateInterval = (evaluations, projectId) => {
+    const projectEvaluations =
+        evaluations.filter(evaluation => evaluation.projectId === projectId).sort((e1, e2) => e1.sprint - e2.sprint)
+
+    if (!projectEvaluations.length) {
+        return
+    }
+
+    const startDate = getFormatedDate(projectEvaluations[0].date)
+    if (projectEvaluations.length === 1) {
+        return startDate
+    } else {
+        const endDate = getFormatedDate(projectEvaluations[projectEvaluations.length - 1].date)
+        if(startDate === endDate) {
+            return startDate
+        }
+        
+        return startDate + ' - ' + endDate
+    }
 }
 
 const getBarChartData = (evaluations, projectId) => {
