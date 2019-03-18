@@ -355,12 +355,37 @@ module.exports = app => {
     const getSummaryData = (summary) => new Promise((resolve, reject) => {
         let evaluations = [...summary.evaluations]
 
-        if(evaluations.length > 1) {
-            evaluations.pop()
+        if (evaluations.length > 1) {
+            const checklistsIds = evaluations.reduce((checklistsIds, evaluation) => {
+                if (!checklistsIds[evaluation.checklistId]) {
+                    checklistsIds[evaluation.checklistId] = 1
+                } else {
+                    checklistsIds[evaluation.checklistId]++
+                }
+                return checklistsIds
+            }, {})
+
+            Object.keys(checklistsIds).map(checklistId => {
+                if (checklistsIds[checklistId] > 1) {
+                    checklistsIds[checklistId] = 0
+                }
+            })
+
+            let index = evaluations.length - 1
+
+            while (Object.values(checklistsIds).includes(0)) {
+                const checklistId = evaluations[index].checklistId
+                if (!checklistsIds[checklistId]) {
+                    delete evaluations[index]
+                    checklistsIds[checklistId] = 1
+                }
+                index--
+            }
         }
-        
+
         const members = summary.members
         const pureEvaluations = summary.pureEvaluations
+
         const before = getEvaluationsByChecklist(evaluations, members, pureEvaluations)
         const current = getEvaluationsByChecklist(summary.evaluations, members, pureEvaluations)
         const summaryData = updateSummaryDataPercentages(before, current)
