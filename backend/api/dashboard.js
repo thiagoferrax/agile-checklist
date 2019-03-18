@@ -316,7 +316,7 @@ module.exports = app => {
     const calculatePercentage = (before, current) => {
         let percentage = 0
         if (current !== 0) {
-            percentage = (current - before) * 100 / current
+            percentage = (current - before) * 100 / before
         }
         return format(percentage)
     }
@@ -360,34 +360,28 @@ module.exports = app => {
     }
 
     const getSummaryData = (summary) => new Promise((resolve, reject) => {
-        let evaluations = [...summary.evaluations].sort((a, b) => a.sprint - b.sprint)        
-
+        let evaluations = [...summary.evaluations].sort((a, b) => a.sprint - b.sprint)
+        let filteredEvaluations = []              
         if (evaluations.length > 1) {
-            const checklistsIds = evaluations.reduce((checklistsIds, evaluation) => {
-                if (!checklistsIds[evaluation.checklistId]) {
-                    checklistsIds[evaluation.checklistId] = 1
-                } else {
-                    checklistsIds[evaluation.checklistId]++
-                }
-                return checklistsIds
-            }, {})
+            const projects = [...new Set(evaluations.map(e => e.projectId))]
+            const checklists = [...new Set(evaluations.map(e => e.checklistId))]
 
-            Object.keys(checklistsIds).map(checklistId => {
-                if (checklistsIds[checklistId] > 1) {
-                    checklistsIds[checklistId] = 0
-                }
+            projects.forEach(project => {
+                checklists.forEach(checklist => {
+                    const evaluationsByProjectAndChecklist = evaluations.filter(e => e.projectId === project).filter(e => e.checklistId === checklist)
+                    const sprints = evaluationsByProjectAndChecklist.map(e => e.sprint)
+                    const sprint = sprints[sprints.length-1]
+
+                    if(sprints.length > 1) {
+                        filteredEvaluations = filteredEvaluations.concat(evaluations.filter(e => e.projectId === project && e.checklistId === checklist && e.sprint === sprint))
+                    }
+                })
+            })    
+
+            filteredEvaluations.forEach(f => {
+                const index = evaluations.indexOf(f)
+                delete evaluations[index]
             })
-
-            let index = evaluations.length - 1
-
-            while (Object.values(checklistsIds).includes(0)) {
-                const checklistId = evaluations[index].checklistId
-                if (!checklistsIds[checklistId]) {
-                    delete evaluations[index]
-                    checklistsIds[checklistId] = 1
-                }
-                index--
-            }
         }
 
         const members = summary.members

@@ -16,7 +16,7 @@ export default props => {
                     <h3 className="box-title">&nbsp;&nbsp;PROGRESS - {props.project}</h3>
                 </div>
                 <div className="box-body">
-                    <p class="text-center">
+                    <p className="text-center">
                         Average score per sprint: {props.dateInterval}
                     </p>
                     <div className="chart">
