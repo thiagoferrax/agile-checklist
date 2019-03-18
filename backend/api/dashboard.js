@@ -246,7 +246,7 @@ module.exports = app => {
             }
         })
 
-        return 100 * nMembers / projectMembers.length
+        return format(100 * nMembers / projectMembers.length)
     }
 
     const getEvaluationsByChecklist = (evaluations, members, pureEvaluations) => {
