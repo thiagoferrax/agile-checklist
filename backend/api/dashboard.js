@@ -235,9 +235,9 @@ module.exports = app => {
         const projectMembers = members.filter(m => m.projectId = projectId).map(m => m.userId)
 
         const membersThatEvaluated = pureEvaluations.filter(
-            e => e.sprint === sprint
+            e => (e.sprint === sprint
                 && e.projectId === projectId
-                && e.checklistId === checklist).map(e => e.userId)
+                && e.checklistId === checklist)).map(e => e.userId)
 
         let nMembers = 0
         projectMembers.forEach(member => {
@@ -258,7 +258,7 @@ module.exports = app => {
 
             checklists.map(checklist => {
 
-                const evaluationsChecklist = projectEvaluations.filter(e => e.checklistId === checklist)
+                const evaluationsChecklist = projectEvaluations.filter(e => e.checklistId === checklist).sort((a, b) => a.sprint - b.sprint)
 
                 const scores = evaluationsChecklist.map(e => +e.score)
 
@@ -360,7 +360,7 @@ module.exports = app => {
     }
 
     const getSummaryData = (summary) => new Promise((resolve, reject) => {
-        let evaluations = [...summary.evaluations]
+        let evaluations = [...summary.evaluations].sort((a, b) => a.sprint - b.sprint)        
 
         if (evaluations.length > 1) {
             const checklistsIds = evaluations.reduce((checklistsIds, evaluation) => {
