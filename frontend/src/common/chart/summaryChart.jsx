@@ -49,8 +49,9 @@ export default class SummaryChart extends Component {
                 <div className="row" style={styles.fadeIn}>
                     <Grid cols='6 2'>
                         <div className="description-block border-right carousel-inner">
+                            <span className="description-percentage text-muted">Sprint {this.props.summaryData[this.state.index].currentSprint}</span>
                             <h5 className="description-header">{this.props.summaryData[this.state.index].checklist}</h5>
-                            <span className="description-text">CHECKLIST</span>
+                            <span className="description-text">MY CHECKLIST</span>
 
                             <If test={this.props.summaryData.length > 1} >
                                 <a class="left carousel-control" href="javascript:;" onClick={() => this.nextChecklist(-1)} data-slide="prev">
@@ -84,14 +85,14 @@ export default class SummaryChart extends Component {
                         <div className="description-block border-right">
                             <span className="description-percentage text-muted">{`Sprint ${this.props.summaryData[this.state.index].minimumScore.sprint}`}</span>
                             <h5 className="description-header">{this.props.summaryData[this.state.index].minimumScore.value}</h5>
-                            <span className="description-text">MINIMUM</span>
+                            <span className="description-text">MINIMUM SCORE</span>
                         </div>
                     </Grid>
                     <Grid cols='6 2'>
                         <div className="description-block">
                             <span className="description-percentage text-muted">{`Sprint ${this.props.summaryData[this.state.index].maximumScore.sprint}`}</span>
                             <h5 className="description-header">{this.props.summaryData[this.state.index].maximumScore.value}</h5>
-                            <span className="description-text">MAXIMUM</span>
+                            <span className="description-text">MAXIMUM SCORE</span>
                         </div>
                     </Grid>
                     <Grid cols='6 2'>

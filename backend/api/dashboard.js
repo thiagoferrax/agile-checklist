@@ -276,10 +276,10 @@ module.exports = app => {
                 const minEvaluation = getScoreEvaluation(evaluationsChecklist, Math.min)
                 const maxEvaluation = getScoreEvaluation(evaluationsChecklist, Math.max)
 
-                const currentEvaluation = evaluationsChecklist[evaluationsChecklist.length - 1]
-
-                const teamParticipation = getTeamParticipation(projectId, currentEvaluation.sprint,
-                    checklist, members, pureEvaluations)
+                const currentEvaluation = evaluationsChecklist[evaluationsChecklist.length - 1] 
+                const currentSprint = currentEvaluation.sprint
+                const teamParticipation = 
+                    getTeamParticipation(projectId, currentSprint, checklist, members, pureEvaluations)
 
                 const totalAverage = getAverage(evaluationsChecklist)
 
@@ -290,6 +290,7 @@ module.exports = app => {
                 evaluationsMap[projectId].push({
                     checklist: minEvaluation.checklistDescription,
                     checklistId: minEvaluation.checklistId,
+                    currentSprint, 
                     currentScore: { value: format(currentEvaluation.score) },
                     teamParticipation: { value: format(teamParticipation) },
                     minimumScore: {

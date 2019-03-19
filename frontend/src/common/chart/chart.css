@@ -6,32 +6,14 @@
     font-size: 14px;
 }
 
-.btn-default_ {
-    background-color: transparent;
-    color: #444;
-    border-color: none;
-}
-
-.btn_ {
-    border-radius: 3px;
-    box-shadow: none;
-    border: none;
-}
-
-:focus {
-    outline: none !important;
-}
-
-.nextBtn:hover {
-    color: black;
-}
 .carousel-inner {
     overflow: visible;
 }
 
 .carousel-control {
-    width: 20%;
-    padding-top: 11px;
+    width: 30%;
+    padding-top: 31px;
+    padding-right: 3px;
     opacity: 1;
 }
 
