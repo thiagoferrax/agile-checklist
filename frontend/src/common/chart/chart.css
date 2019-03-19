@@ -25,3 +25,17 @@
 .nextBtn:hover {
     color: black;
 }
+.carousel-inner {
+    overflow: visible;
+}
+
+.carousel-control {
+    width: 20%;
+    padding-top: 11px;
+    opacity: 1;
+}
+
+.description-block{
+    display: flex;
+    flex-direction: column;
+}
