@@ -9,9 +9,11 @@ import { getList as getProjects } from '../project/projectActions'
 import Tree from 'tree-slide-bar'
 import If from '../common/operator/if'
 import Grid from '../common/layout/grid'
-import './evaluation.css'
+import ProgressBar from '../common/widget/progressBar'
 
 import Select from '../common/form/select'
+
+import './evaluation.css'
 
 class EvaluationForm extends Component {
 
@@ -33,46 +35,16 @@ class EvaluationForm extends Component {
         this.props.updateScore(tree)
     }
 
-    getColor = (value) => {
-        let color = ''
-        if (value === null) {
-            color = 'gray_'
-        } else if (value == 0) {
-            color = 'red_'
-        } else if (value < 3) {
-            color = 'orange_'
-        } else if (value < 5) {
-            color = 'light_orange_'
-        } else if (value == 5) {
-            color = 'yellow_'
-        } else if (value < 8) {
-            color = 'yellow_green_'
-        } else if (value < 10) {
-            color = 'light_green_'
-        } else if (value == 10) {
-            color = 'green_'
-        }
-        return color
-    }
-
     getChecklist(checklist) {
         return (
             <Grid cols='12'>
-                <div className="box box-primary">
+                <div className="box box-primary box_evaluations">
                     <div className="box-header box-header_evaluations">
                         <i className={`fa fa-check`}></i>
                         <h3 className="box-title">&nbsp;&nbsp;MY CHECKLIST</h3>
-                        <div className="progress">
-                            <div
-                                class={`progress-bar ${this.getColor(this.props.score)}`}
-                                role="progressbar"
-                                aria-valuenow={this.props.completion}
-                                aria-valuemin="0" aria-valuemax="100"
-                                style={{ width: this.props.completion + '%' }}>
-                            </div>
-                        </div>
                     </div>
-                    <div className="box-body fixed-panel">
+                    <ProgressBar score={this.props.score} completion={this.props.completion}/>
+                    <div className="box-body">
                         <Field
                             name='checklist'
                             component={Tree}
@@ -80,15 +52,7 @@ class EvaluationForm extends Component {
                             onChange={tree => this.updateChecklistScore(tree)}
                         />
                     </div>
-                    <div className="progress">
-                        <div
-                            class={`progress-bar ${this.getColor(this.props.score)}`}
-                            role="progressbar"
-                            aria-valuenow={this.props.completion}
-                            aria-valuemin="0" aria-valuemax="100"
-                            style={{ width: this.props.completion + '%' }}>
-                        </div>
-                    </div>
+                    <ProgressBar score={this.props.score} completion={this.props.completion}/>                    
                 </div>
             </Grid >
         )
