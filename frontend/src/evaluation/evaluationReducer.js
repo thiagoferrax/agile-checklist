@@ -11,28 +11,28 @@ export default (state = INITIAL_STATE, action) => {
         case 'TREE_FETCHED':
             return { ...state, tree: action.payload.data }
         case 'SCORE_UPDATED':
-            const treeScore = action.payload
-            const score = treeScore.filter(item => item.parentId === null)[0].value
+            const score =
+                action.payload &&
+                action.payload.filter(item => item.parentId === null)[0].value
 
-            const getItemsQuantitative = (treeS, initialItems = {total:0, withValue:0}) => 
-                (treeS && treeS.reduce((items, item) => {
-                    
-                    items.total++
-                    if (item.value !== undefined) {
-                        items.withValue++
-                    }
-                    if (item.children) {
-                        return getItemsQuantitative(item.children, items)
-                    }
-                    return items
-                }, initialItems))
+            const getItemsQuantitative =
+                (treeScore, initialItems = { total: 0, withValue: 0 }) =>
+                    (treeScore && treeScore.reduce((items, item) => {
+                        items.total++
+                        if (item.value !== undefined) {
+                            items.withValue++
+                        }
+                        if (item.children) {
+                            return getItemsQuantitative(item.children, items)
+                        }
+                        return items
+                    }, initialItems))
 
-            const itemsQuantitative = getItemsQuantitative(treeScore)
-            
-            let completion = 0
-            if(itemsQuantitative.total !== 0) {
-                completion = parseInt((itemsQuantitative.withValue / itemsQuantitative.total) * 100)
-            } 
+            const itemsQuantitative = getItemsQuantitative(action.payload)
+
+            const completion = itemsQuantitative.total !== 0 ? 
+                parseInt(100* itemsQuantitative.withValue / itemsQuantitative.total) : 0 
+
             return { ...state, score, completion }
         case 'ANSWERS_FETCHED':
             let answers = action.payload.data
