@@ -5,21 +5,21 @@ export default props => {
     const getColor = (value) => {
         let color = ''
         if (value === null) {
-            color = 'gray_'
+            color = 'gray_pb'
         } else if (value == 0) {
-            color = 'red_'
+            color = 'red_pb'
         } else if (value < 3) {
-            color = 'orange_'
+            color = 'orange_pb'
         } else if (value < 5) {
-            color = 'light_orange_'
+            color = 'light_orange_pb'
         } else if (value == 5) {
-            color = 'yellow_'
+            color = 'yellow_pb'
         } else if (value < 8) {
-            color = 'yellow_green_'
+            color = 'yellow_green_pb'
         } else if (value < 10) {
-            color = 'light_green_'
+            color = 'light_green_pb'
         } else if (value == 10) {
-            color = 'green_'
+            color = 'green_pb'
         }
         return color
     }

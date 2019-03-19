@@ -39,7 +39,7 @@ class EvaluationForm extends Component {
         return (
             <Grid cols='12'>
                 <div className="box box-primary box_evaluations">
-                    <div className="box-header box-header_evaluations">
+                    <div className="box-header">
                         <i className={`fa fa-check`}></i>
                         <h3 className="box-title">&nbsp;&nbsp;MY CHECKLIST</h3>
                     </div>

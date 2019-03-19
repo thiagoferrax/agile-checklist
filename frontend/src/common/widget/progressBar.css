@@ -1,39 +1,38 @@
-.red_ {
+.red_pb {
     background:  #DC3545;
 }
 
-.orange_ {
+.orange_pb {
     background: #ff6600;
 }
 
-.light_orange_ {
+.light_orange_pb {
     background: #ff9900;
 }
 
-.yellow_ {
+.yellow_pb {
     background: #FFCC00;
 }
 
-.yellow_green_ {
+.yellow_green_pb {
     background: #99ff00;
 }
 
 
-.light_green_ {
+.light_green_pb {
     background: #66ff00;
 }
 
-.green_ {
+.green_pb {
     background: #28A745;
 }
 
-.gray_ {
+.gray_pb {
     background: #d3d3d3;
 }
 
 .progress {
     height: 2px;
-    margin-top: 10px;
     margin-bottom: 0px;
     overflow: hidden;
     background-color: #f5f5f5;

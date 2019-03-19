@@ -24,7 +24,7 @@ export default class SummaryChart extends Component {
     }
 
     getPercentageColor = percentageDirection => {
-        let color = 'mute'
+        let color = 'yellow'
         if (percentageDirection === 'up') {
             color = 'green'
         } else if (percentageDirection === 'down') {
