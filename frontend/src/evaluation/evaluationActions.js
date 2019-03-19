@@ -22,6 +22,13 @@ export function selectChecklist(checklistId) {
     }
 }
 
+export function updateScore(score) {
+    return {
+        type: 'SCORE_UPDATED',
+        payload: score
+    }
+}
+
 export function create(values) {
     return submit(values, 'post')
 }
