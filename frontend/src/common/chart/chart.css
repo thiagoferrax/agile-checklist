@@ -16,3 +16,15 @@
     padding-right: 2px;
     opacity: 1;
 }
+
+.fixedBox {
+    position: absolute;
+    top: 41px;
+    left: 0px;
+    max-height: 335px;
+    overflow-y: scroll;
+}
+
+.box-body-timeline {
+    height: 335px;
+}
