@@ -44,64 +44,66 @@ export default class SummaryChart extends Component {
                 animationName: Radium.keyframes(fadeIn, 'fadeIn')
             }
         }
+        let grids = ['12 3', '6 2', '6 2', '6 2', '6 3']
+        if(this.props.summaryData.length > 1) {
+            grids = ['11 2', '6 2', '6 2', '6 2', '5 2']
+        }
         return (
             <StyleRoot>
                 <div className="row" style={styles.fadeIn}>
-                    <Grid cols='6 2'>
+                    <If test={this.props.summaryData.length > 1} >
+                        <Grid cols='1'>
+                            <div className="carousel_controller">
+                                <a href="javascript:;" onClick={() => this.nextChecklist(-1)}>
+                                    <span class="fa fa-angle-left fa-2x"></span>
+                                </a>
+                            </div>
+                        </Grid>
+                    </If>
+                    <Grid cols={grids[0]}>
                         <div className="description-block border-right carousel-inner">
                             <span className="description-percentage text-muted">Sprint {this.props.summaryData[this.state.index].currentSprint}</span>
                             <h5 className="description-header">{this.props.summaryData[this.state.index].checklist}</h5>
                             <span className="description-text">MY CHECKLIST</span>
-
-                            <If test={this.props.summaryData.length > 1} >
-                                <a class="left carousel-control" href="javascript:;" onClick={() => this.nextChecklist(-1)} data-slide="prev">
-                                    <span class="icon ion-ios-arrow-back"></span>
-                                    <span class="icon ion-ios-arrow-back"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="right carousel-control" href="javascript:;" onClick={() => this.nextChecklist(1)} data-slide="next">
-                                    <span class="icon ion-ios-arrow-forward"></span>
-                                    <span class="icon ion-ios-arrow-forward"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </If>
                         </div>
                     </Grid>
-                    <Grid cols='6 2'>
+                    <Grid cols={grids[1]}>
                         <div className="description-block border-right">
                             <span className={`description-percentage text-${this.getPercentageColor(this.props.summaryData[this.state.index].currentScore.percentageDirection)}`}><i className={`fa fa-caret-${this.props.summaryData[this.state.index].currentScore.percentageDirection}`}></i> {this.props.summaryData[this.state.index].currentScore.percentage}%</span>
                             <h5 className="description-header">{this.props.summaryData[this.state.index].currentScore.value}</h5>
                             <span className="description-text">CURRENT SCORE</span>
                         </div>
                     </Grid>
-                    <Grid cols='6 2'>
+                    <Grid cols={grids[2]}>
                         <div className="description-block border-right">
                             <span className={`description-percentage text-${this.getPercentageColor(this.props.summaryData[this.state.index].teamParticipation.percentageDirection)}`}><i className={`fa fa-caret-${this.props.summaryData[this.state.index].teamParticipation.percentageDirection}`}></i> {this.props.summaryData[this.state.index].teamParticipation.percentage}%</span>
                             <h5 className="description-header">{`${this.props.summaryData[this.state.index].teamParticipation.value}%`}</h5>
                             <span className="description-text">TEAM PARTICIPATION</span>
                         </div>
                     </Grid>
-                    <Grid cols='6 2'>
-                        <div className="description-block border-right">
-                            <span className="description-percentage text-muted">{`Sprint ${this.props.summaryData[this.state.index].minimumScore.sprint}`}</span>
-                            <h5 className="description-header">{this.props.summaryData[this.state.index].minimumScore.value}</h5>
-                            <span className="description-text">MINIMUM SCORE</span>
-                        </div>
-                    </Grid>
-                    <Grid cols='6 2'>
+                    <Grid cols={grids[3]}>
                         <div className="description-block">
                             <span className="description-percentage text-muted">{`Sprint ${this.props.summaryData[this.state.index].maximumScore.sprint}`}</span>
                             <h5 className="description-header">{this.props.summaryData[this.state.index].maximumScore.value}</h5>
                             <span className="description-text">MAXIMUM SCORE</span>
                         </div>
                     </Grid>
-                    <Grid cols='6 2'>
+                    <Grid cols={grids[4]}>
                         <div className="description-block border-right">
                             <span className={`description-percentage text-${this.getPercentageColor(this.props.summaryData[this.state.index].totalAverage.percentageDirection)}`}><i className={`fa fa-caret-${this.props.summaryData[this.state.index].totalAverage.percentageDirection}`}></i> {this.props.summaryData[this.state.index].totalAverage.percentage}%</span>
                             <h5 className="description-header">{this.props.summaryData[this.state.index].totalAverage.value}</h5>
                             <span className="description-text">TOTAL AVERAGE</span>
                         </div>
                     </Grid>
+                    <If test={this.props.summaryData.length > 1} >
+                        <Grid cols='1'>
+                            <div className="carousel_controller">
+                                <a href="javascript:;" onClick={() => this.nextChecklist(1)}>
+                                    <span class="fa fa-angle-right fa-2x"></span>
+                                </a>
+                            </div>
+                        </Grid>
+                    </If>
                 </div>
             </StyleRoot>
         )
