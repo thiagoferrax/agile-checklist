@@ -1,23 +1,30 @@
 .chart {
-    padding: 10px;
+    padding: 5px;
 }
 
 .description-block > .description-header {
     font-size: 14px;
 }
 
-.btn-default_ {
-    background-color: transparent;
-    color: #444;
-    border-color: none;
+.carousel-inner {
+    overflow: visible;
 }
 
-.btn_ {
-    border-radius: 3px;
-    box-shadow: none;
-    border: none;
+.carousel-control {
+    width: 18%;
+    padding-top: 31px;
+    padding-right: 2px;
+    opacity: 1;
 }
 
-:focus {
-    outline: none !important;
+.fixedBox {
+    position: absolute;
+    top: 41px;
+    left: 0px;
+    max-height: 335px;
+    overflow-y: scroll;
+}
+
+.box-body-timeline {
+    height: 335px;
 }

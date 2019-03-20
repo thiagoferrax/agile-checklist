@@ -175,12 +175,13 @@ module.exports = app => {
                     }
 
                     const rootCauses = getRootCauses(evaluation, summary.projectEvaluations[projectId])
+                    const checklist = evaluation.checklistDescription
                     if (rootCauses.length > 0) {
-                        causeAndEffect[sprint][evaluation.checklistDescription] = getRootCauses(evaluation, summary.projectEvaluations[projectId])
+                        causeAndEffect[sprint][checklist] =
+                            getRootCauses(evaluation, summary.projectEvaluations[projectId])
                     } else {
-                        delete causeAndEffect[sprint][evaluation.checklistDescription]
+                        delete causeAndEffect[sprint][checklist]
                     }
-
 
                     return causeAndEffect
                 }, {})
@@ -194,29 +195,29 @@ module.exports = app => {
         }
     })
 
-
     const getParetoData = (summary) => new Promise((resolve, reject) => {
         if (summary.sprintEvaluations) {
             const projects = Object.keys(summary.sprintEvaluations)
 
             summary.paretoData = projects.reduce((paretoData, projectId) => {
 
-                paretoData[projectId] = summary.sprintEvaluations[projectId].reduce((data, evaluation) => {
-                    const sprint = `Sprint ${evaluation.sprint}`
+                paretoData[projectId] =
+                    summary.sprintEvaluations[projectId].reduce((data, evaluation) => {
+                        const sprint = `Sprint ${evaluation.sprint}`
 
-                    if (!data[sprint]) {
-                        data[sprint] = {}
-                    }
+                        if (!data[sprint]) {
+                            data[sprint] = {}
+                        }
 
-                    const rootCauses = getRootCauses(evaluation, summary.projectEvaluations[projectId])
-                    if (rootCauses.length > 0) {
-                        data[sprint][evaluation.checklistDescription] = rootCauses.length
-                    } else {
-                        delete data[sprint][evaluation.checklistDescription]
-                    }
+                        const rootCauses = getRootCauses(evaluation, summary.projectEvaluations[projectId])
+                        if (rootCauses.length > 0) {
+                            data[sprint][evaluation.checklistDescription] = rootCauses.length
+                        } else {
+                            delete data[sprint][evaluation.checklistDescription]
+                        }
 
-                    return data
-                }, {})
+                        return data
+                    }, {})
 
                 return paretoData
             }, {})
@@ -231,22 +232,34 @@ module.exports = app => {
 
     const average = array => format(array.reduce((a, b) => a + b, 0) / array.length)
 
+    const getAverage = (evaluations) => {
+        const scores = evaluations.map(e => +e.score)
+        return average(scores)
+    }
+
+    const getScoreEvaluation = (evaluations, func) => {
+        const scores = evaluations.map(e => +e.score)
+        const index = scores.lastIndexOf(func(...scores))
+        return evaluations[index]
+    }
+
     const getTeamParticipation = (projectId, sprint, checklist, members, pureEvaluations) => {
         const projectMembers = members.filter(m => m.projectId = projectId).map(m => m.userId)
 
-        const membersThatEvaluated = pureEvaluations.filter(
-            e => (e.sprint === sprint
-                && e.projectId === projectId
-                && e.checklistId === checklist)).map(e => e.userId)
+        const membersThatEvaluated =
+            pureEvaluations.filter(
+                e => (e.sprint === sprint && e.projectId === projectId
+                    && e.checklistId === checklist)
+            ).map(e => e.userId)
 
         let nMembers = 0
         projectMembers.forEach(member => {
-            if(membersThatEvaluated.includes(member)) {
+            if (membersThatEvaluated.includes(member)) {
                 nMembers++
             }
         })
 
-        return format(100 * nMembers / projectMembers.length)
+        return 100 * nMembers / projectMembers.length
     }
 
     const getEvaluationsByChecklist = (evaluations, members, pureEvaluations) => {
@@ -260,39 +273,26 @@ module.exports = app => {
 
                 const evaluationsChecklist = projectEvaluations.filter(e => e.checklistId === checklist).sort((a, b) => a.sprint - b.sprint)
 
-                const scores = evaluationsChecklist.map(e => +e.score)
+                const minEvaluation = getScoreEvaluation(evaluationsChecklist, Math.min)
+                const maxEvaluation = getScoreEvaluation(evaluationsChecklist, Math.max)
 
-                const min = Math.min(...scores)
-                const minIndex = scores.indexOf(min)
-                const minEvaluation = evaluationsChecklist[minIndex]
+                const currentEvaluation = evaluationsChecklist[evaluationsChecklist.length - 1] 
+                const currentSprint = currentEvaluation.sprint
+                const teamParticipation = 
+                    getTeamParticipation(projectId, currentSprint, checklist, members, pureEvaluations)
 
-                const max = Math.max(...scores)
-                const maxIndex = scores.indexOf(max)
-                const maxEvaluation = evaluationsChecklist[maxIndex]
-
-                const currentEvaluation =
-                    evaluationsChecklist[evaluationsChecklist.length - 1]
-
-                const teamParticipation = getTeamParticipation(projectId, currentEvaluation.sprint, checklist, members, pureEvaluations)
-
-                const totalAverage = average(scores)
+                const totalAverage = getAverage(evaluationsChecklist)
 
                 if (!evaluationsMap.hasOwnProperty(projectId)) {
                     evaluationsMap[projectId] = []
                 }
+
                 evaluationsMap[projectId].push({
                     checklist: minEvaluation.checklistDescription,
                     checklistId: minEvaluation.checklistId,
-                    currentScore: {
-                        value: format(currentEvaluation.score),
-                        percentage: 17,
-                        percentageDirection: 'up'
-                    },
-                    teamParticipation: {
-                        value: teamParticipation,
-                        percentage: 13,
-                        percentageDirection: 'up'
-                    },
+                    currentSprint, 
+                    currentScore: { value: format(currentEvaluation.score) },
+                    teamParticipation: { value: format(teamParticipation) },
                     minimumScore: {
                         value: format(minEvaluation.score),
                         sprint: minEvaluation.sprint
@@ -301,11 +301,7 @@ module.exports = app => {
                         value: format(maxEvaluation.score),
                         sprint: maxEvaluation.sprint
                     },
-                    totalAverage: {
-                        value: totalAverage,
-                        percentage: 16,
-                        percentageDirection: 'up'
-                    }
+                    totalAverage: { value: totalAverage }
                 })
             })
             return evaluationsMap
@@ -313,22 +309,16 @@ module.exports = app => {
         }, {})
     }
 
-    const calculatePercentage = (before, current) => {
-        let percentage = 0
-        if (current !== 0) {
-            percentage = (current - before) * 100 / before
-        }
-        return format(percentage)
-    }
+    const calculatePercentage = (before, current) =>
+        format(before !== 0 ? (current - before) * 100 / before : 0)
 
-    const getPercentageDirection = (percentage) => {
-        let percentageDirection = 'right'
-        if (percentage > 0) {
-            percentageDirection = 'up'
-        } else if (percentage < 0) {
-            percentageDirection = 'down'
-        }
-        return percentageDirection
+    const getPercentageDirection = (percentage) =>
+        percentage > 0 ? 'up' : (percentage < 0 ? 'down' : 'right')
+
+    const setPercentageValues = (field, beforeMap, currentMap) => {
+        currentMap[field].percentage = calculatePercentage(beforeMap[0][field].value, currentMap[field].value)
+        currentMap[field].percentageDirection = getPercentageDirection(currentMap[field].percentage)
+        currentMap[field].percentage *= Math.sign(currentMap[field].percentage)
     }
 
     const updateSummaryDataPercentages = (beforeProjectsMap, currentProjectsMap) => {
@@ -338,20 +328,12 @@ module.exports = app => {
             const before = beforeProjectsMap[project]
             const current = currentProjectsMap[project]
 
-            current.forEach(map => {
-                const beforeMap = before.filter(beforeMap => beforeMap.checklistId === map.checklistId)
+            current.forEach(currentMap => {
+                const beforeMap = before.filter(beforeMap => beforeMap.checklistId === currentMap.checklistId)
                 if (beforeMap.length > 0) {
-                    map.currentScore.percentage = calculatePercentage(beforeMap[0].currentScore.value, map.currentScore.value)
-                    map.currentScore.percentageDirection = getPercentageDirection(map.currentScore.percentage)
-                    map.currentScore.percentage *= Math.sign(map.currentScore.percentage)
-
-                    map.teamParticipation.percentage = calculatePercentage(beforeMap[0].teamParticipation.value, map.teamParticipation.value)
-                    map.teamParticipation.percentageDirection = getPercentageDirection(map.teamParticipation.percentage)
-                    map.teamParticipation.percentage *= Math.sign(map.teamParticipation.percentage)
-
-                    map.totalAverage.percentage = calculatePercentage(beforeMap[0].totalAverage.value, map.totalAverage.value)
-                    map.totalAverage.percentageDirection = getPercentageDirection(map.totalAverage.percentage)
-                    map.totalAverage.percentage *= Math.sign(map.totalAverage.percentage)
+                    setPercentageValues('currentScore', beforeMap, currentMap)
+                    setPercentageValues('teamParticipation', beforeMap, currentMap)
+                    setPercentageValues('totalAverage', beforeMap, currentMap)
                 }
             })
 
@@ -359,39 +341,52 @@ module.exports = app => {
         return currentProjectsMap
     }
 
-    const getSummaryData = (summary) => new Promise((resolve, reject) => {
-        let evaluations = [...summary.evaluations].sort((a, b) => a.sprint - b.sprint)
-        let filteredEvaluations = []              
+    const getEvaluationsWithoutLastSprint = summaryEvaluations => {
+        let evaluations = [...summaryEvaluations].sort((a, b) => a.sprint - b.sprint)
         if (evaluations.length > 1) {
             const projects = [...new Set(evaluations.map(e => e.projectId))]
             const checklists = [...new Set(evaluations.map(e => e.checklistId))]
 
+            let filteredEvaluations = []
             projects.forEach(project => {
                 checklists.forEach(checklist => {
                     const evaluationsByProjectAndChecklist = evaluations.filter(e => e.projectId === project).filter(e => e.checklistId === checklist)
                     const sprints = evaluationsByProjectAndChecklist.map(e => e.sprint)
-                    const sprint = sprints[sprints.length-1]
+                    const sprint = sprints[sprints.length - 1]
 
-                    if(sprints.length > 1) {
-                        filteredEvaluations = filteredEvaluations.concat(evaluations.filter(e => e.projectId === project && e.checklistId === checklist && e.sprint === sprint))
+                    if (sprints.length > 1) {
+                        filteredEvaluations = filteredEvaluations.concat(
+                            evaluations.filter(
+                                e => e.projectId === project
+                                    && e.checklistId === checklist
+                                    && e.sprint === sprint)
+                        )
                     }
                 })
-            })    
-
-            filteredEvaluations.forEach(f => {
-                const index = evaluations.indexOf(f)
-                delete evaluations[index]
             })
+
+            filteredEvaluations.forEach(e => delete evaluations[evaluations.indexOf(e)])
         }
+        return evaluations
+    }
 
-        const members = summary.members
-        const pureEvaluations = summary.pureEvaluations
+    const getSummaryData = (summary) => new Promise((resolve, reject) => {
+        const evaluationsWithoutCurrentSprint =
+            getEvaluationsWithoutLastSprint(summary.evaluations)
 
-        const before = getEvaluationsByChecklist(evaluations, members, pureEvaluations)
-        const current = getEvaluationsByChecklist(summary.evaluations, members, pureEvaluations)
-        const summaryData = updateSummaryDataPercentages(before, current)
+        const before =
+            getEvaluationsByChecklist(
+                evaluationsWithoutCurrentSprint,
+                summary.members,
+                summary.pureEvaluations)
 
-        summary.summaryData = summaryData
+        const current = getEvaluationsByChecklist(
+            summary.evaluations,
+            summary.members,
+            summary.pureEvaluations)
+
+        summary.summaryData = updateSummaryDataPercentages(before, current)
+
         resolve(summary)
     })
 

@@ -1,0 +1,41 @@
+.red_pb {
+    background:  #DC3545;
+}
+
+.orange_pb {
+    background: #ff6600;
+}
+
+.light_orange_pb {
+    background: #ff9900;
+}
+
+.yellow_pb {
+    background: #FFCC00;
+}
+
+.yellow_green_pb {
+    background: #99ff00;
+}
+
+
+.light_green_pb {
+    background: #66ff00;
+}
+
+.green_pb {
+    background: #28A745;
+}
+
+.gray_pb {
+    background: #d3d3d3;
+}
+
+.progress {
+    height: 2px;
+    margin-bottom: 0px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}

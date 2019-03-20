@@ -21,16 +21,24 @@ class Timeline extends Component {
         clearInterval(this.interval)
     }
 
-    render() {
+    getTimelineContent() {
         const timelineData = this.props.timeline.data
+        return (
+            <ul className="timeline">
+                {this.getTimelineItems(timelineData)}
+            </ul>
+        )
+    }
 
+    render() {
+        if (this.props.onlyTimelineContent) {
+            return this.getTimelineContent()
+        }
         return (
             <div>
                 <ContentHeader title='Timeline' small='Main Events' />
                 <Content>
-                    <ul className="timeline">
-                        {this.getTimelineItems(timelineData)}
-                    </ul>
+                    {this.getTimelineContent()}
                 </Content>
                 <br />
                 <br />
@@ -86,11 +94,11 @@ class Timeline extends Component {
         dates = dates && dates.sort((d1, d2) => new Date(d2) - new Date(d1))
 
         return dates && dates.reduce((items, day) => {
-            items.push(this.date(day))
-
-            const sortedData = data[day].sort((d1, d2) => new Date(d2.data.time) - new Date(d1.data.time))
-
-            sortedData.forEach(log =>  items.push(this[`${log.type}Item`](log.data)))
+            if(!this.props.fromDay || new Date(day) >= this.props.fromDay) {
+                items.push(this.date(day))
+                const sortedData = data[day].sort((d1, d2) => new Date(d2.data.time) - new Date(d1.data.time))
+                sortedData.forEach(log => items.push(this[`${log.type}Item`](log.data)))
+            }
             return items
         }, [])
     }
