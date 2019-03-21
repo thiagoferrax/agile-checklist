@@ -24,16 +24,22 @@ module.exports = app => {
         }, timelineData)
     }
 
-    const buildUserName = (entityMap, usersMap) => {
+    const buildUserName = (entityMap, usersMap, loggedUser) => {
         const ids = Object.keys(entityMap)
         ids.forEach(id => {
-            const user = usersMap[entityMap[id].userId].user
-            entityMap[id] = { ...entityMap[id], user }
+            const userId = entityMap[id].userId
+            if (usersMap[userId]) {
+                const user = usersMap[userId].user
+                entityMap[id] = { ...entityMap[id], user }
+            } else if (loggedUser.id === userId) {
+                const user = loggedUser.user
+                entityMap[id] = { ...entityMap[id], user }
+            }
         })
     }
 
-    const getProjectsIds = (userId) => new Promise((resolve, reject) => {
-        const summary = { timeline: { data: {} }, userId, membersIds: [userId], projects: [] }
+    const getProjectsIds = (summary) => new Promise((resolve, reject) => {
+        const userId = summary.userId
 
         app.db.select({
             id: 'projects.id',
@@ -77,13 +83,13 @@ module.exports = app => {
             .then(projects => {
                 if (projects.length > 0) {
                     summary.team = getTeam(projects)
-                    summary.timeline.data = buildTimeline(summary.timeline.data, 'user', summary.team)
 
+                    summary.timeline.data = buildTimeline(summary.timeline.data, 'user', summary.team)
                     summary.usersMap = array2map(summary.team, 'userId')
                     summary.membersIds = Object.keys(summary.usersMap)
 
                     const projectsMap = array2map(projects, 'id')
-                    buildUserName(projectsMap, summary.usersMap)
+                    buildUserName(projectsMap, summary.usersMap, summary.user)
 
                     summary.projectsIds = Object.keys(projectsMap)
                     summary.projects = Object.values(projectsMap)
@@ -131,26 +137,33 @@ module.exports = app => {
             }).catch(err => reject(err))
     })
 
+    const getLoggedUser = (summary) => new Promise((resolve, reject) => {
+        app.db.select({
+            id: 'users.id',
+            user: 'users.name',
+            time: 'users.created_at'
+        }).from('users')
+            .where('users.id', summary.userId)
+            .first()
+            .then(user => {
+                summary.user = user
+                resolve(summary)
+            }).catch(err => reject(err))
+    })
+
     const getSingleUser = (summary) => new Promise((resolve, reject) => {
-        if (Object.keys(summary.projects).length < 1) {
-            app.db.select({
-                id: 'users.id',
-                user: 'users.name',
-                time: 'users.created_at'
-            }).from('users')
-                .where('users.id', summary.userId)
-                .first()
-                .then(user => {
-                    summary.timeline.data = buildTimeline(summary.timeline.data, 'user', [user])
-                    resolve(summary)
-                }).catch(err => reject(err))
-        } else {
-            resolve(summary)
-        }
+        if (Object.keys(summary.projects).length < 1 || !summary.membersIds.includes(summary.userId) ) {
+            summary.timeline.data = buildTimeline(summary.timeline.data, 'user', [summary.user])
+        } 
+        resolve(summary)        
     })
 
     const get = (req, res) => {
-        getProjectsIds(req.decoded.id)
+        const userId = req.decoded.id
+        const summary = { timeline: { data: {} }, userId, membersIds: [userId], projects: [] }
+
+        getLoggedUser(summary)
+            .then(getProjectsIds)
             .then(getProjects)
             .then(getChecklists)
             .then(getEvaluations)
