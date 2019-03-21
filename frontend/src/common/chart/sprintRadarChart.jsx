@@ -79,15 +79,8 @@ const getRadarChartData = (evaluations) => {
             map.datasets.push({
                 label: sprint,
                 data,
+                notes: data,
                 hidden,
-                pointBorderColor: getChartBorderColor(color),
-                pointBackgroundColor: getChartColor(color),
-                pointBorderWidth: 1,
-                pointHoverRadius: 4,
-                pointHoverBackgroundColor: getChartColor(color),
-                pointHoverBorderColor: getChartBorderColor(color),
-                pointHoverBorderWidth: 1.5,
-                pointRadius: 3,
                 borderWidth: 1.5,
                 backgroundColor: getChartColor(color),
                 borderColor: getChartBorderColor(color)

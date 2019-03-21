@@ -55,7 +55,7 @@ export default class SummaryChart extends Component {
                         <Grid cols='1'>
                             <div className="carousel_controller">
                                 <a href="javascript:;" onClick={() => this.nextChecklist(-1)}>
-                                    <span class="fa fa-angle-left fa-2x"></span>
+                                    <span className="fa fa-angle-left fa-2x"></span>
                                 </a>
                             </div>
                         </Grid>
@@ -99,7 +99,7 @@ export default class SummaryChart extends Component {
                         <Grid cols='1'>
                             <div className="carousel_controller">
                                 <a href="javascript:;" onClick={() => this.nextChecklist(1)}>
-                                    <span class="fa fa-angle-right fa-2x"></span>
+                                    <span className="fa fa-angle-right fa-2x"></span>
                                 </a>
                             </div>
                         </Grid>

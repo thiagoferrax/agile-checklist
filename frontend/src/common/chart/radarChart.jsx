@@ -15,7 +15,21 @@ export default props => {
             ticks: {
                 beginAtZero: true,
                 max: 10,
-                stepSize: 2
+                stepSize: 2,
+                userCallback: function (label, index, labels) {
+
+                    return label;
+
+                },
+            }
+        },
+        tooltips: {
+            enabled: true,
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || ''
+                    return datasetLabel + ': ' + tooltipItem.yLabel
+                }
             }
         }
     }
