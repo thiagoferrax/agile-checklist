@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { fadeIn } from 'react-animations'
-import Radium, { StyleRoot } from 'radium'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Grid from '../layout/grid'
 import If from '../operator/if'
 
-const INITIAL_STATE = { index: 0 }
+const INITIAL_STATE = { index: 0, animation: false }
 
 export default class SummaryChart extends Component {
     constructor(props) {
@@ -19,7 +18,7 @@ export default class SummaryChart extends Component {
         if (!this.props.summaryData[index]) {
             index = step > 0 ? 0 : this.props.summaryData.length - 1
         }
-        this.setState({ index })
+        this.setState({ index, animation: true })
     }
 
     getPercentageColor = percentageDirection => {
@@ -36,29 +35,31 @@ export default class SummaryChart extends Component {
         if (!this.props.summaryData) {
             return <React.Fragment></React.Fragment>
         }
-
-        const styles = {
-            fadeIn: {
-                animation: 'x 1.5s',
-                animationName: Radium.keyframes(fadeIn, 'fadeIn')
-            }
-        }
+        
         let grids = ['12 3', '6 2', '6 2', '6 2', '6 3']
-        if(this.props.summaryData.length > 1) {
+        if (this.props.summaryData.length > 1) {
             grids = ['11 2', '6 2', '6 2', '6 2', '5 2']
         }
+
         return (
-            <StyleRoot>
-                <div className="row" style={styles.fadeIn}>
-                    <If test={this.props.summaryData.length > 1} >
-                        <Grid cols='1'>
-                            <div className="carousel_controller">
-                                <a href="javascript:;" onClick={() => this.nextChecklist(-1)}>
-                                    <span className="fa fa-angle-left fa-2x"></span>
-                                </a>
-                            </div>
-                        </Grid>
-                    </If>
+            <div className="row">
+                <If test={this.props.summaryData.length > 1} >
+                    <Grid cols='1'>
+                        <div className="carousel_controller">
+                            <a href="javascript:;" onClick={() => this.nextChecklist(-1)}>
+                                <span className="fa fa-angle-left fa-2x"></span>
+                            </a>
+                        </div>
+                    </Grid>
+                </If>
+                <ReactCSSTransitionGroup key={`animation_${this.props.title}_${this.state.index}`}
+                    transitionName="animation"
+                    transitionAppear={true}
+                    transitionAppearTimeout={250} 
+                    transitionEnterTimeout={250} 
+                    transitionLeaveTimeout={250} 
+                    transitionEnter={true}
+                    transitionLeave={true} >
                     <Grid cols={grids[0]}>
                         <div className="description-block border-right carousel-inner">
                             <span className="description-percentage text-muted">Sprint {this.props.summaryData[this.state.index].currentSprint}</span>
@@ -94,17 +95,18 @@ export default class SummaryChart extends Component {
                             <span className="description-text">TOTAL AVERAGE</span>
                         </div>
                     </Grid>
-                    <If test={this.props.summaryData.length > 1} >
-                        <Grid cols='1'>
-                            <div className="carousel_controller">
-                                <a href="javascript:;" onClick={() => this.nextChecklist(1)}>
-                                    <span className="fa fa-angle-right fa-2x"></span>
-                                </a>
-                            </div>
-                        </Grid>
-                    </If>
-                </div>
-            </StyleRoot>
+                </ReactCSSTransitionGroup >
+                <If test={this.props.summaryData.length > 1} >
+                    <Grid cols='1'>
+                        <div className="carousel_controller">
+                            <a href="javascript:;" onClick={() => this.nextChecklist(1)}>
+                                <span className="fa fa-angle-right fa-2x"></span>
+                            </a>
+                        </div>
+                    </Grid>
+                </If>
+            </div>
+
         )
     }
 }

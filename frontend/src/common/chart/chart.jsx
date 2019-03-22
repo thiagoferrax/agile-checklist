@@ -24,7 +24,7 @@ export default props => {
                 </div>
                 <div className="card-footer">
                     <If test={props.summaryData}>
-                        <SummaryChart summaryData={props.summaryData} />
+                        <SummaryChart summaryData={props.summaryData} title={props.title}/>
                     </If>
                     <If test={props.footerText}>
                         <i className="icon ion-md-information-circle-outline"></i> {props.footerText}

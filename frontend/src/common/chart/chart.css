@@ -41,3 +41,30 @@
 .card .border-right {
     border-right: 1px solid rgba(0,0,0,.125);
 }
+
+  .animation-appear {
+    opacity: 0.01;
+  }
+  
+  .animation-appear.animation-appear-active {
+    opacity: 1;
+    transition: opacity 250ms ease-in;
+  }
+
+  .animation-enter {
+    opacity: 0.01;
+  }
+  
+  .animation-enter.animation-enter-active {
+    opacity: 1;
+    transition: opacity 250ms ease-in;
+  }
+  
+  .animation-leave {
+    opacity: 1;
+  }
+  
+  .animation-leave.animation-leave-active {
+    opacity: 0.01;
+    transition: opacity 250ms ease-in;
+  }
