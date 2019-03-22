@@ -10,7 +10,7 @@ export default props => {
             <div className="box card">
                 <div className="box-header with-border">
                     <i className={props.icon}></i>
-                    <h3 className="box-title">&nbsp;&nbsp;{props.title}</h3>
+                    <h3 className="box-title">{props.title}</h3>
                 </div>
                 <div className="box-body">
                     <If test={props.bodyTitle}>
