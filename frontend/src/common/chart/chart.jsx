@@ -7,7 +7,7 @@ import './chart.css'
 export default props => {
     return (
         <Grid cols={props.cols}>
-            <div className="box box-primary">
+            <div className="box card">
                 <div className="box-header with-border">
                     <i className={props.icon}></i>
                     <h3 className="box-title">&nbsp;&nbsp;{props.title}</h3>
@@ -22,7 +22,7 @@ export default props => {
                         {props.children}
                     </div>
                 </div>
-                <div className="box-footer">
+                <div className="card-footer">
                     <If test={props.summaryData}>
                         <SummaryChart summaryData={props.summaryData} />
                     </If>

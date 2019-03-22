@@ -2,21 +2,16 @@
     margin-bottom: 15px;
 }
 
-.box {
+.box_ {
     position: relative;
     border-radius: 2px;
     background: #fff;
     width: 100%;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    border-top: 1px solid hsl(0,0%,85%) !important;
-    border: 1px solid hsl(0,0%, 85%);
+    border: 1px solid hsl(0,0%,80%);
     margin-bottom: 15px;
 }
 
 
 .box-header > .fa, .box-header > .glyphicon, .box-header > .ion, .box-header .box-title {
-    display: inline-block;
     font-size: 14px;
-    margin: 0;
-    line-height: 1;
 }

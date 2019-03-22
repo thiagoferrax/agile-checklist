@@ -81,14 +81,14 @@ export default class SummaryChart extends Component {
                         </div>
                     </Grid>
                     <Grid cols={grids[3]}>
-                        <div className="description-block">
+                        <div className="description-block border-right">
                             <span className="description-percentage text-muted">{`Sprint ${this.props.summaryData[this.state.index].maximumScore.sprint}`}</span>
                             <h5 className="description-header">{this.props.summaryData[this.state.index].maximumScore.value}</h5>
                             <span className="description-text">MAXIMUM SCORE</span>
                         </div>
                     </Grid>
                     <Grid cols={grids[4]}>
-                        <div className="description-block border-right">
+                        <div className="description-block">
                             <span className={`description-percentage text-${this.getPercentageColor(this.props.summaryData[this.state.index].totalAverage.percentageDirection)}`}><i className={`fa fa-caret-${this.props.summaryData[this.state.index].totalAverage.percentageDirection}`}></i> {this.props.summaryData[this.state.index].totalAverage.percentage}%</span>
                             <h5 className="description-header">{this.props.summaryData[this.state.index].totalAverage.value}</h5>
                             <span className="description-text">TOTAL AVERAGE</span>

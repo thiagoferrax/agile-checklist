@@ -55,7 +55,7 @@ class ChecklistForm extends Component {
         return tree && tree.map(checklist => {
             return (
                 <Grid key={`checklist_${checklist.id}`} cols='12'>
-                    <div className="box box-primary">
+                    <div className="box_ box-default">
                         <div className="box-header with-border">
                             <i className="fa fa-check"></i>
                             <h3 className="box-title">&nbsp;&nbsp;MY CHECKLIST - {checklist.description}</h3>
