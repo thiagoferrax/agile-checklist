@@ -29,6 +29,7 @@
     background-clip: border-box;
     border: 0 solid rgba(0,0,0,.125);
     border-radius: .25rem;
+    margin-bottom: 18px;
 }
 
 .card-footer {

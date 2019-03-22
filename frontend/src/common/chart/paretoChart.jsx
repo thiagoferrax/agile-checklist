@@ -27,6 +27,7 @@ export default props => {
             title={`PARETO - ${props.project}`}
             footerText='Number of items (average score <= 5.0) per category'>
             <ParetoChart
+                lineLabel="Accumulated"
                 width={100}
                 height={20}
                 data={props.data} />
