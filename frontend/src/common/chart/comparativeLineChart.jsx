@@ -1,6 +1,5 @@
 import React from 'react'
 import LineChart from './lineChart'
-import './chart.css'
 
 const MAX_DATASETS = 2
 

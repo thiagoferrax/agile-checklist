@@ -1,9 +1,6 @@
 import React from 'react'
 import ParetoChart from 'pareto-chart';
-import Grid from '../layout/grid'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartLine } from '@fortawesome/free-solid-svg-icons'
-import './chart.css'
+import Chart from './chart'
 
 export default props => {
     if (!props.data) {
@@ -24,24 +21,16 @@ export default props => {
     }
 
     return (
-        <Grid cols={props.cols}>
-            <div className="box box-primary">
-                <div className="box-header with-border">
-                    <FontAwesomeIcon icon={faChartLine} />
-                    <h3 className="box-title">&nbsp;&nbsp;PARETO - {props.project}</h3>
-                </div>
-                <div className="box-body">
-                    <div className="chart">
-                        <ParetoChart
-                            width={100}
-                            height={20}
-                            data={props.data} />
-                    </div>
-                </div>
-                <div className="box-footer">
-                    <i className="icon ion-md-information-circle-outline"></i> {'Number of items (average score <= 5.0) per category'}
-                </div>
-            </div>
-        </Grid >
+        <Chart
+            cols={props.cols}
+            icon='fa fa-bar-chart'
+            title={`PARETO - ${props.project}`}
+            footerText='Number of items (average score <= 5.0) per category'>
+            <ParetoChart
+                width={100}
+                height={20}
+                data={props.data} />
+            />
+        </Chart>
     )
 }

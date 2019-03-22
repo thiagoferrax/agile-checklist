@@ -1,9 +1,6 @@
 import React from 'react'
 import FishboneChart from 'fishbone-chart'
-import Grid from '../layout/grid'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFish } from '@fortawesome/free-solid-svg-icons'
-import './chart.css'
+import Chart from './chart'
 
 export default props => {
     if (!props.data) {
@@ -24,21 +21,12 @@ export default props => {
     }
 
     return (
-        <Grid cols={props.cols}>
-            <div className="box box-primary">
-                <div className="box-header with-border">
-                    <FontAwesomeIcon icon={faFish} />
-                    <h3 className="box-title">&nbsp;&nbsp;CAUSE AND EFFECT - {props.project}</h3>
-                </div>
-                <div className="box-body">
-                    <div className="chart">
-                        <FishboneChart data={props.data} />
-                    </div>
-                </div>
-                <div className="box-footer">
-                    <i className="icon ion-md-information-circle-outline"></i> {'Items (average score <= 5.0) per category'}
-                </div>
-            </div>
-        </Grid >
+        <Chart
+            cols={props.cols}
+            icon='fa fa-bug'
+            title={`CAUSE AND EFFECT - ${props.project}`}
+            footerText='Radar of average score per category'>
+             <FishboneChart data={props.data} />
+        </Chart>
     )
 }

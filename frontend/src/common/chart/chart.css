@@ -6,28 +6,15 @@
     font-size: 14px;
 }
 
-.fixedBox {
-    position: absolute;
-    top: 41px;
-    left: 0px;
-    max-height: 335px;
-    overflow-y: scroll;
-}
-
-.box-body-timeline {
-    height: 335px;
-}
-
 .carousel_controller{
     display: flex;
     flex-direction: column;
     align-items: center;
     align-content: stretch;
-    padding-top: 22px;
-    
+    padding-top: 22px;    
 }
 
-.carousel_controller a {color:rgb(17,17,17, 0.7);}
-.carousel_controller a:visited {color:rgb(17,17,17);}
-.carousel_controller a:hover {color:rgb(17,17,17);}
-.carousel_controller a:active {color:rgb(17,17,17);}
+.carousel_controller a {color:black;}
+.carousel_controller a:visited {color:black;}
+.carousel_controller a:hover {color:black;}
+.carousel_controller a:active {color:black;}

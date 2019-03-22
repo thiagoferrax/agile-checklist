@@ -1,6 +1,5 @@
 import React from 'react'
 import RadarChart from './radarChart'
-import './chart.css'
 
 const MAX_DATASETS = 1
 

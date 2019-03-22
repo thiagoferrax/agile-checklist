@@ -1,6 +1,5 @@
 import React from 'react'
 import BarChart from './barChart'
-import './chart.css'
 
 export default props => {
     const data = getBarChartData(props.evaluations, props.project.id)

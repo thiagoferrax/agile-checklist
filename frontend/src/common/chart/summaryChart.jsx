@@ -4,7 +4,6 @@ import Radium, { StyleRoot } from 'radium'
 import Grid from '../layout/grid'
 import If from '../operator/if'
 
-
 const INITIAL_STATE = { index: 0 }
 
 export default class SummaryChart extends Component {
