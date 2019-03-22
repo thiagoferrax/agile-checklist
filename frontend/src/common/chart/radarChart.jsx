@@ -30,7 +30,7 @@ export default props => {
     return (
         <Chart
             cols={props.cols}
-            icon='icon ion-md-pulse'
+            icon='fa fa-area-chart'
             title={`RADAR - ${props.project}`}
             footerText='Radar of average score per category'>
             <Radar
