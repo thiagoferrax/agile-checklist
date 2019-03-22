@@ -30,7 +30,6 @@ export default props => {
                 width={100}
                 height={20}
                 data={props.data} />
-            />
         </Chart>
     )
 }
