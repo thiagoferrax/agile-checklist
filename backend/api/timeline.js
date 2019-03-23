@@ -152,9 +152,9 @@ module.exports = app => {
     })
 
     const getSingleUser = (summary) => new Promise((resolve, reject) => {
-        if (Object.keys(summary.projects).length < 1 || !summary.membersIds.includes(summary.userId) ) {
+        if (Object.keys(summary.projects).length < 1 || !summary.membersIds.includes(`${summary.userId}`) ) {
             summary.timeline.data = buildTimeline(summary.timeline.data, 'user', [summary.user])
-        } 
+        }
         resolve(summary)        
     })
 

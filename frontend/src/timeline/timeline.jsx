@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
 import { getTimeline } from './timelinedActions'
-import ContentHeader from '../common/template/contentHeader'
-import Content from '../common/template/content'
-import TimelineItem from '../common/template/timelineItem'
+
+import TimelineChart from '../common/template/timeline'
+
 import './timeline.css'
 
 class Timeline extends Component {
@@ -20,87 +19,10 @@ class Timeline extends Component {
     componentWillUnmount() {
         clearInterval(this.interval)
     }
-
-    getTimelineContent() {
-        const timelineData = this.props.timeline.data
-        return (
-            <ul className="timeline">
-                {this.getTimelineItems(timelineData)}
-            </ul>
-        )
-    }
-
     render() {
-        if (this.props.onlyTimelineContent) {
-            return this.getTimelineContent()
-        }
         return (
-            <div>
-                <ContentHeader title='Timeline' small='Main Events' />
-                <Content>
-                    {this.getTimelineContent()}
-                </Content>
-                <br />
-                <br />
-            </div>
+            <TimelineChart data={this.props.timeline.data}/>
         )
-    }
-
-    projectItem({ project, user, formattedTime }) {
-        return (
-            <TimelineItem key={`projects_${project}_${user}_${formattedTime}`} icon="cube" color="aqua" time={formattedTime}>
-                <a href="/#/projects">{project}</a> was created by <a href="#">{user}</a>
-            </TimelineItem>
-        )
-    }
-
-    userItem({ user, formattedTime }) {
-        return (
-            <TimelineItem key={`users_${user}_${formattedTime}`} icon="user" color="red" time={formattedTime}>
-                <a href="#">{user}</a> was registered in <a href="#">My Checklist</a>
-            </TimelineItem>
-        )
-    }
-
-    evaluationItem({ sprint, project, user, checklist, formattedTime }) {
-        return (
-            <TimelineItem key={`evaluations_${sprint}_${project}_${user}_${checklist}_${formattedTime}`} icon="sliders" color="green" time={formattedTime}>
-                <a href="/#/evaluations">Sprint {sprint}</a> of <a href="/#/projects">{project}</a> was evaluated by <a href="#">{user}</a> using <a href="/#/checklists">{checklist}</a>
-            </TimelineItem>
-        )
-    }
-
-    checklistItem({ checklist, user, formattedTime }) {
-        return (
-            <TimelineItem key={`checklists_${checklist}_${user}_${formattedTime}`} icon="check" color="yellow" time={formattedTime}>
-                <a href="/#/checklists">{checklist}</a> was created by <a href="#">{user}</a>
-            </TimelineItem>
-        )
-    }
-
-    date(date) {
-        return (
-            <li key={Math.random()} className="time-label">
-                <span className="bg-white">
-                    {date}
-                </span>
-            </li>
-        )
-    }
-
-    getTimelineItems(data) {
-        let dates = data && Object.keys(data)
-
-        dates = dates && dates.sort((d1, d2) => new Date(d2) - new Date(d1))
-
-        return dates && dates.reduce((items, day) => {
-            if(!this.props.fromDay || new Date(day) >= this.props.fromDay) {
-                items.push(this.date(day))
-                const sortedData = data[day].sort((d1, d2) => new Date(d2.data.time) - new Date(d1.data.time))
-                sortedData.forEach(log => items.push(this[`${log.type}Item`](log.data)))
-            }
-            return items
-        }, [])
     }
 }
 
