@@ -20,7 +20,7 @@ function submit(values, url) {
             })
             .catch(e => {
                 if(!e.response) {
-                    toastr.error('Error', 'Backend application and database is not accessible!')
+                    toastr.error('Error', 'Backend application and database are not accessible!')
                 } else {
                     e.response.data.errors.forEach(
                         error => toastr.error('Error', error))
