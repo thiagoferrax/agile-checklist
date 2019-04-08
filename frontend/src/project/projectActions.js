@@ -31,7 +31,7 @@ function submit(values, method) {
         const id = values.id ? values.id : ''
         axios[method](`${consts.API_URL}/projects/${id}`, values)
             .then(resp => {
-                toastr.success('Sucess', 'Successful operation.')
+                toastr.success('Success', 'Successful operation.')
                 dispatch(init())
             })
             .catch(e => {
