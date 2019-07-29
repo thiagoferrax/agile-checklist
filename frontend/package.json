@@ -7,13 +7,13 @@
     "@fortawesome/free-solid-svg-icons": "5.7.2",
     "@fortawesome/react-fontawesome": "0.1.4",
     "admin-lte": "2.4.10",
-    "axios": "0.18.0",
+    "axios": "^0.19.0",
     "chart.js": "2.8.0",
-    "fishbone-chart": "1.0.22",
+    "fishbone-chart": "1.0.23",
     "font-awesome": "4.7.0",
     "ionicons": "4.5.5",
-    "jquery": "3.3.1",
-    "pareto-chart": "1.0.21",
+    "jquery": "^3.4.1",
+    "pareto-chart": "1.0.22",
     "radium": "0.25.1",
     "react": "16.8.4",
     "react-addons-css-transition-group": "15.6.2",
@@ -31,7 +31,7 @@
     "redux-multi": "0.1.12",
     "redux-promise": "0.6.0",
     "redux-thunk": "2.3.0",
-    "tree-slide-bar": "1.0.30"
+    "tree-slide-bar": "1.0.31"
   },
   "scripts": {
     "start": "react-scripts start",
