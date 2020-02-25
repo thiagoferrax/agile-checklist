@@ -3,9 +3,9 @@
 module.exports = {
     client: 'postgresql',
     connection: {
-      database: 'agile_checklist',
+      database: 'database',
       user:     'postgres',
-      password: '123456'
+      password: 'postgres'
     },
     pool: {
       min: 2,
