@@ -29,7 +29,7 @@ $ git clone https://github.com/thiagoferrax/agile-checklist.git
 ```
 #### With docker and docker-compose installed
 ```sh
-$ cd 360-feedback && docker-compose up
+$ cd agile-checklist && docker-compose up
 ```
 #### How to use
 Use a browser to open http://localhost:3000
