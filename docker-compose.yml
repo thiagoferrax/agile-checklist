@@ -33,6 +33,6 @@ services:
       working_dir: /app/frontend
       command: npm run docker_start
       ports:
-         - 88:3000
+         - 3000:3000
       depends_on:
          - backend

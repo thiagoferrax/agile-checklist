@@ -3,7 +3,8 @@
 module.exports = {
     client: 'postgresql',
     connection: {
-      database: 'database',
+      host: 'database',
+      db: 'agile_checklist',
       user:     'postgres',
       password: 'postgres'
     },
