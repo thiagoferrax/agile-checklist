@@ -12,6 +12,8 @@ services:
          - POSTGRES_PASSWORD=postgres
       volumes:
          - data:/var/lib/postgresql/data
+      networks:
+         - net
    backend:
       image: mhart/alpine-node:12
       restart: always
@@ -24,6 +26,8 @@ services:
          - 3001:3001
       depends_on:
          - database
+      networks:
+         - net   
    frontend:
       image: mhart/alpine-node:12
       restart: always
@@ -36,3 +40,7 @@ services:
          - 3000:3000
       depends_on:
          - backend
+      networks:
+         - net
+networks:
+   net:
