@@ -1,0 +1,46 @@
+version: '3'
+volumes:
+   data:
+   node_modules_backend:
+   node_modules_frontend:
+services:
+   database:
+      image: postgres:11.3
+      environment:
+         - POSTGRES_DB=agile_checklist
+         - POSTGRES_USER=postgres
+         - POSTGRES_PASSWORD=postgres
+      volumes:
+         - data:/var/lib/postgresql/data
+      networks:
+         - net
+   backend:
+      image: mhart/alpine-node:12
+      restart: always
+      volumes:
+         - .:/app
+         - node_modules_backend:/app/backend/node_modules
+      working_dir: /app/backend
+      command: npm run docker_start     
+      ports:
+         - 3001:3001
+      depends_on:
+         - database
+      networks:
+         - net   
+   frontend:
+      image: mhart/alpine-node:12
+      restart: always
+      volumes:
+        - .:/app
+        - node_modules_frontend:/app/frontend/node_modules
+      working_dir: /app/frontend
+      command: npm run docker_start
+      ports:
+         - 3000:3000
+      depends_on:
+         - backend
+      networks:
+         - net
+networks:
+   net:
