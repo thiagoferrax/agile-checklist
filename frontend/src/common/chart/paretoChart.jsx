@@ -25,7 +25,8 @@ export default props => {
             cols={props.cols}
             icon='fa fa-line-chart'
             title={`PARETO - ${props.project}`}
-            footerText='Number of items (average score <= 5.0) per category'>
+            footerText={props.footerText}
+            simpleSummaryData={props.summaryData}>
             <ParetoChart
                 lineLabel="Accumulated"
                 width={100}

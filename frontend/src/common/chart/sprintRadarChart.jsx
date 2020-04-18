@@ -7,7 +7,7 @@ export default props => {
     const chartData = getRadarChartData(props.evaluations)
 
     if(chartData && chartData.categories > 2) {
-        return (<RadarChart cols={props.cols} data={chartData} project={props.project}/>)
+        return (<RadarChart cols={props.cols} data={chartData} project={props.project} summaryData={props.summaryData} footerText={props.footerText}/>)
     } else {
         return (<React.Fragment/>)
     }
@@ -61,6 +61,8 @@ const getRadarChartData = (evaluations) => {
     const RadarChartData = evaluations && evaluations.reduce((map, evaluation) => {
         const sprint = 'Sprint ' + evaluation.sprint
         const checklist = evaluation.checklistDescription
+
+        console.log(evaluation)
 
         if (!map.labels.includes(checklist)) {
             map.labels.push(checklist)

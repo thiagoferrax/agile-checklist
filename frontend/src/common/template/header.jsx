@@ -5,10 +5,10 @@ import Navbar from './navbar'
 export default props => (
     <header className='main-header'>
         <a href='/#/' className='logo'>
-            <span className='logo-mini'><b>My</b>C</span>
+            <span className='logo-mini'><b>M</b>y<b>C</b></span>
             <span className='logo-lg'>
                 <i className='icon ion-md-checkbox-outline'></i>
-                &nbsp;&nbsp;<b>My</b> Checklist
+                &nbsp;&nbsp;<b>M</b>y <b>C</b>hecklist
             </span>        
         </a>
         <nav className='navbar navbar-static-top'>

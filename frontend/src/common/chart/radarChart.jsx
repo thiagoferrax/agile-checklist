@@ -32,7 +32,8 @@ export default props => {
             cols={props.cols}
             icon='fa fa-area-chart'
             title={`RADAR - ${props.project}`}
-            footerText='Radar of average score per category'>
+            simpleSummaryData={props.summaryData}
+            footerText={props.footerText}>    
             <Radar
                 data={props.data}
                 width={100}

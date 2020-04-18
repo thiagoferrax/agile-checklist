@@ -11,13 +11,31 @@
     flex-direction: column;
     align-items: center;
     align-content: stretch;
-    padding-top: 22px;    
+    padding-top: 23px;    
 }
-
 .carousel_controller a {color:black;}
 .carousel_controller a:visited {color:black;}
 .carousel_controller a:hover {color:black;}
 .carousel_controller a:active {color:black;}
+
+.card-footer {
+  padding: .60rem 1.10rem !important;
+  background-color: rgba(0,0,0,.03) !important;
+  border-top: 0 solid rgba(0,0,0,.125) !important;
+}
+
+.simple_carousel_controller{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: stretch;
+  padding-top: 4px;    
+}
+
+.simple_carousel_controller a {color:black;}
+.simple_carousel_controller a:visited {color:black;}
+.simple_carousel_controller a:hover {color:black;}
+.simple_carousel_controller a:active {color:black;}
 
 .card {
     position: relative;
@@ -30,12 +48,6 @@
     border: 0 solid rgba(0,0,0,.125);
     border-radius: .25rem;
     margin-bottom: 18px;
-}
-
-.card-footer {
-    padding: .75rem 1.25rem;
-    background-color: rgba(0,0,0,.03);
-    border-top: 0 solid rgba(0,0,0,.125);
 }
 
 .card .border-right {
