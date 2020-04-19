@@ -30,11 +30,18 @@ class Dashboard extends Component {
     }
 
     renderProjects() {
-        const { projects, evaluationsPerChecklist, projectEvaluations, sprintEvaluations, fishboneData, paretoData, summaryData } = this.props.summary
+        const { projects, evaluationsPerChecklist, sprintEvaluations, fishboneData, paretoData, summaryData } = this.props.summary
 
         return projects.map(
+
             project => {
-                let key = `${project.id}_${this.props.nextChecklistId || summaryData[project.id][0].checklistId }`
+
+                if(!summaryData[project.id]) {
+                    return
+                }
+
+                let checklistId = this.props.nextChecklistId || summaryData[project.id][0].checklistId    
+                let key = `${project.id}_${checklistId}`
 
                 return ([
                 <SummaryChart key={`summaryChart_${project.id}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project.name} summaryData={summaryData[project.id]} />,
