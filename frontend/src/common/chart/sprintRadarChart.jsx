@@ -62,8 +62,6 @@ const getRadarChartData = (evaluations) => {
         const sprint = 'Sprint ' + evaluation.sprint
         const checklist = evaluation.checklistDescription
 
-        console.log(evaluation)
-
         if (!map.labels.includes(checklist)) {
             map.labels.push(checklist)
             map.categories++

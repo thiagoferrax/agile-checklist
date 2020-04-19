@@ -7,6 +7,7 @@ import ContentHeader from '../common/template/contentHeader'
 import Content from '../common/template/content'
 import InfoBox from '../common/widget/infoBox'
 import EvaluationBarChart from '../common/chart/evaluationBarChart'
+import SummaryChart from '../common/chart/summaryChart'
 import SprintRadarChart from '../common/chart/sprintRadarChart'
 import ComparativeLineChart from '../common/chart/comparativeLineChart'
 import FishboneChart from '../common/chart/fishboneChart'
@@ -29,16 +30,20 @@ class Dashboard extends Component {
     }
 
     renderProjects() {
-        const { projects, evaluations, sprintEvaluations, fishboneData, paretoData, summaryData } = this.props.summary
+        const { projects, evaluationsPerChecklist, projectEvaluations, sprintEvaluations, fishboneData, paretoData, summaryData } = this.props.summary
 
         return projects.map(
-            project => ([
-                <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluations} project={project} summaryData={summaryData[project.id]} />,
-                <ComparativeLineChart key={`lineChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name} summaryData={summaryData[project.id]} footerText="Comparison of average score per category"/>,
-                <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[project.id]} project={project.name} summaryData={summaryData[project.id]} footerText="Radar of average score per category" />,
-                <ParetoChart key={`paretoChart_${project.id}`} cols='12' data={paretoData[project.id]} project={project.name} summaryData={summaryData[project.id]} footerText="Number of items (average score < 7.0) per category" />,
-                <FishboneChart key={`fishboneChart_${project.id}`} cols='12' data={fishboneData[project.id]} project={project.name} summaryData={summaryData[project.id]} footerText="Number of items (average score < 7.0) per category"/>
-            ])
+            project => {
+                let key = `${project.id}_${this.props.nextChecklistId || summaryData[project.id][0].checklistId }`
+
+                return ([
+                <SummaryChart key={`summaryChart_${project.id}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project.name} summaryData={summaryData[project.id]} />,
+                <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} />,
+                <ComparativeLineChart key={`lineChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[project.id]} />,
+                <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[project.id]} />,
+                <ParetoChart key={`paretoChart_${project.id}`} cols='12' data={paretoData[key]} project={project.name} summaryData={summaryData[project.id]} />,
+                <FishboneChart key={`fishboneChart_${project.id}`} cols='12' data={fishboneData[key]} project={project.name} summaryData={summaryData[project.id]} />
+            ])}
         )
     }
 
@@ -69,6 +74,6 @@ class Dashboard extends Component {
     }
 }
 
-const mapStateToProps = state => ({ summary: state.dashboard.summary })
+const mapStateToProps = state => ({ summary: state.dashboard.summary, nextChecklistId: state.dashboard.nextChecklistId })
 const mapDispatchToProps = dispatch => bindActionCreators({ getSummary }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

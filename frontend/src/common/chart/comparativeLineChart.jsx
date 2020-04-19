@@ -61,7 +61,9 @@ const getChartBorderColor = (index) => {
 const getLineChartData = (evaluations) => {
     let color = 0
     let datasets = 0
-    const LineChartData = evaluations && evaluations.reduce((map, evaluation) => {
+    
+    const LineChartData = evaluations && evaluations.reduce((map, evaluation) => {        
+
         const sprint = 'Sprint ' + evaluation.sprint
         const checklist = evaluation.checklistDescription
 

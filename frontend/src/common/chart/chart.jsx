@@ -23,17 +23,16 @@ export default props => {
                         {props.children}
                     </div>
                 </div>
+                <If test={props.summaryData || props.footerText}>
                 <div className="card-footer">
                     <If test={props.summaryData}>
                         <SummaryChart summaryData={props.summaryData} title={props.title} />
-                    </If>
-                    <If test={false}>
-                        <SimpleSummaryChart summaryData={props.simpleSummaryData} title={props.title} />
                     </If>
                     <If test={props.footerText}>
                         <i className="icon ion-md-information-circle-outline"></i> {props.footerText}
                     </If>
                 </div>
+                </If>
             </div>
         </Grid >
     )

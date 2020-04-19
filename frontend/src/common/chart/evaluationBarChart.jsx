@@ -70,6 +70,7 @@ const getFormatedDate = (isoDate) => {
 }
 
 const getDateInterval = (evaluations, projectId) => {
+
     const projectEvaluations =
         evaluations.filter(evaluation => evaluation.projectId === projectId).sort((e1, e2) => e1.sprint - e2.sprint)
 

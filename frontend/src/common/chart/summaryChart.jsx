@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
+import { setNextChecklistId } from '../../dashboard/dashboardActions'
+
 import Grid from '../layout/grid'
 import If from '../operator/if'
+import Chart from './chart'
 
 const INITIAL_STATE = { index: 0, animation: false }
 
-export default class SummaryChart extends Component {
+class SummaryChart extends Component {
     constructor(props) {
         super(props)
         this.state = INITIAL_STATE
@@ -18,6 +25,9 @@ export default class SummaryChart extends Component {
         if (!this.props.summaryData[index]) {
             index = step > 0 ? 0 : this.props.summaryData.length - 1
         }
+
+        this.props.setNextChecklistId(this.props.summaryData[index].checklistId)
+
         this.setState({ index, animation: true })
     }
 
@@ -42,6 +52,11 @@ export default class SummaryChart extends Component {
         }
 
         return (
+            <Chart
+            cols={this.props.cols}
+            icon='fa fa-flag-checkered'
+            title={`SUMMARY - ${this.props.project}`}            
+            footerText={this.props.footerText}>    
             <div className="row">
                 <If test={this.props.summaryData.length > 1} >
                     <Grid cols='1'>
@@ -55,9 +70,9 @@ export default class SummaryChart extends Component {
                 <ReactCSSTransitionGroup key={`animation_${this.props.title}_${this.state.index}`}
                     transitionName="animation"
                     transitionAppear={true}
-                    transitionAppearTimeout={250} 
-                    transitionEnterTimeout={250} 
-                    transitionLeaveTimeout={250} 
+                    transitionAppearTimeout={500} 
+                    transitionEnterTimeout={500} 
+                    transitionLeaveTimeout={500} 
                     transitionEnter={true}
                     transitionLeave={true} >
                     <Grid cols={grids[0]}>
@@ -106,7 +121,11 @@ export default class SummaryChart extends Component {
                     </Grid>
                 </If>
             </div>
-
+        </Chart>
         )
     }
 }
+
+const mapStateToProps = state => ({})
+const mapDispatchToProps = dispatch => bindActionCreators({ setNextChecklistId }, dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(SummaryChart)

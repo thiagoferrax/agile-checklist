@@ -105,9 +105,6 @@ class ChecklistForm extends Component {
                                 <button type='submit' className='btn btn-primary' title="Save">
                                     <i className="fa fa-check"></i>
                                 </button>
-                                <button type='button' className='btn btn-warning' onClick={this.cloneChecklist} title="Clone Parent path">
-                                    <i className="fa fa-copy"></i>
-                                </button>
                                 <button type='button' className='btn btn-default'
                                     onClick={init} title="Clear">
                                     <i className="icon ion-md-close"></i>

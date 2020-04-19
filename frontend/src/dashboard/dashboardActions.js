@@ -8,3 +8,10 @@ export function getSummary() {
         payload: request
     }
 }
+
+export function setNextChecklistId(nextChecklistId) {
+    return {
+        type: 'DASHBOARD_NEXT_CHECKLIST_SELECTED',
+        payload: nextChecklistId
+    }
+}

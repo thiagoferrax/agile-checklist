@@ -1,4 +1,4 @@
-const INITIAL_STATE = {summary: {projects: [], evaluations: [], number_checklists: 0, number_evaluations: 0, members: []}}
+const INITIAL_STATE = {summary: {projects: [], evaluations: [], number_checklists: 0, number_evaluations: 0, members: [], nextChecklistId: 1}}
 
 export default function(state = INITIAL_STATE, action) {
     switch (action.type) {
@@ -8,6 +8,8 @@ export default function(state = INITIAL_STATE, action) {
             }
             
             return { ...state, summary: action.payload.data }
+        case 'DASHBOARD_NEXT_CHECKLIST_SELECTED':
+            return { ...state, nextChecklistId: action.payload }
         default:
             return state
     }
