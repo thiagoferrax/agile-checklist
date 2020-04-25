@@ -78,9 +78,9 @@ class SummaryChart extends Component {
                     transitionLeave={true} >
                     <Grid cols={grids[0]}>
                         <div className="description-block border-right carousel-inner">
-                            <span className="description-percentage text-muted">Sprint {this.props.summaryData[this.state.index].currentSprint}</span>
-                            <h5 className="description-header">{this.props.summaryData[this.state.index].checklist}</h5>
-                            <span className="description-text">MY CHECKLIST</span>
+                            <span className="description-percentage text-muted">{this.props.summaryData[this.state.index].checklist}</span>
+                            <h5 className="description-header">Sprint {this.props.summaryData[this.state.index].currentSprint}</h5>
+                            <span className="description-text">CURRENT SPRINT</span>
                         </div>
                     </Grid>
                     <Grid cols={grids[1]}>
