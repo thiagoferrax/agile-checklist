@@ -43,6 +43,12 @@ class Dashboard extends Component {
                 let checklistId = this.props.nextChecklistId || summaryData[project.id][0].checklistId    
                 let data = summaryData[project.id] && summaryData[project.id].filter(data => data.checklistId === +checklistId)
                 let checklist = data[0] && data[0].checklist
+                
+                if(!checklist) {
+                    return
+                }
+
+                
                 let key = `${project.id}_${checklistId}`
 
                 return ([
