@@ -24,7 +24,7 @@ export default props => {
         <Chart
             cols={props.cols}
             icon='fa fa-bug'
-            title={`CAUSE AND EFFECT - ${props.project}`}
+            title={`CAUSE AND EFFECT \\ ${props.project} \\ ${props.checklist}`}
             footerText={props.footerText}
             simpleSummaryData={props.summaryData}>
              <FishboneChart data={props.data} />

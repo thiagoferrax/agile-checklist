@@ -11,13 +11,13 @@ export default props => {
         <Chart
             cols={props.cols}
             icon={'fa fa-bar-chart'}
-            title={`PROGRESS - ${props.project}`}
+            title={props.title}
             bodyTitle={`Average score per sprint: ${props.dateInterval}`}
             summaryData={props.summaryData}>
             <Bar
                 data={props.data}
                 width={100}
-                height={20}
+                height={18}
                 options={{
                     legend: {
                         position: 'right',

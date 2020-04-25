@@ -10,7 +10,16 @@ export default props => {
     if(chartData && chartData.categories > 1) {
         const cols = chartData.categories > 2 ? props.cols : '12'
         const height = chartData.categories > 2 ? 50 : 20
-        return (<LineChart cols={cols} data={chartData} height={height} project={props.project} summaryData={props.summaryData} footerText={props.footerText}/>)
+        return (
+            <LineChart 
+                title={`COMPARISON \\ ${props.project} \\ ${props.checklist}`}
+                cols={cols} 
+                data={chartData} 
+                height={height} 
+                project={props.project} 
+                summaryData={props.summaryData} 
+                footerText={props.footerText}
+            />)
     } else {
         return (<React.Fragment/>)
     }

@@ -7,7 +7,13 @@ export default props => {
     const chartData = getRadarChartData(props.evaluations)
 
     if(chartData && chartData.categories > 2) {
-        return (<RadarChart cols={props.cols} data={chartData} project={props.project} summaryData={props.summaryData} footerText={props.footerText}/>)
+        return (<RadarChart 
+                    title={`RADAR \\ ${props.project} \\ ${props.checklist}`}
+                    cols={props.cols} 
+                    data={chartData} 
+                    project={props.project} 
+                    summaryData={props.summaryData} 
+                    footerText={props.footerText}/>)
     } else {
         return (<React.Fragment/>)
     }

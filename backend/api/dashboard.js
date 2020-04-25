@@ -198,6 +198,8 @@ module.exports = app => {
                 const evaluations = summary.projectEvaluations[project]
                 
                 sprintEvaluations[project] = evaluations.filter(evaluation => (!evaluation.parentId || hasChild(evaluation, evaluations)))
+                sprintEvaluations[project] = sprintEvaluations[project].filter(evaluation => evaluation.parentId)
+
                 return sprintEvaluations
             }, {})
 

@@ -41,15 +41,17 @@ class Dashboard extends Component {
                 }
 
                 let checklistId = this.props.nextChecklistId || summaryData[project.id][0].checklistId    
+                let data = summaryData[project.id] && summaryData[project.id].filter(data => data.checklistId === +checklistId)
+                let checklist = data[0] && data[0].checklist
                 let key = `${project.id}_${checklistId}`
 
                 return ([
-                <SummaryChart key={`summaryChart_${project.id}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project.name} summaryData={summaryData[project.id]} />,
-                <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} />,
-                <ComparativeLineChart key={`lineChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[project.id]} />,
-                <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[project.id]} />,
-                <ParetoChart key={`paretoChart_${project.id}`} cols='12' data={paretoData[key]} project={project.name} summaryData={summaryData[project.id]} />,
-                <FishboneChart key={`fishboneChart_${project.id}`} cols='12' data={fishboneData[key]} project={project.name} summaryData={summaryData[project.id]} />
+                <SummaryChart key={`summaryChart_${project.id}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project.name} summaryData={summaryData[project.id]} checklist={checklist}/>,
+                <EvaluationBarChart key={`barChart_${project.id}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} checklist={checklist}/>,
+                <ComparativeLineChart key={`lineChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[project.id]} checklist={checklist}/>,
+                <SprintRadarChart key={`radarChart_${project.id}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[project.id]} checklist={checklist}/>,
+                <ParetoChart key={`paretoChart_${project.id}`} cols='12' data={paretoData[key]} project={project.name} summaryData={summaryData[project.id]} checklist={checklist}/>,
+                <FishboneChart key={`fishboneChart_${project.id}`} cols='12' data={fishboneData[key]} project={project.name} summaryData={summaryData[project.id]} checklist={checklist}/>
             ])}
         )
     }

@@ -24,7 +24,7 @@ export default props => {
         <Chart
             cols={props.cols}
             icon='fa fa-line-chart'
-            title={`PARETO - ${props.project}`}
+            title={`PARETO \\ ${props.project} \\ ${props.checklist}`}
             footerText={props.footerText}
             simpleSummaryData={props.summaryData}>
             <ParetoChart

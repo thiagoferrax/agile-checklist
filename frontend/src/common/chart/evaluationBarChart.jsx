@@ -14,7 +14,7 @@ export default props => {
         <BarChart
             cols={props.cols}
             data={data}
-            project={props.project.name}
+            title={`PROGRESS \\ ${props.project.name} \\ ${props.checklist}`}
             summaryData={props.summaryData}
             dateInterval={dateInterval} />
     )
@@ -71,10 +71,10 @@ const getFormatedDate = (isoDate) => {
 
 const getDateInterval = (evaluations, projectId) => {
 
-    const projectEvaluations =
+    const projectEvaluations = evaluations &&
         evaluations.filter(evaluation => evaluation.projectId === projectId).sort((e1, e2) => e1.sprint - e2.sprint)
 
-    if (!projectEvaluations.length) {
+    if (!projectEvaluations || !projectEvaluations.length) {
         return
     }
 
@@ -93,9 +93,9 @@ const getDateInterval = (evaluations, projectId) => {
 
 const getBarChartData = (evaluations, projectId) => {
     const projectEvaluations =
-        evaluations.filter(evaluation => evaluation.projectId === projectId).sort((e1, e2) => e1.sprint - e2.sprint)
+        evaluations && evaluations.filter(evaluation => evaluation.projectId === projectId).sort((e1, e2) => e1.sprint - e2.sprint)
 
-    if (!projectEvaluations.length) {
+    if (!projectEvaluations || !projectEvaluations.length) {
         return
     }
 

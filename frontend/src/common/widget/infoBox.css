@@ -1,5 +1,11 @@
 .info-box {
     margin-bottom: 18px;
+    min-height: 80px; 
+}
+
+.info-box-content {
+    padding: 5px 10px;
+    margin-left: 80px;
 }
 
 .box_ {
@@ -9,6 +15,21 @@
     width: 100%;
     border: 1px solid hsl(0,0%,80%);
     margin-bottom: 18px;
+}
+
+.info-box-icon {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 2px;
+    display: block;
+    float: left;
+    height: 80px;
+    width: 80px;
+    text-align: center;
+    font-size: 45px;
+    line-height: 90px;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 
