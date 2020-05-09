@@ -9,7 +9,9 @@ export default function(state = INITIAL_STATE, action) {
             
             return { ...state, summary: action.payload.data }
         case 'DASHBOARD_NEXT_CHECKLIST_SELECTED':
-            return { ...state, nextChecklistId: action.payload }
+            return { ...state, nextChecklistId: action.payload.nextChecklistId }
+        case 'DASHBOARD_PROJECT_SELECTED':
+            return { ...state, projectId: action.payload }    
         default:
             return state
     }

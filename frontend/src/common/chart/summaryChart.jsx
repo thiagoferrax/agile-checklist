@@ -27,7 +27,7 @@ class SummaryChart extends Component {
             index = step > 0 ? 0 : this.props.summaryData.length - 1
         }
 
-        this.props.setNextChecklistId(this.props.summaryData[index].checklistId)
+        this.props.setNextChecklistId(this.props.project.id, this.props.summaryData[index].checklistId)
 
         this.setState({ index, animation: true })
     }
@@ -56,7 +56,7 @@ class SummaryChart extends Component {
             <Chart
             cols={this.props.cols}
             icon='fa fa-flag-checkered'
-            title={`SUMMARY \\ ${this.props.project} \\ ${this.props.checklist}`}
+            title={`SUMMARY \\ ${this.props.project.name} \\ ${this.props.checklist}`}
             footerText={this.props.footerText}>    
             <div className="row">
                 <If test={this.props.summaryData.length > 1} >

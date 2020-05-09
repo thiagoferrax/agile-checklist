@@ -2,7 +2,6 @@ import React from 'react'
 import Grid from '../layout/grid'
 import If from '../operator/if'
 import SummaryChart from './summaryChart'
-import SimpleSummaryChart from './simpleSummaryChart'
 import './chart.css'
 
 export default props => {
