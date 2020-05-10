@@ -65,7 +65,6 @@ class Dashboard extends Component {
                     return ([
                         <SummaryChart key={`summaryChart_${projectId}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} summaryData={summaryData[projectId]} checklist={checklist} />,
                         <EvaluationBarChart key={`barChart_${projectId}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} checklist={checklist} />,
-                        <ComparativeLineChart key={`lineChart_${projectId}`} cols={'12'} evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} height={20} />,
                         <SprintRadarChart key={`radarChart_${projectId}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} />,
                         <SprintRadarChart key={`radarChart_${projectId}_2`} cols='12 12 6' evaluations={feedbackData[key]} project={project.name} summaryData={summaryData[projectId]} checklist={`${checklist} \\ ${name}`} />,
                         <ParetoChart key={`paretoChart_${projectId}`} cols='12' data={paretoData[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} />,
