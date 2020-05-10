@@ -85,32 +85,32 @@ module.exports = app => {
 
             let itemRootMap = {}
 
-            summary.evaluationsPerChecklist = 
+            summary.evaluationsPerChecklist =
                 summary.evaluations.reduce((evaluationsPerChecklist, evaluation) => {
-                let checklistId = evaluation.checklistId
-                let parentId = evaluation.parentId
-                if(!itemRootMap[checklistId]) {
-                    if(!evaluation.parentId) {
-                        itemRootMap[checklistId] = checklistId;
-                    } else {
-                        itemRootMap[checklistId] = itemRootMap[parentId]
+                    let checklistId = evaluation.checklistId
+                    let parentId = evaluation.parentId
+                    if (!itemRootMap[checklistId]) {
+                        if (!evaluation.parentId) {
+                            itemRootMap[checklistId] = checklistId;
+                        } else {
+                            itemRootMap[checklistId] = itemRootMap[parentId]
+                        }
                     }
-                }
-                    
-                const key = `${evaluation.projectId}_${itemRootMap[checklistId]}`
-        
-                if (evaluationsPerChecklist[key]) {
-                    evaluationsPerChecklist[key].push(evaluation)
-                } else {
-                    evaluationsPerChecklist[key] = [evaluation]
-                }
 
-                return evaluationsPerChecklist;                
-            }, {})             
+                    const key = `${evaluation.projectId}_${itemRootMap[checklistId]}`
+
+                    if (evaluationsPerChecklist[key]) {
+                        evaluationsPerChecklist[key].push(evaluation)
+                    } else {
+                        evaluationsPerChecklist[key] = [evaluation]
+                    }
+
+                    return evaluationsPerChecklist;
+                }, {})
 
             resolve(summary)
         }
-        
+
     })
 
 
@@ -164,16 +164,16 @@ module.exports = app => {
 
                     let checklistId = evaluation.checklistId
                     let parentId = evaluation.parentId
-                    if(!itemRootMap[checklistId]) {
-                        if(!evaluation.parentId) {
+                    if (!itemRootMap[checklistId]) {
+                        if (!evaluation.parentId) {
                             itemRootMap[checklistId] = checklistId;
                         } else {
                             itemRootMap[checklistId] = itemRootMap[parentId]
                         }
                     }
-                    
+
                     checklist = itemRootMap[checklistId]
-                    
+
                     const key = `${evaluation.projectId}_${checklist}`
 
                     if (projectEvaluations[key]) {
@@ -182,7 +182,7 @@ module.exports = app => {
                         projectEvaluations[key] = [evaluation]
                     }
                     return projectEvaluations
-                }, {})                   
+                }, {})
 
                 resolve(summary)
             }).catch(err => reject(err))
@@ -196,7 +196,7 @@ module.exports = app => {
 
             summary.sprintEvaluations = projects.reduce((sprintEvaluations, project) => {
                 const evaluations = summary.projectEvaluations[project]
-                
+
                 sprintEvaluations[project] = evaluations.filter(evaluation => (!evaluation.parentId || hasChild(evaluation, evaluations)))
                 sprintEvaluations[project] = sprintEvaluations[project].filter(evaluation => evaluation.parentId)
 
@@ -333,9 +333,9 @@ module.exports = app => {
                 const minEvaluation = getScoreEvaluation(evaluationsChecklist, Math.min)
                 const maxEvaluation = getScoreEvaluation(evaluationsChecklist, Math.max)
 
-                const currentEvaluation = evaluationsChecklist[evaluationsChecklist.length - 1] 
+                const currentEvaluation = evaluationsChecklist[evaluationsChecklist.length - 1]
                 const currentSprint = currentEvaluation.sprint
-                const teamParticipation = 
+                const teamParticipation =
                     getTeamParticipation(projectId, currentSprint, checklist, members, pureEvaluations)
 
                 const totalAverage = getAverage(evaluationsChecklist)
@@ -347,7 +347,7 @@ module.exports = app => {
                 evaluationsMap[projectId].push({
                     checklist: minEvaluation.checklistDescription,
                     checklistId: minEvaluation.checklistId,
-                    currentSprint, 
+                    currentSprint,
                     currentScore: { value: format(currentEvaluation.score) },
                     teamParticipation: { value: format(teamParticipation) },
                     minimumScore: {
@@ -427,6 +427,52 @@ module.exports = app => {
         return evaluations
     }
 
+    const getFeedbackData = (summary) => new Promise((resolve, reject) => {
+
+        app.db.select({
+            id: 'users.id',
+            name: 'users.name'
+        }).from('users')
+            .where('users.id', summary.userId)
+            .then(users => {
+                let name = users[0].name
+
+                if (summary.projectEvaluations) {
+
+                    const projects = Object.keys(summary.projectEvaluations)
+
+                    summary.feedbackData = projects.reduce((feedbackData, project) => {
+                        const evaluations = summary.projectEvaluations[project]
+
+                        let userEvaluations = evaluations.filter(evaluation => evaluation.checklistDescription == name)
+
+                        let userEvaluationsMap = userEvaluations.reduce((map, userEvaluation) => {
+                            map[`${userEvaluation.sprint}_${userEvaluation.parentId}`] = userEvaluation.score
+                            return map
+                        }, {})
+
+                       let checklistIds =
+                            userEvaluations.reduce((checklistIds, evaluation) => {
+                                checklistIds.push(`${evaluation.sprint}_${evaluation.parentId}`)
+                                return checklistIds
+                            }, [])
+
+                        feedbackData[project] = evaluations.filter(evaluation => checklistIds && checklistIds.includes(`${evaluation.sprint}_${evaluation.checklistId}`))
+
+                        let data = []
+                        feedbackData[project].forEach(row => {
+                            data.push({...row, score:userEvaluationsMap[`${row.sprint}_${row.checklistId}`]})                            
+                        })
+                        feedbackData[project] = data
+
+                        return feedbackData
+                    }, {})
+                }
+
+                resolve(summary)
+            }).catch(err => reject(err))
+    })
+
     const getSummaryData = (summary) => new Promise((resolve, reject) => {
         const evaluationsWithoutCurrentSprint =
             getEvaluationsWithoutLastSprint(summary.evaluations)
@@ -459,6 +505,7 @@ module.exports = app => {
             .then(getEvaluationsPerChecklist)
             .then(getFishboneData)
             .then(getParetoData)
+            .then(getFeedbackData)
             .then(getSummaryData)
             .then(summary => res.json(summary))
             .catch(err => res.status(500).json({ errors: [err] }))

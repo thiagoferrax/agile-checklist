@@ -32,40 +32,56 @@ class Dashboard extends Component {
     }
 
     renderProjects() {
-        const { projects, evaluationsPerChecklist, sprintEvaluations, fishboneData, paretoData, summaryData } = this.props.summary
-        
+        const { projects, evaluationsPerChecklist, sprintEvaluations, feedbackData, fishboneData, paretoData, summaryData } = this.props.summary
+
         let projectId = this.props.projectId || projects && projects[0] && projects[0].id
 
         let projectsFiltered = projectId ? projects.filter(p => p.id == projectId) : projects
+
+        const { name, email } = this.props.user
 
         return projectsFiltered.map(
 
             project => {
                 let projectId = project.id
 
-                if(!summaryData[projectId]) {
+                if (!summaryData[projectId]) {
                     return
                 }
 
-                let checklistId = this.props.nextChecklistId || summaryData[projectId][0].checklistId    
+                let checklistId = this.props.nextChecklistId || summaryData[projectId][0].checklistId
                 let data = summaryData[projectId] && summaryData[projectId].filter(data => data.checklistId === +checklistId)
                 let checklist = data[0] && data[0].checklist
-                
-                if(!checklist) {
+
+                if (!checklist) {
                     return
                 }
 
-                
                 let key = `${projectId}_${checklistId}`
 
-                return ([
-                <SummaryChart key={`summaryChart_${projectId}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} summaryData={summaryData[projectId]} checklist={checklist}/>,
-                <EvaluationBarChart key={`barChart_${projectId}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} checklist={checklist}/>,
-                <ComparativeLineChart key={`lineChart_${projectId}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist}/>,
-                <SprintRadarChart key={`radarChart_${projectId}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist}/>,
-                <ParetoChart key={`paretoChart_${projectId}`} cols='12' data={paretoData[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist}/>,
-                <FishboneChart key={`fishboneChart_${projectId}`} cols='12' data={fishboneData[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist}/>
-            ])}
+                let hasUserRadar = feedbackData[key] && feedbackData[key].length > 0
+
+                if(hasUserRadar) {
+                    return ([
+                        <SummaryChart key={`summaryChart_${projectId}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} summaryData={summaryData[projectId]} checklist={checklist} />,
+                        <EvaluationBarChart key={`barChart_${projectId}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} checklist={checklist} />,
+                        <ComparativeLineChart key={`lineChart_${projectId}`} cols={'12'} evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} height={20} />,
+                        <SprintRadarChart key={`radarChart_${projectId}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} />,
+                        <SprintRadarChart key={`radarChart_${projectId}_2`} cols='12 12 6' evaluations={feedbackData[key]} project={project.name} summaryData={summaryData[projectId]} checklist={`${checklist} \\ ${name}`} />,
+                        <ParetoChart key={`paretoChart_${projectId}`} cols='12' data={paretoData[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} />,
+                    ])
+                } else {
+                    return ([
+                        <SummaryChart key={`summaryChart_${projectId}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} summaryData={summaryData[projectId]} checklist={checklist} />,
+                        <EvaluationBarChart key={`barChart_${projectId}`} cols='12' evaluations={evaluationsPerChecklist[key]} project={project} checklist={checklist} />,
+                        <ComparativeLineChart key={`lineChart_${projectId}`} cols={'12 12 6'} evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} />,
+                        <SprintRadarChart key={`radarChart_${projectId}`} cols='12 12 6' evaluations={sprintEvaluations[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} />,
+                        <ParetoChart key={`paretoChart_${projectId}`} cols='12' data={paretoData[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} />,
+                        <FishboneChart key={`fishboneChart_${projectId}`} cols='12' data={fishboneData[key]} project={project.name} summaryData={summaryData[projectId]} checklist={checklist} />
+                    ])
+                }
+                
+            }
         )
     }
 
@@ -96,9 +112,11 @@ class Dashboard extends Component {
     }
 }
 
-const mapStateToProps = state => ({ 
-    summary: state.dashboard.summary, 
+const mapStateToProps = state => ({
+    summary: state.dashboard.summary,
     nextChecklistId: state.dashboard.nextChecklistId,
-    projectId: state.dashboard.projectId })
+    projectId: state.dashboard.projectId,
+    user: state.auth.user
+})
 const mapDispatchToProps = dispatch => bindActionCreators({ getSummary, getList }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
