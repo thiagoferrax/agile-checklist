@@ -22,6 +22,13 @@ Some ideas that helped me design My Checklist:
 
 >
 
+## Tech stack
+* [React](https://reactjs.org/) for creating the front-end application
+* [AdminLTE Bootstrap Admin Dashboard Template](https://adminlte.io/) for using a free bootstrap admin template
+* [NodeJS](https://nodejs.org/en/docs/) for the back-end, creating the RESTful Web Services
+* [Postgres](https://www.postgresql.org/) as database
+* [Docker](https://www.docker.com/) for building and managing the application distribution using containers 
+
 ## Install
 #### Download the repository
 ```sh
