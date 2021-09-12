@@ -5,15 +5,17 @@ import Navbar from './navbar'
 export default props => (
     <header className='main-header'>
         <a href='/#/' className='logo'>
-            <span className='logo-mini'><b>M</b>y<b>C</b></span>
+            <span className='logo-mini'>
+                <i className='icon ion-md-checkbox-outline'></i>
+            </span>
             <span className='logo-lg'>
                 <i className='icon ion-md-checkbox-outline'></i>
-                &nbsp;&nbsp;<b>M</b>y <b>C</b>hecklist
-            </span>        
+                &nbsp;&nbsp;My Checklist
+            </span>
         </a>
         <nav className='navbar navbar-static-top'>
             <a href="javascript:;" className='sidebar-toggle' data-toggle="push-menu"></a>
-            <Navbar /> 
+            <Navbar />
         </nav>
     </header>
 )

@@ -13,3 +13,12 @@
 .skin-blue .main-header .logo:hover {
     background-color: #1b7bc7;
 }
+
+.sidebar-mini.sidebar-collapse .main-header .logo > .logo-mini {
+    margin-left: 0px;
+    font-size: 20px;
+}
+
+.main-header .logo {
+    text-align: left;
+}
