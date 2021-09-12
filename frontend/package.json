@@ -7,7 +7,7 @@
     "@fortawesome/free-solid-svg-icons": "5.7.2",
     "@fortawesome/react-fontawesome": "0.1.4",
     "admin-lte": "2.4.10",
-    "axios": "^0.19.0",
+    "axios": "^0.21.2",
     "chart.js": "2.8.0",
     "fishbone-chart": "1.0.24",
     "font-awesome": "4.7.0",
