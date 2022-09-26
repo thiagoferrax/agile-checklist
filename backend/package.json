@@ -38,7 +38,7 @@
     "passport": "0.4.0",
     "passport-jwt": "4.0.0",
     "pg": "7.9.0",
-    "pm2": "3.4.0",
+    "pm2": "5.2.0",
     "run": "^1.4.0"
   },
   "devDependencies": {
