@@ -30,7 +30,7 @@
     "cors": "2.8.5",
     "express": "4.16.4",
     "express-query-int": "3.0.0",
-    "jsonwebtoken": "8.5.0",
+    "jsonwebtoken": "9.0.0",
     "jwt-simple": "0.5.5",
     "knex": "^0.95.11",
     "lodash": "^4.17.15",
